@@ -160,13 +160,13 @@ var default_state := {
 }
 
 # Nodes
-var square_map
-var pieces
-var held_piece_node
+var square_map: TileMapLayer
+var pieces: Node
+var held_piece: Node
+var piece_map: Dictionary = {}
 
 # State
-var last_tile_highlighted
-var held_piece
+var last_tile_highlighted: Vector2i
 
 # Sprite Indices
 const tileset_id := 0
@@ -178,7 +178,6 @@ const black_tile_highlighted := Vector2i(1, 7)
 func _ready():
 	square_map = $Squares
 	pieces = $Pieces
-	held_piece_node = $HeldPiece
 	loadBoardState(default_state)
 
 
@@ -190,7 +189,7 @@ func _process(_delta):
 	
 	if held_piece != null:
 		# Move piece under cursor
-		held_piece_node.position = round(world_pos)
+		held_piece.position = round(world_pos)
 	else:
 		# Reset previous tile
 		if hovered_square != last_tile_highlighted and last_tile_highlighted != null:
@@ -209,16 +208,22 @@ func _process(_delta):
 
 
 func _input(event):
-	#var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
-	
+	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
+
 	if event is InputEventMouseButton and event.pressed:
 		
 		if held_piece == null:
 			# Pick up piece
-			pass
+			var piece_at_cell = piece_map.get(hovered_square)
+			if piece_at_cell:
+				held_piece = piece_at_cell
+				
+				# Bring to front
+				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 		else:
 			# Put down piece
-			pass
+			movePiece(held_piece, hovered_square)
+			held_piece = null
 
 
 func loadBoardState(new_state):
@@ -232,15 +237,30 @@ func loadBoardState(new_state):
 	# Load Squares
 	for row in range(1, 16):
 		for col in range(1, 16):
-			if get_bit(state.squares[row], 16 - col - 1):
+			if getBit(state.squares[row], 16 - col - 1):
 				square_map.set_cell(Vector2i(col - 8, row - 8), 0, white_tile if (row + col) % 2 == 0 else black_tile)
 	
 	# Load Pieces
 	for piece in state.pieces:
 		var instance := piece_scene.instantiate()
 		instance.loadPieceData(piece)
+		piece_map[Vector2i(piece.x, piece.y)] = instance
 		pieces.add_child(instance)
 
 
-func get_bit(bitfield: int, pos: int) -> int:
+func movePiece(piece: Node, pos: Vector2i):
+	# Pick up original piece
+	piece_map.set(piece.squarePos, null)
+
+	# "Capture" as necessary (literally just delete it)
+	var replaced_piece = piece_map.get(pos)
+	if replaced_piece:
+		replaced_piece.queue_free()
+
+	# Move piece
+	piece.setSquarePos(pos)
+	piece_map[pos] = piece
+
+
+func getBit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
