@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0bs6sbbrybcl"]
+
+[ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
+[ext_resource type="TileSet" uid="uid://csjjpcar6usnu" path="res://assets/spritesheet.tres" id="2_kymhv"]
+[ext_resource type="PackedScene" uid="uid://c7k57d4hiqhd1" path="res://scenes/piece/piece.tscn" id="3_knosr"]
+
+[node name="Board" type="Node2D"]
+script = ExtResource("1_q07he")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(8, 8)
+
+[node name="Squares" type="TileMapLayer" parent="."]
+rotation = -4.80598e-05
+tile_set = ExtResource("2_kymhv")
+
+[node name="Pieces" type="Node2D" parent="."]
+
+[node name="HeldPiece" parent="." instance=ExtResource("3_knosr")]
+visible = false

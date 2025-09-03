@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7k57d4hiqhd1"]
+
+[ext_resource type="Texture2D" uid="uid://p0vmoyd3s210" path="res://assets/spritesheet.png" id="1_87r1p"]
+[ext_resource type="Script" uid="uid://dbfahhjcplmb6" path="res://scenes/piece/piece.gd" id="1_huli3"]
+
+[node name="Piece" type="Node2D"]
+script = ExtResource("1_huli3")
+metadata/sprite = 0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_87r1p")
+hframes = 8
+vframes = 8
+
+[node name="DebugCamera" type="Camera2D" parent="."]
+zoom = Vector2(16, 16)
