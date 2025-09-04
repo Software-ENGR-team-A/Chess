@@ -13,8 +13,8 @@ var default_state := {
 		0b0000111111110000,
 		0b0000111111110000,
 		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
+		0b0000111001110000,
+		0b0000111001110000,
 		0b0000111111110000,
 		0b0000111111110000,
 		0b0000111111110000,
@@ -182,10 +182,15 @@ func _ready():
 
 
 func _process(_delta):
+	pass
+
+
+func _input(event):
+	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
+
 	var vport = get_viewport()
 	var screen_mouse_position = vport.get_mouse_position() # Get the mouse position on the screen
 	var world_pos = (vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse() * screen_mouse_position
-	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
 	
 	if held_piece != null:
 		# Move piece under cursor
@@ -206,13 +211,10 @@ func _process(_delta):
 			square_map.set_cell(hovered_square, tileset_id, black_tile_highlighted)
 			last_tile_highlighted = hovered_square
 
-
-func _input(event):
-	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
-
 	if event is InputEventMouseButton and event.pressed:
 		
 		if held_piece == null:
+
 			# Pick up piece
 			var piece_at_cell = piece_map.get(hovered_square)
 			if piece_at_cell:
@@ -220,9 +222,12 @@ func _input(event):
 				
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
-		else:
+		elif checkFloor(hovered_square):
 			# Put down piece
 			movePiece(held_piece, hovered_square)
+			held_piece = null
+		else:
+			movePiece(held_piece, held_piece.squarePos)
 			held_piece = null
 
 
@@ -235,10 +240,11 @@ func loadBoardState(new_state):
 		child.queue_free()
 	
 	# Load Squares
-	for row in range(1, 16):
-		for col in range(1, 16):
-			if getBit(state.squares[row], 16 - col - 1):
-				square_map.set_cell(Vector2i(col - 8, row - 8), 0, white_tile if (row + col) % 2 == 0 else black_tile)
+	for row in range(0, 16):
+		for col in range(0, 16):
+			var map_cell = Vector2i(col - 8, row - 8)
+			if checkFloor(map_cell):
+				square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
 	
 	# Load Pieces
 	for piece in state.pieces:
@@ -260,6 +266,10 @@ func movePiece(piece: Node, pos: Vector2i):
 	# Move piece
 	piece.setSquarePos(pos)
 	piece_map[pos] = piece
+
+
+func checkFloor(pos: Vector2i):
+	return getBit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
 
 
 func getBit(bitfield: int, pos: int) -> int:
