@@ -176,6 +176,8 @@ const white_tile_highlighted := Vector2i(1, 3)
 const black_tile_highlighted := Vector2i(1, 7)
 const green_tile := Vector2i(2, 3)
 const dark_green_tile := Vector2i(2, 7)
+const red_tile := Vector2i(5, 3)
+const dark_red_tile := Vector2i(5, 7)
 
 func _ready():
 	square_map = $Squares
@@ -251,7 +253,10 @@ func loadBoardSquares(selected_piece: Piece):
 				if selected_piece and selected_piece.square_pos == map_cell:
 					square_map.set_cell(map_cell, 0, white_tile_highlighted if (row + col) % 2 == 0 else black_tile_highlighted)
 				elif selected_piece and selected_piece.canMoveTo(map_cell):
-					square_map.set_cell(map_cell, 0, green_tile if (row + col) % 2 == 0 else dark_green_tile)
+					if piece_map.get(map_cell) == null:
+						square_map.set_cell(map_cell, 0, green_tile if (row + col) % 2 == 0 else dark_green_tile)
+					else:
+						square_map.set_cell(map_cell, 0, red_tile if (row + col) % 2 == 0 else dark_red_tile)
 				else:
 					square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
 
