@@ -3,4 +3,4 @@ extends Piece
 
 func _ready():
 	super();
-	self.pointValue = 3
+	self.point_value = 3
