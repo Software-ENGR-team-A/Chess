@@ -2,5 +2,6 @@ class_name Queen
 extends Piece
 
 func _ready():
-	super();
 	self.pointValue = 9
+	self.spriteIndex = 5
+	super()._ready();

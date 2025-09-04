@@ -27,134 +27,134 @@ var default_state := {
 		# White Front Row
 		{
 			x = -4, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = -3, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = -2, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = -1, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = 0, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = 1, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = 2, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		{
 			x = 3, y = -3,
-			player = 0, spriteIndex = 0,
+			player = 0, piece = Pawn,
 		},
 		# White Back Row
 		{
 			x = -4, y = -4,
-			player = 0, spriteIndex = 3,
+			player = 0, piece = Rook,
 		},
 		{
 			x = -3, y = -4,
-			player = 0, spriteIndex = 1,
+			player = 0, piece = Knight,
 		},
 		{
 			x = -2, y = -4,
-			player = 0, spriteIndex = 2,
+			player = 0, piece = Bishop,
 		},
 		{
 			x = -1, y = -4,
-			player = 0, spriteIndex = 4,
+			player = 0, piece = Queen,
 		},
 		{
 			x = 0, y = -4,
-			player = 0, spriteIndex = 5,
+			player = 0, piece = King,
 		},
 		{
 			x = 1, y = -4,
-			player = 0, spriteIndex = 2,
+			player = 0, piece = Bishop,
 		},
 		{
 			x = 2, y = -4,
-			player = 0, spriteIndex = 1,
+			player = 0, piece = Knight,
 		},
 		{
 			x = 3, y = -4,
-			player = 0, spriteIndex = 3,
+			player = 0, piece = Rook,
 		},
 			# Black Front Row
 		{
 			x = -4, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1,piece = Pawn,
 		},
 		{
 			x = -3, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = -2, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = -1, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = 0, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = 1, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = 2, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		{
 			x = 3, y = 2,
-			player = 1, spriteIndex = 0,
+			player = 1, piece = Pawn,
 		},
 		# White Back Row
 		{
 			x = -4, y = 3,
-			player = 1, spriteIndex = 3,
+			player = 1, piece = Rook,
 		},
 		{
 			x = -3, y = 3,
-			player = 1, spriteIndex = 1,
+			player = 1, piece = Knight,
 		},
 		{
 			x = -2, y = 3,
-			player = 1, spriteIndex = 2,
+			player = 1, piece = Bishop,
 		},
 		{
 			x = -1, y = 3,
-			player = 1, spriteIndex = 4,
+			player = 1, piece = King,
 		},
 		{
 			x = 0, y = 3,
-			player = 1, spriteIndex = 5,
+			player = 1, piece = Queen,
 		},
 		{
 			x = 1, y = 3,
-			player = 1, spriteIndex = 2,
+			player = 1, piece = Bishop,
 		},
 		{
 			x = 2, y = 3,
-			player = 1, spriteIndex = 1,
+			player = 1, piece = Knight,
 		},
 		{
 			x = 3, y = 3,
-			player = 1, spriteIndex = 3,
+			player = 1, piece = Rook,
 		},
 	]
 }
