@@ -108,6 +108,9 @@ func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
 	load_board_state(DEFAULT_STATE)
+	
+	add_user_signal("piece_grabbed")
+	add_user_signal("piece_placed", [{"Name": "isCapture?", "type": TYPE_BOOL}])
 
 
 func _process(_delta) -> void:
@@ -157,10 +160,17 @@ func _input(event) -> void:
 
 				# Highlight places where it can be moved
 				load_board_square(held_piece)
+				
+				emit_signal("piece_grabbed")
 
 		else:
 			if check_floor(hovered_square):
 				# Put down piece
+				if(check_capture(hovered_square)):
+					emit_signal("piece_placed", true)
+				else:
+					emit_signal("piece_placed", false)
+					
 				move_piece(held_piece, hovered_square)
 			else:
 				# Revert location
@@ -227,3 +237,11 @@ func check_floor(pos: Vector2i) -> bool:
 
 func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
+
+func check_capture(hovered_square):
+	if piece_map.get(hovered_square) != null:
+		#print("CAPTURED " + str(piece_map.get(hovered_square)))
+		return true
+	return false
+	
+	
