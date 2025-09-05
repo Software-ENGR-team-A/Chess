@@ -97,7 +97,7 @@ const dark_green_tile := Vector2i(2, 7)
 ##[param piece_script]: The proloaded script for the piece [br]
 ##[param pos]: The Vector2i for the board location [br]
 ##[param player]: The player that controls the piece [br]
-func spawnPiece(piece_script: Script, pos: Vector2i, player: int):
+func spawnPiece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	var new_piece = piece_scene.instantiate()
 	new_piece.set_script(piece_script)
 	new_piece.setup(pos, player)
@@ -105,17 +105,17 @@ func spawnPiece(piece_script: Script, pos: Vector2i, player: int):
 	pieces.add_child(new_piece)
 	
 
-func _ready():
+func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
 	loadBoardState(default_state)
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	pass
 
 
-func _input(event):
+func _input(event) -> void:
 	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
 
 	if held_piece != null:
@@ -170,7 +170,7 @@ func _input(event):
 			loadBoardSquares(null)
 
 
-func loadBoardSquares(selected_piece: Piece):
+func loadBoardSquares(selected_piece: Piece) -> void:
 	# Load Squares
 	for row in range(0, 16):
 		for col in range(0, 16):
@@ -184,7 +184,7 @@ func loadBoardSquares(selected_piece: Piece):
 					square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
 
 
-func loadBoardState(new_state):
+func loadBoardState(new_state) -> void:
 	state = new_state
 
 	# Reset Board
@@ -199,7 +199,7 @@ func loadBoardState(new_state):
 		spawnPiece(piece_data.script, piece_data.pos, piece_data.player)
 
 
-func movePiece(piece: Node, pos: Vector2i):
+func movePiece(piece: Node, pos: Vector2i) -> void:
 	# Pick up original piece
 	piece_map.set(piece.square_pos, null)
 
@@ -213,7 +213,7 @@ func movePiece(piece: Node, pos: Vector2i):
 	piece_map[pos] = piece
 
 
-func checkFloor(pos: Vector2i):
+func checkFloor(pos: Vector2i) -> bool:
 	return getBit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
 
 

@@ -2,38 +2,39 @@ class_name Piece
 extends Node2D
 
 @export var player := 0 # Black vs White
-@export var squarePos: Vector2i # It's location on the board
-@export var hasMoved = false # After the first move, mark as true
+@export var square_pos: Vector2i # It's location on the board
+@export var has_moved = false # After the first move, mark as true
 
-var spriteIndex := 0 # Where in the sprite sheet it exists
-var pointValue := 0 # The point value for the engine
+var sprite_index := 0 # Where in the sprite sheet it exists
+var point_value := 0 # The point value for the engine
 
 
-func _ready():
+func _ready() -> void:
 	self.setSprite(getSpriteIndex())
-	setSprite(spriteIndex);
+	setSprite(sprite_index);
 
 
-func setup(pos: Vector2i,player: int):
+func setup(pos: Vector2i, player: int) -> void:
 	setSquarePos(pos)
 	self.player = player
 
-func setSprite(sprite: int):
+func setSprite(sprite: int) -> void:
 	sprite_index = sprite
 	$Sprite.frame = sprite_index + player * 32
 
-func setSquarePos(pos: Vector2i):
+func setSquarePos(pos: Vector2i) -> void:
 	square_pos = pos
 	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
 
 
-func getSquarePos():
-	return squarePos
+func getSquarePos() -> Vector2i:
+	return square_pos
 	
-func getSpriteIndex():
-	return spriteIndex
+func getSpriteIndex() -> int:
+	return sprite_index
 
-func canMoveTo(pos: Vector2i):
+func canMoveTo(pos: Vector2i) -> bool:
+	return false
 	if square_pos == pos: return false
 
 	if pos.x == square_pos.x: return true
