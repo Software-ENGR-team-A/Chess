@@ -21,7 +21,7 @@ const DARK_GREEN_TILE := Vector2i(2, 7)
 
 @export var state := {}
 
-var default_state := {
+const DEFAULT_STATE := {
 	squares =
 	[
 		0b0000000000000000,
@@ -107,7 +107,7 @@ func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
-	load_board_state(default_state)
+	load_board_state(DEFAULT_STATE)
 
 
 func _process(_delta) -> void:
