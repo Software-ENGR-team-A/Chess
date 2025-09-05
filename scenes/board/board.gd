@@ -1,11 +1,27 @@
 extends Node2D
 
-var piece_scene := preload("res://scenes/piece/piece.tscn");
+const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
-@export var state := {}
+# Load all piece classes to prevent null pointers
+const PAWN_SCRIPT = preload("res://scenes/piece/Pawn.gd")
+const ROOK_SCRIPT = preload("res://scenes/piece/Rook.gd")
+const KNIGHT_SCRIPT = preload("res://scenes/piece/Knight.gd")
+const BISHOP_SCRIPT = preload("res://scenes/piece/Bishop.gd")
+const QUEEN_SCRIPT = preload("res://scenes/piece/Queen.gd")
+const KING_SCRIPT = preload("res://scenes/piece/King.gd")
 
-var default_state := {
-	squares = [
+# Sprite Indices
+const TILESET_ID := 0
+const WHITE_TILE := Vector2i(0, 3)
+const BLACK_TILE := Vector2i(0, 7)
+const WHITE_TILE_HIGHLIGHTED := Vector2i(1, 3)
+const BLACK_TILE_HIGHLIGHTED := Vector2i(1, 7)
+const GREEN_TILE := Vector2i(2, 3)
+const DARK_GREEN_TILE := Vector2i(2, 7)
+
+const DEFAULT_STATE := {
+	squares =
+	[
 		0b0000000000000000,
 		0b0000000000000000,
 		0b0000000000000000,
@@ -13,8 +29,8 @@ var default_state := {
 		0b0000111111110000,
 		0b0000111111110000,
 		0b0000111111110000,
-		0b0000111001110000,
-		0b0000111001110000,
+		0b0000111111110000,
+		0b0000111111110000,
 		0b0000111111110000,
 		0b0000111111110000,
 		0b0000111111110000,
@@ -23,141 +39,48 @@ var default_state := {
 		0b0000000000000000,
 		0b0000000000000000
 	],
-	pieces = [
+	pieces =
+	[
 		# White Front Row
-		{
-			x = -4, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = -3, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = -2, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = -1, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = 0, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = 1, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = 2, y = -3,
-			player = 0, sprite_index = 0,
-		},
-		{
-			x = 3, y = -3,
-			player = 0, sprite_index = 0,
-		},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-3, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(0, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(1, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(2, -3), "player": 0},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(3, -3), "player": 0},
 		# White Back Row
-		{
-			x = -4, y = -4,
-			player = 0, sprite_index = 3,
-		},
-		{
-			x = -3, y = -4,
-			player = 0, sprite_index = 1,
-		},
-		{
-			x = -2, y = -4,
-			player = 0, sprite_index = 2,
-		},
-		{
-			x = -1, y = -4,
-			player = 0, sprite_index = 4,
-		},
-		{
-			x = 0, y = -4,
-			player = 0, sprite_index = 5,
-		},
-		{
-			x = 1, y = -4,
-			player = 0, sprite_index = 2,
-		},
-		{
-			x = 2, y = -4,
-			player = 0, sprite_index = 1,
-		},
-		{
-			x = 3, y = -4,
-			player = 0, sprite_index = 3,
-		},
-			# Black Front Row
-		{
-			x = -4, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = -3, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = -2, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = -1, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = 0, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = 1, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = 2, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		{
-			x = 3, y = 2,
-			player = 1, sprite_index = 0,
-		},
-		# White Back Row
-		{
-			x = -4, y = 3,
-			player = 1, sprite_index = 3,
-		},
-		{
-			x = -3, y = 3,
-			player = 1, sprite_index = 1,
-		},
-		{
-			x = -2, y = 3,
-			player = 1, sprite_index = 2,
-		},
-		{
-			x = -1, y = 3,
-			player = 1, sprite_index = 4,
-		},
-		{
-			x = 0, y = 3,
-			player = 1, sprite_index = 5,
-		},
-		{
-			x = 1, y = 3,
-			player = 1, sprite_index = 2,
-		},
-		{
-			x = 2, y = 3,
-			player = 1, sprite_index = 1,
-		},
-		{
-			x = 3, y = 3,
-			player = 1, sprite_index = 3,
-		},
+		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
+		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
+		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
+		{"script": QUEEN_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
+		{"script": KING_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
+		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
+		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
+		{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
+		# Black Front Row
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-4, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-3, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(0, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(1, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
+		{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
+		# Black Back Row
+		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
+		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
+		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
+		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
+		{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
+		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
+		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
+		{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 	]
 }
+
+@export var state := {}
 
 # Nodes
 var square_map: TileMapLayer
@@ -168,113 +91,123 @@ var piece_map: Dictionary = {}
 # State
 var last_tile_highlighted: Vector2i
 
-# Sprite Indices
-const tileset_id := 0
-const white_tile := Vector2i(0, 3)
-const black_tile := Vector2i(0, 7)
-const white_tile_highlighted := Vector2i(1, 3)
-const black_tile_highlighted := Vector2i(1, 7)
-const green_tile := Vector2i(2, 3)
-const dark_green_tile := Vector2i(2, 7)
 
-func _ready():
+## Creates a scene instance of the piece and places it in the pieces array [br]
+##[param piece_script]: The proloaded script for the piece [br]
+##[param pos]: The Vector2i for the board location [br]
+##[param player]: The player that controls the piece [br]
+func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
+	var new_piece = PIECE_SCENE.instantiate()
+	new_piece.set_script(piece_script)
+	new_piece.setup(pos, player)
+	piece_map[pos] = new_piece
+	pieces.add_child(new_piece)
+
+
+func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
-	loadBoardState(default_state)
+	load_board_state(DEFAULT_STATE)
 
 
-func _process(_delta):
+func _process(_delta) -> void:
 	pass
 
 
-func _input(event):
+func _input(event) -> void:
 	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
 
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
 		var vport = get_viewport()
-		var screen_mouse_position = vport.get_mouse_position() # Get the mouse position on the screen
-		var world_pos = (vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse() * screen_mouse_position
-		
+		var screen_mouse_position = vport.get_mouse_position()  # Get the mouse position on the screen
+		var world_pos = (
+			(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
+			* screen_mouse_position
+		)
+
 		# Move piece under cursor
 		held_piece.position = round(world_pos)
 
 	else:
 		# Reset previous tile
 		if hovered_square != last_tile_highlighted and last_tile_highlighted != null:
-			if square_map.get_cell_atlas_coords(last_tile_highlighted) == white_tile_highlighted:
-				square_map.set_cell(last_tile_highlighted, tileset_id, white_tile)
-			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == black_tile_highlighted:
-				square_map.set_cell(last_tile_highlighted, tileset_id, black_tile)
-			
+			if square_map.get_cell_atlas_coords(last_tile_highlighted) == WHITE_TILE_HIGHLIGHTED:
+				square_map.set_cell(last_tile_highlighted, TILESET_ID, WHITE_TILE)
+			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == BLACK_TILE_HIGHLIGHTED:
+				square_map.set_cell(last_tile_highlighted, TILESET_ID, BLACK_TILE)
+
 		# Set current tile
-		if square_map.get_cell_atlas_coords(hovered_square) == white_tile:
-			square_map.set_cell(hovered_square, tileset_id, white_tile_highlighted)
+		if square_map.get_cell_atlas_coords(hovered_square) == WHITE_TILE:
+			square_map.set_cell(hovered_square, TILESET_ID, WHITE_TILE_HIGHLIGHTED)
 			last_tile_highlighted = hovered_square
-		elif square_map.get_cell_atlas_coords(hovered_square) == black_tile:
-			square_map.set_cell(hovered_square, tileset_id, black_tile_highlighted)
+		elif square_map.get_cell_atlas_coords(hovered_square) == BLACK_TILE:
+			square_map.set_cell(hovered_square, TILESET_ID, BLACK_TILE_HIGHLIGHTED)
 			last_tile_highlighted = hovered_square
 
-	
 	if event is InputEventMouseButton and event.pressed:
-		
 		if held_piece == null:
 			# Pick up piece
 			var piece_at_cell = piece_map.get(hovered_square)
 			if piece_at_cell:
 				held_piece = piece_at_cell
-				
+
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				loadBoardSquares(held_piece)
+				load_board_square(held_piece)
 
 		else:
-			if checkFloor(hovered_square):
+			if check_floor(hovered_square):
 				# Put down piece
-				movePiece(held_piece, hovered_square)
+				move_piece(held_piece, hovered_square)
 			else:
 				# Revert location
-				movePiece(held_piece, held_piece.square_pos)
+				move_piece(held_piece, held_piece.square_pos)
 
 			held_piece = null
-			loadBoardSquares(null)
+			load_board_square(null)
 
 
-func loadBoardSquares(selected_piece: Piece):
+func load_board_square(selected_piece: Piece) -> void:
 	# Load Squares
 	for row in range(0, 16):
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
-			if checkFloor(map_cell):
+			if check_floor(map_cell):
 				if selected_piece and selected_piece.square_pos == map_cell:
-					square_map.set_cell(map_cell, 0, white_tile_highlighted if (row + col) % 2 == 0 else black_tile_highlighted)
-				elif selected_piece and selected_piece.canMoveTo(map_cell):
-					square_map.set_cell(map_cell, 0, green_tile if (row + col) % 2 == 0 else dark_green_tile)
+					square_map.set_cell(
+						map_cell,
+						0,
+						WHITE_TILE_HIGHLIGHTED if (row + col) % 2 == 0 else BLACK_TILE_HIGHLIGHTED
+					)
+				elif selected_piece and selected_piece.can_move_to(map_cell):
+					square_map.set_cell(
+						map_cell, 0, GREEN_TILE if (row + col) % 2 == 0 else DARK_GREEN_TILE
+					)
 				else:
-					square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
+					square_map.set_cell(
+						map_cell, 0, WHITE_TILE if (row + col) % 2 == 0 else BLACK_TILE
+					)
 
 
-func loadBoardState(new_state):
+func load_board_state(new_state) -> void:
 	state = new_state
-	
+
 	# Reset Board
 	square_map.clear()
 	for child in pieces.get_children():
 		child.queue_free()
 
-	loadBoardSquares(null)
-	
+	load_board_square(null)
+
 	# Load Pieces
-	for piece in state.pieces:
-		var instance := piece_scene.instantiate()
-		instance.loadPieceData(piece)
-		piece_map[Vector2i(piece.x, piece.y)] = instance
-		pieces.add_child(instance)
+	for piece_data in state.pieces:  # Iterate through the board, creating instances of each piece
+		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 
 
-func movePiece(piece: Node, pos: Vector2i):
+func move_piece(piece: Node, pos: Vector2i) -> void:
 	# Pick up original piece
 	piece_map.set(piece.square_pos, null)
 
@@ -284,13 +217,13 @@ func movePiece(piece: Node, pos: Vector2i):
 		replaced_piece.queue_free()
 
 	# Move piece
-	piece.setSquarePos(pos)
+	piece.set_square_pos(pos)
 	piece_map[pos] = piece
 
 
-func checkFloor(pos: Vector2i):
-	return getBit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+func check_floor(pos: Vector2i) -> bool:
+	return get_bit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
 
 
-func getBit(bitfield: int, pos: int) -> int:
+func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
