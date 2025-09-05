@@ -1,8 +1,17 @@
 extends Node2D
 
-var piece_scene := preload("res://scenes/piece/piece.tscn");
+const piece_scene := preload("res://scenes/piece/piece.tscn");
+
+const PawnScript = preload("res://scenes/piece/Pawn.gd")
+const RookScript = preload("res://scenes/piece/Rook.gd")
+const KnightScript = preload("res://scenes/piece/Knight.gd")
+const BishopScript = preload("res://scenes/piece/Bishop.gd")
+const QueenScript = preload("res://scenes/piece/Queen.gd")
+const KingScript = preload("res://scenes/piece/King.gd")
 
 @export var state := {}
+
+
 
 var default_state := {
 	squares = [
@@ -25,139 +34,47 @@ var default_state := {
 	],
 	pieces = [
 		# White Front Row
-		{
-			x = -4, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = -3, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = -2, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = -1, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = 0, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = 1, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = 2, y = -3,
-			player = 0, piece = Pawn,
-		},
-		{
-			x = 3, y = -3,
-			player = 0, piece = Pawn,
-		},
+		{ "script": PawnScript, "pos": Vector2i(-4,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(-3,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(-2,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(-1,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(0,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(1,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(2,-3), "player": 0 },
+		{ "script": PawnScript, "pos": Vector2i(3,-3), "player": 0 },
+		
 		# White Back Row
-		{
-			x = -4, y = -4,
-			player = 0, piece = Rook,
-		},
-		{
-			x = -3, y = -4,
-			player = 0, piece = Knight,
-		},
-		{
-			x = -2, y = -4,
-			player = 0, piece = Bishop,
-		},
-		{
-			x = -1, y = -4,
-			player = 0, piece = Queen,
-		},
-		{
-			x = 0, y = -4,
-			player = 0, piece = King,
-		},
-		{
-			x = 1, y = -4,
-			player = 0, piece = Bishop,
-		},
-		{
-			x = 2, y = -4,
-			player = 0, piece = Knight,
-		},
-		{
-			x = 3, y = -4,
-			player = 0, piece = Rook,
-		},
-			# Black Front Row
-		{
-			x = -4, y = 2,
-			player = 1,piece = Pawn,
-		},
-		{
-			x = -3, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = -2, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = -1, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = 0, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = 1, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = 2, y = 2,
-			player = 1, piece = Pawn,
-		},
-		{
-			x = 3, y = 2,
-			player = 1, piece = Pawn,
-		},
-		# White Back Row
-		{
-			x = -4, y = 3,
-			player = 1, piece = Rook,
-		},
-		{
-			x = -3, y = 3,
-			player = 1, piece = Knight,
-		},
-		{
-			x = -2, y = 3,
-			player = 1, piece = Bishop,
-		},
-		{
-			x = -1, y = 3,
-			player = 1, piece = King,
-		},
-		{
-			x = 0, y = 3,
-			player = 1, piece = Queen,
-		},
-		{
-			x = 1, y = 3,
-			player = 1, piece = Bishop,
-		},
-		{
-			x = 2, y = 3,
-			player = 1, piece = Knight,
-		},
-		{
-			x = 3, y = 3,
-			player = 1, piece = Rook,
-		},
+		{ "script": RookScript, "pos": Vector2i(-4,-4), "player": 0 },
+		{ "script": KnightScript, "pos": Vector2i(-3,-4), "player": 0 },
+		{ "script": BishopScript, "pos": Vector2i(-2,-4), "player": 0 },
+		{ "script": QueenScript, "pos": Vector2i(-1,-4), "player": 0 },
+		{ "script": KingScript, "pos": Vector2i(0,-4), "player": 0 },
+		{ "script": BishopScript, "pos": Vector2i(1,-4), "player": 0 },
+		{ "script": KnightScript, "pos": Vector2i(2,-4), "player": 0 },
+		{ "script": RookScript, "pos": Vector2i(3,-4), "player": 0 },
+
+		# Black Front Row
+		{ "script": PawnScript, "pos": Vector2i(-4,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(-3,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(-2,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(-1,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(0,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(1,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(2,2), "player": 1 },
+		{ "script": PawnScript, "pos": Vector2i(3,2), "player": 1 },
+			
+		# Black Back Row
+		{ "script": RookScript, "pos": Vector2i(-4,3), "player": 1 },
+		{ "script": KnightScript, "pos": Vector2i(-3,3), "player": 1 },
+		{ "script": BishopScript, "pos": Vector2i(-2,3), "player": 1 },
+		{ "script": QueenScript, "pos": Vector2i(0,3), "player": 1 },
+		{ "script": KingScript, "pos": Vector2i(-1,3), "player": 1 },
+		{ "script": BishopScript, "pos": Vector2i(1,3), "player": 1 },
+		{ "script": KnightScript, "pos": Vector2i(2,3), "player": 1 },
+		{ "script": RookScript, "pos": Vector2i(3,3), "player": 1 }
 	]
 }
+		
 
 # Nodes
 var square_map: TileMapLayer
@@ -174,6 +91,13 @@ const white_tile := Vector2i(0, 3)
 const black_tile := Vector2i(0, 7)
 const white_tile_highlighted := Vector2i(1, 3)
 const black_tile_highlighted := Vector2i(1, 7)
+
+func spawnPiece(piece_script: Script, position: Vector2i, player: int):
+	var new_piece = piece_scene.instantiate()
+	new_piece.set_script(piece_script)
+	new_piece.setup(position.x, position.y, player)
+	piece_map[position] = new_piece
+	pieces.add_child(new_piece)
 
 func _ready():
 	square_map = $Squares
@@ -233,7 +157,7 @@ func _input(event):
 
 func loadBoardState(new_state):
 	state = new_state
-	
+
 	# Reset Board
 	square_map.clear()
 	for child in pieces.get_children():
@@ -247,11 +171,8 @@ func loadBoardState(new_state):
 				square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
 	
 	# Load Pieces
-	for piece in state.pieces:
-		var instance := piece_scene.instantiate()
-		instance.loadPieceData(piece)
-		piece_map[Vector2i(piece.x, piece.y)] = instance
-		pieces.add_child(instance)
+	for piece_data in state.pieces:
+		spawnPiece(piece_data.script, piece_data.pos, piece_data.player)
 
 
 func movePiece(piece: Node, pos: Vector2i):
@@ -274,3 +195,5 @@ func checkFloor(pos: Vector2i):
 
 func getBit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
+	
+# Add this method to board.gd

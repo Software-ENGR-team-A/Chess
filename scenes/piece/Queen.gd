@@ -1,7 +1,7 @@
 class_name Queen
 extends Piece
 
-func _ready():
+func setup(x:int,y:int,player:int):
 	self.pointValue = 9
 	self.spriteIndex = 5
-	super()._ready();
+	super.setup(x,y,player);

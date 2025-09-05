@@ -1,7 +1,7 @@
 class_name Knight
 extends Piece
 
-func _ready():
+func setup(x:int,y:int,player:int):
 	self.pointValue = 3
 	self.spriteIndex = 1
-	super()._ready();
+	super.setup(x,y,player);

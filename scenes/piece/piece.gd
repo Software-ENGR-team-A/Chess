@@ -5,19 +5,18 @@ extends Node2D
 @export var squarePos: Vector2i # It's location on the board
 @export var hasMoved = false # After the first move, mark as true
 
-static var spriteIndex := 0 # Where in the sprite sheet it exists
-static var pointValue := 0 # The point value for the engine
+var spriteIndex := 0 # Where in the sprite sheet it exists
+var pointValue := 0 # The point value for the engine
 
 
 func _ready():
+	self.setSprite(getSpriteIndex())
 	setSprite(spriteIndex);
 
 
-func loadPieceData(data):
-	player = data.player
-	spriteIndex = data.piece.getSpriteIndex()
-	setSquarePos(Vector2i(data.x, data.y))
-
+func setup(x,y,player):
+	setSquarePos(Vector2i(x, y))
+	self.player = player
 
 func setSprite(sprite: int):
 	spriteIndex = sprite
@@ -27,5 +26,8 @@ func setSquarePos(pos: Vector2i):
 	squarePos = pos
 	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
 	
-static func getSpriteIndex():
+func getSquarePos():
+	return squarePos
+	
+func getSpriteIndex():
 	return spriteIndex

@@ -1,7 +1,9 @@
 class_name Bishop
 extends Piece
 
-func _ready():
+
+func setup(x:int,y:int,player:int):
 	self.pointValue = 3
 	self.spriteIndex = 2
-	super()._ready();
+	super.setup(x,y,player);
+	

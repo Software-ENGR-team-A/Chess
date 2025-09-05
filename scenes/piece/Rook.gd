@@ -1,7 +1,7 @@
 class_name Rook
 extends Piece
 
-func _ready():
+func setup(x:int,y:int,player:int):
 	self.pointValue = 5
 	self.spriteIndex = 3
-	super()._ready();
+	super.setup(x,y,player);

@@ -1,7 +1,9 @@
 class_name King
 extends Piece
 
-func _ready():
+	
+func setup(x:int,y:int,player:int):
 	self.pointValue = 99999
 	self.spriteIndex = 4
-	super()._ready();
+	super.setup(x,y,player);
+	
