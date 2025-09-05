@@ -2,16 +2,14 @@ extends Node2D
 
 const piece_scene := preload("res://scenes/piece/piece.tscn");
 
-const PawnScript = preload("res://scenes/piece/Pawn.gd")
-const RookScript = preload("res://scenes/piece/Rook.gd")
-const KnightScript = preload("res://scenes/piece/Knight.gd")
-const BishopScript = preload("res://scenes/piece/Bishop.gd")
-const QueenScript = preload("res://scenes/piece/Queen.gd")
-const KingScript = preload("res://scenes/piece/King.gd")
+const pawn_script = preload("res://scenes/piece/Pawn.gd")
+const rook_script = preload("res://scenes/piece/Rook.gd")
+const knight_script = preload("res://scenes/piece/Knight.gd")
+const bishop_script = preload("res://scenes/piece/Bishop.gd")
+const queen_script = preload("res://scenes/piece/Queen.gd")
+const king_script = preload("res://scenes/piece/King.gd")
 
 @export var state := {}
-
-
 
 var default_state := {
 	squares = [
@@ -34,44 +32,44 @@ var default_state := {
 	],
 	pieces = [
 		# White Front Row
-		{ "script": PawnScript, "pos": Vector2i(-4,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(-3,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(-2,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(-1,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(0,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(1,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(2,-3), "player": 0 },
-		{ "script": PawnScript, "pos": Vector2i(3,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(-4,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(-3,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(-2,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(-1,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(0,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(1,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(2,-3), "player": 0 },
+		{ "script": pawn_script, "pos": Vector2i(3,-3), "player": 0 },
 		
 		# White Back Row
-		{ "script": RookScript, "pos": Vector2i(-4,-4), "player": 0 },
-		{ "script": KnightScript, "pos": Vector2i(-3,-4), "player": 0 },
-		{ "script": BishopScript, "pos": Vector2i(-2,-4), "player": 0 },
-		{ "script": QueenScript, "pos": Vector2i(-1,-4), "player": 0 },
-		{ "script": KingScript, "pos": Vector2i(0,-4), "player": 0 },
-		{ "script": BishopScript, "pos": Vector2i(1,-4), "player": 0 },
-		{ "script": KnightScript, "pos": Vector2i(2,-4), "player": 0 },
-		{ "script": RookScript, "pos": Vector2i(3,-4), "player": 0 },
+		{ "script": rook_script, "pos": Vector2i(-4,-4), "player": 0 },
+		{ "script": knight_script, "pos": Vector2i(-3,-4), "player": 0 },
+		{ "script": bishop_script, "pos": Vector2i(-2,-4), "player": 0 },
+		{ "script": queen_script, "pos": Vector2i(-1,-4), "player": 0 },
+		{ "script": king_script, "pos": Vector2i(0,-4), "player": 0 },
+		{ "script": bishop_script, "pos": Vector2i(1,-4), "player": 0 },
+		{ "script": knight_script, "pos": Vector2i(2,-4), "player": 0 },
+		{ "script": rook_script, "pos": Vector2i(3,-4), "player": 0 },
 
 		# Black Front Row
-		{ "script": PawnScript, "pos": Vector2i(-4,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(-3,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(-2,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(-1,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(0,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(1,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(2,2), "player": 1 },
-		{ "script": PawnScript, "pos": Vector2i(3,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(-4,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(-3,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(-2,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(-1,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(0,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(1,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(2,2), "player": 1 },
+		{ "script": pawn_script, "pos": Vector2i(3,2), "player": 1 },
 			
 		# Black Back Row
-		{ "script": RookScript, "pos": Vector2i(-4,3), "player": 1 },
-		{ "script": KnightScript, "pos": Vector2i(-3,3), "player": 1 },
-		{ "script": BishopScript, "pos": Vector2i(-2,3), "player": 1 },
-		{ "script": QueenScript, "pos": Vector2i(0,3), "player": 1 },
-		{ "script": KingScript, "pos": Vector2i(-1,3), "player": 1 },
-		{ "script": BishopScript, "pos": Vector2i(1,3), "player": 1 },
-		{ "script": KnightScript, "pos": Vector2i(2,3), "player": 1 },
-		{ "script": RookScript, "pos": Vector2i(3,3), "player": 1 }
+		{ "script": rook_script, "pos": Vector2i(-4,3), "player": 1 },
+		{ "script": knight_script, "pos": Vector2i(-3,3), "player": 1 },
+		{ "script": bishop_script, "pos": Vector2i(-2,3), "player": 1 },
+		{ "script": queen_script, "pos": Vector2i(0,3), "player": 1 },
+		{ "script": king_script, "pos": Vector2i(-1,3), "player": 1 },
+		{ "script": bishop_script, "pos": Vector2i(1,3), "player": 1 },
+		{ "script": knight_script, "pos": Vector2i(2,3), "player": 1 },
+		{ "script": rook_script, "pos": Vector2i(3,3), "player": 1 }
 	]
 }
 		
