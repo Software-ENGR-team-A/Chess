@@ -19,8 +19,6 @@ const BLACK_TILE_HIGHLIGHTED := Vector2i(1, 7)
 const GREEN_TILE := Vector2i(2, 3)
 const DARK_GREEN_TILE := Vector2i(2, 7)
 
-@export var state := {}
-
 const DEFAULT_STATE := {
 	squares =
 	[
@@ -81,6 +79,8 @@ const DEFAULT_STATE := {
 		{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 	]
 }
+
+@export var state := {}
 
 # Nodes
 var square_map: TileMapLayer
