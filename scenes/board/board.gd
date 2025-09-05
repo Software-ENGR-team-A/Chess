@@ -217,7 +217,7 @@ func move_piece(piece: Node, pos: Vector2i) -> void:
 		replaced_piece.queue_free()
 
 	# Move piece
-	piece.setSquarePos(pos)
+	piece.set_square_pos(pos)
 	piece_map[pos] = piece
 
 
