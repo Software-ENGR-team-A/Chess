@@ -1,0 +1,17 @@
+name: Formatting Checks
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  static-checks:
+    name: 'gdtoolkit'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: Scony/godot-gdscript-toolkit@master
+    - run: gdformat --check ./
+    - run: gdlint ./
