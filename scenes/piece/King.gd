@@ -2,11 +2,11 @@ class_name King
 extends Piece
 
 
-func setup(pos: Vector2i, player:int) -> void:
-	self.point_value = 99999 # Insanely high value that should be tuned with the engine
+func setup(pos: Vector2i, player: int) -> void:
+	self.point_value = 99999  # Insanely high value that should be tuned with the engine
 	self.sprite_index = 4
-	super.setup(pos, player);
+	super.setup(pos, player)
 
 
-func canMoveTo(pos: Vector2i) -> bool:
+func can_move_to(_pos: Vector2i) -> bool:
 	return false
