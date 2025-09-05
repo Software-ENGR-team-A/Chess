@@ -1,7 +1,7 @@
 class_name Pawn 
 extends Piece
 
-func setup(x:int,y:int,player:int):
+func setup(pos: Vector2i,player:int):
 	self.pointValue = 1
 	self.spriteIndex = 0
-	super.setup(x,y,player);
+	super.setup(pos, player);

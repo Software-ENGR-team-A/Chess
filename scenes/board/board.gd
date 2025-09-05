@@ -2,6 +2,7 @@ extends Node2D
 
 const piece_scene := preload("res://scenes/piece/piece.tscn");
 
+# Load all piece classes to prevent null pointers
 const pawn_script = preload("res://scenes/piece/Pawn.gd")
 const rook_script = preload("res://scenes/piece/Rook.gd")
 const knight_script = preload("res://scenes/piece/Knight.gd")
@@ -90,12 +91,17 @@ const black_tile := Vector2i(0, 7)
 const white_tile_highlighted := Vector2i(1, 3)
 const black_tile_highlighted := Vector2i(1, 7)
 
-func spawnPiece(piece_script: Script, position: Vector2i, player: int):
+## Creates a scene instance of the piece and places it in the pieces array [br]
+##[param piece_script]: The proloaded script for the piece [br]
+##[param pos]: The Vector2i for the board location [br]
+##[param player]: The player that controls the piece [br]
+func spawnPiece(piece_script: Script, pos: Vector2i, player: int):
 	var new_piece = piece_scene.instantiate()
 	new_piece.set_script(piece_script)
-	new_piece.setup(position.x, position.y, player)
-	piece_map[position] = new_piece
+	new_piece.setup(pos, player)
+	piece_map[pos] = new_piece
 	pieces.add_child(new_piece)
+	
 
 func _ready():
 	square_map = $Squares
@@ -169,7 +175,7 @@ func loadBoardState(new_state):
 				square_map.set_cell(map_cell, 0, white_tile if (row + col) % 2 == 0 else black_tile)
 	
 	# Load Pieces
-	for piece_data in state.pieces:
+	for piece_data in state.pieces: # Iterate through the board, creating instances of each piece
 		spawnPiece(piece_data.script, piece_data.pos, piece_data.player)
 
 
@@ -194,4 +200,3 @@ func checkFloor(pos: Vector2i):
 func getBit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
 	
-# Add this method to board.gd

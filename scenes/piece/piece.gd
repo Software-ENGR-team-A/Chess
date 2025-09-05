@@ -14,8 +14,8 @@ func _ready():
 	setSprite(spriteIndex);
 
 
-func setup(x,y,player):
-	setSquarePos(Vector2i(x, y))
+func setup(pos: Vector2i,player: int):
+	setSquarePos(pos)
 	self.player = player
 
 func setSprite(sprite: int):
@@ -25,7 +25,7 @@ func setSprite(sprite: int):
 func setSquarePos(pos: Vector2i):
 	squarePos = pos
 	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
-	
+
 func getSquarePos():
 	return squarePos
 	
