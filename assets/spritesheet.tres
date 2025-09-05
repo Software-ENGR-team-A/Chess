@@ -1,9 +1,11 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://csjjpcar6usnu"]
 
-[ext_resource type="Texture2D" uid="uid://p0vmoyd3s210" path="res://assets/spritesheet.png" id="1_aa0rm"]
+[ext_resource type="Texture2D" uid="uid://p0vmoyd3s210" path="res://assets/spritesheet.png" id="1_qxcdh"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_13ory"]
-texture = ExtResource("1_aa0rm")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0e48y"]
+resource_name = "spritesheet"
+texture = ExtResource("1_qxcdh")
+use_texture_padding = false
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -31,4 +33,4 @@ texture = ExtResource("1_aa0rm")
 
 [resource]
 resource_local_to_scene = true
-sources/0 = SubResource("TileSetAtlasSource_13ory")
+sources/0 = SubResource("TileSetAtlasSource_0e48y")
