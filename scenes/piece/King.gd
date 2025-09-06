@@ -8,5 +8,9 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	super.setup(board, pos, player)
 
 
-func can_move_to(_pos: Vector2i) -> bool:
-	return false
+func piece_movement(pos: Vector2i) -> bool:
+	var piece_to_capture = board.get_piece_at(pos)
+	if piece_to_capture and piece_to_capture.player == player:
+		return false
+
+	return pos.distance_to(board_pos) <= 1.5

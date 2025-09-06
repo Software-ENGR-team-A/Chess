@@ -8,6 +8,8 @@ extends Node2D
 var sprite_index := 0  # Where in the sprite sheet it exists
 var point_value := 0  # The point value for the engine
 var board: Board
+var checked_cells: Dictionary
+var checked_cells_half_move: int
 
 
 func _ready() -> void:
@@ -40,5 +42,19 @@ func get_sprite_index() -> int:
 	return sprite_index
 
 
-func can_move_to(_pos: Vector2i) -> bool:
+func can_move_to(pos: Vector2i) -> bool:
+	if pos == board_pos:
+		return false
+
+	if board.half_moves == checked_cells_half_move:
+		if checked_cells.get(pos, false): return true
+
+	checked_cells = {}
+	checked_cells_half_move = board.half_moves
+	var can_move = piece_movement(pos)
+	checked_cells.set(pos, can_move)
+	return can_move
+
+
+func piece_movement(_pos: Vector2i) -> bool:
 	return false
