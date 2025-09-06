@@ -1,6 +1,8 @@
 class_name Piece
 extends Node2D
 
+enum movement_outcome { BLOCKED, AVAILABLE, CAPTURE }
+
 @export var player := 0  # Black vs White
 @export var board_pos: Vector2i
 @export var original_pos: Vector2i
@@ -42,19 +44,26 @@ func get_sprite_index() -> int:
 	return sprite_index
 
 
-func can_move_to(pos: Vector2i) -> bool:
-	if pos == board_pos:
-		return false
+func can_move_to(pos: Vector2i) -> movement_outcome:
+	# Can't move to itself or to somewhere without floor
+	if pos == board_pos or not board.has_floor_at(pos):
+		return movement_outcome.BLOCKED
 
-	if board.half_moves == checked_cells_half_move:
-		if checked_cells.get(pos, false): return true
+	# Reset saved cells if move changed
+	if board.half_moves != checked_cells_half_move:
+		checked_cells = {}
+		checked_cells_half_move = board.half_moves
 
-	checked_cells = {}
-	checked_cells_half_move = board.half_moves
+	# Check previously generated moves
+	var saved_move = checked_cells.get(pos, null)
+	if saved_move != null:
+		return saved_move
+
+	# Check script
 	var can_move = piece_movement(pos)
 	checked_cells.set(pos, can_move)
 	return can_move
 
 
-func piece_movement(_pos: Vector2i) -> bool:
-	return false
+func piece_movement(_pos: Vector2i) -> movement_outcome:
+	return movement_outcome.BLOCKED

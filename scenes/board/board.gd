@@ -15,10 +15,17 @@ const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 const TILESET_ID := 0
 const WHITE_TILE := Vector2i(0, 3)
 const BLACK_TILE := Vector2i(0, 7)
-const WHITE_TILE_HIGHLIGHTED := Vector2i(1, 3)
-const BLACK_TILE_HIGHLIGHTED := Vector2i(1, 7)
+const CYAN_TILE := Vector2i(1, 3)
+const DARK_CAN_TILE := Vector2i(1, 7)
 const GREEN_TILE := Vector2i(2, 3)
 const DARK_GREEN_TILE := Vector2i(2, 7)
+const PURPLE_TILE := Vector2i(3, 3)
+const DARK_PURPLE_TILE := Vector2i(3, 7)
+const ORANGE_TILE := Vector2i(4, 3)
+const DARK_ORANGE_TILE := Vector2i(4, 7)
+const RED_TILE := Vector2i(5, 3)
+const DARK_RED_TILE := Vector2i(5, 7)
+
 
 const DEFAULT_STATE := {
 	squares =
@@ -55,8 +62,8 @@ const DEFAULT_STATE := {
 		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
-		{"script": QUEEN_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
-		{"script": KING_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
+		{"script": KING_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
+		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
 		{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
@@ -73,8 +80,8 @@ const DEFAULT_STATE := {
 		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
-		{"script": QUEEN_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
-		{"script": KING_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
+		{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
+		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
 		{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
@@ -134,17 +141,17 @@ func _input(event) -> void:
 	else:
 		# Reset previous tile
 		if hovered_square != last_tile_highlighted and last_tile_highlighted != null:
-			if square_map.get_cell_atlas_coords(last_tile_highlighted) == WHITE_TILE_HIGHLIGHTED:
+			if square_map.get_cell_atlas_coords(last_tile_highlighted) == CYAN_TILE:
 				square_map.set_cell(last_tile_highlighted, TILESET_ID, WHITE_TILE)
-			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == BLACK_TILE_HIGHLIGHTED:
+			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == DARK_CAN_TILE:
 				square_map.set_cell(last_tile_highlighted, TILESET_ID, BLACK_TILE)
 
 		# Set current tile
 		if square_map.get_cell_atlas_coords(hovered_square) == WHITE_TILE:
-			square_map.set_cell(hovered_square, TILESET_ID, WHITE_TILE_HIGHLIGHTED)
+			square_map.set_cell(hovered_square, TILESET_ID, CYAN_TILE)
 			last_tile_highlighted = hovered_square
 		elif square_map.get_cell_atlas_coords(hovered_square) == BLACK_TILE:
-			square_map.set_cell(hovered_square, TILESET_ID, BLACK_TILE_HIGHLIGHTED)
+			square_map.set_cell(hovered_square, TILESET_ID, DARK_CAN_TILE)
 			last_tile_highlighted = hovered_square
 
 	if event is InputEventMouseButton and event.pressed:
@@ -180,20 +187,29 @@ func load_board_square(selected_piece: Piece) -> void:
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
 			if has_floor_at(map_cell):
-				if selected_piece and selected_piece.board_pos == map_cell:
-					square_map.set_cell(
-						map_cell,
-						0,
-						WHITE_TILE_HIGHLIGHTED if (row + col) % 2 == 0 else BLACK_TILE_HIGHLIGHTED
-					)
-				elif selected_piece and selected_piece.can_move_to(map_cell):
-					square_map.set_cell(
-						map_cell, 0, GREEN_TILE if (row + col) % 2 == 0 else DARK_GREEN_TILE
-					)
-				else:
-					square_map.set_cell(
-						map_cell, 0, WHITE_TILE if (row + col) % 2 == 0 else BLACK_TILE
-					)
+				var tiles = get_square_tile_at(map_cell, selected_piece)
+				square_map.set_cell(
+					map_cell,
+					TILESET_ID,
+					tiles.light if (row + col) % 2 == 0 else tiles.dark
+				)
+
+
+func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+	if selected_piece:
+		if selected_piece.board_pos == map_cell:
+			return {"light": CYAN_TILE, "dark": DARK_CAN_TILE}
+		
+		var outcome = selected_piece.can_move_to(map_cell)
+
+		if outcome == Piece.movement_outcome.AVAILABLE:
+			return {"light": GREEN_TILE, "dark": DARK_GREEN_TILE}
+
+		if outcome == Piece.movement_outcome.CAPTURE:
+			return {"light": RED_TILE, "dark": DARK_RED_TILE}
+
+	return {"light": WHITE_TILE, "dark": BLACK_TILE}
+
 
 
 func load_board_state(new_state) -> void:
