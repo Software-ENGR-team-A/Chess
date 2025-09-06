@@ -41,12 +41,15 @@ func set_board_pos(pos: Vector2i) -> void:
 	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
 
 
-func get_board_pos() -> Vector2i:
-	return board_pos
-
-
 func get_sprite_index() -> int:
 	return sprite_index
+
+
+func capture() -> void:
+	if board.get_piece_at(board_pos) == self:
+		board.piece_map.set(board_pos, null)
+
+	queue_free()
 
 
 func can_move_to(pos: Vector2i) -> MovementOutcome:
@@ -74,5 +77,5 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
 
 
-func additional_captures_when_moved_to(_pos: Vector2i) -> Array[Piece]:
-	return []
+func movement_actions(_pos: Vector2i) -> void:
+	pass

@@ -44,20 +44,22 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 func get_en_passant_target(pos: Vector2i) -> Pawn:
 	var target = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
 
-	if not target:
+	# Target must:
+	if not target:  # exist,
 		return
-	if target.player == player:
+	if target.player == player:  # be owned by the opposing team,
 		return
-	if target.last_moved_half_move != board.half_moves - 1:
+	if target.last_moved_half_move != board.half_moves - 1:  # have just moved,
 		return
-	if target.board_pos != target.original_pos + Vector2i(0, 2 * target.forward_direction):
+	if target.board_pos != target.original_pos + Vector2i(0, 2 * target.forward_direction):  # and
 		return
+
 	return target
 
 
-func additional_captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
-	var output: Array[Piece] = []
-	var en_passant = get_en_passant_target(pos)
-	if en_passant:
-		output.push_back(en_passant)
-	return output
+func movement_actions(pos: Vector2i) -> void:
+	super.movement_actions(pos)
+
+	var en_passant_target = get_en_passant_target(pos)
+	if en_passant_target:
+		en_passant_target.capture()

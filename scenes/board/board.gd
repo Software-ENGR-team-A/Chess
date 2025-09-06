@@ -100,10 +100,10 @@ var half_moves = 0
 var last_tile_highlighted: Vector2i
 
 
-## Creates a scene instance of the piece and places it in the pieces array [br]
-##[param piece_script]: The proloaded script for the piece [br]
-##[param pos]: The Vector2i for the board location [br]
-##[param player]: The player that controls the piece [br]
+## Creates a scene instance of the piece and places it in the pieces array
+##[param piece_script]: The proloaded script for the piece
+##[param pos]: The Vector2i for the board location
+##[param player]: The player that controls the piece
 func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
@@ -227,20 +227,18 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	# Pick up original piece
 	piece_map.set(piece.board_pos, null)
 
-	# "Capture" as necessary (literally just delete it)
+	# Capture
 	var replaced_piece = get_piece_at(pos)
 	if replaced_piece:
-		replaced_piece.queue_free()
+		replaced_piece.capture()
 
 	# Move piece
 	piece.set_board_pos(pos)
 	piece.last_moved_half_move = half_moves
 	piece_map[pos] = piece
 
-	# Perform extra captures
-	for captured_piece in piece.additional_captures_when_moved_to(pos):
-		piece_map[captured_piece.board_pos] = null
-		captured_piece.queue_free()
+	# Perform extra actions
+	piece.movement_actions(pos)
 
 
 func has_floor_at(pos: Vector2i) -> bool:
