@@ -9,9 +9,13 @@ enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
 
 var sprite_index := 0  # Where in the sprite sheet it exists
 var point_value := 0  # The point value for the engine
+var forward_direction: int
 var board: Board
+
 var checked_cells: Dictionary
 var checked_cells_half_move: int
+
+var last_moved_half_move := 0
 
 
 func _ready() -> void:
@@ -24,6 +28,7 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	set_board_pos(pos)
 	original_pos = board_pos
 	self.player = player
+	forward_direction = -1 if player else 1
 
 
 func set_sprite(sprite: int) -> void:
@@ -67,3 +72,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 
 func _movement(_pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
+
+
+func additional_captures_when_moved_to(_pos: Vector2i) -> Array[Piece]:
+	return []

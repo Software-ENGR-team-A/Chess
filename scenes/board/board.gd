@@ -234,7 +234,13 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 
 	# Move piece
 	piece.set_board_pos(pos)
+	piece.last_moved_half_move = half_moves
 	piece_map[pos] = piece
+
+	# Perform extra captures
+	for captured_piece in piece.additional_captures_when_moved_to(pos):
+		piece_map[captured_piece.board_pos] = null
+		captured_piece.queue_free()
 
 
 func has_floor_at(pos: Vector2i) -> bool:
