@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://d1kqs01ig1dug"]
+[gd_scene load_steps=2 format=3 uid="uid://d1kqs01ig1dug"]
+
+[ext_resource type="Script" uid="uid://dlvmb6alpnxru" path="res://scenes/sound_system/audio_manager.gd" id="1_fagox"]
 
 [node name="AudioManager" type="Node"]
+script = ExtResource("1_fagox")
 
 [node name="Movement" type="Node" parent="."]
 
@@ -11,6 +14,12 @@
 [node name="Capture" type="AudioStreamPlayer" parent="Movement"]
 
 [node name="Invalid" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Check" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Checkmate" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Stalemate" type="AudioStreamPlayer" parent="Movement"]
 
 [node name="Menu" type="Node" parent="."]
 

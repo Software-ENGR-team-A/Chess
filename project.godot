@@ -14,6 +14,11 @@ config/name="Chess and Balances"
 run/main_scene="uid://c0bs6sbbrybcl"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 
+[autoload]
+
+AudioManager="*res://scenes/sound_system/audio_manager.tscn"
+MusicManager="*res://scenes/sound_system/music_manager.tscn"
+
 [display]
 
 window/size/viewport_width=2304
