@@ -1,3 +1,4 @@
+class_name Board
 extends Node2D
 
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
@@ -99,7 +100,7 @@ var last_tile_highlighted: Vector2i
 func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
-	new_piece.setup(pos, player)
+	new_piece.setup(self, pos, player)
 	piece_map[pos] = new_piece
 	pieces.add_child(new_piece)
 
@@ -148,7 +149,7 @@ func _input(event) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if held_piece == null:
 			# Pick up piece
-			var piece_at_cell = piece_map.get(hovered_square)
+			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell:
 				held_piece = piece_at_cell
 
@@ -159,12 +160,13 @@ func _input(event) -> void:
 				load_board_square(held_piece)
 
 		else:
-			if check_floor(hovered_square):
+			# Try to put down piece
+			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
 				# Put down piece
-				move_piece(held_piece, hovered_square)
+				move_piece_to(held_piece, hovered_square)
 			else:
 				# Revert location
-				move_piece(held_piece, held_piece.square_pos)
+				move_piece_to(held_piece, held_piece.board_pos)
 
 			held_piece = null
 			load_board_square(null)
@@ -175,8 +177,8 @@ func load_board_square(selected_piece: Piece) -> void:
 	for row in range(0, 16):
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
-			if check_floor(map_cell):
-				if selected_piece and selected_piece.square_pos == map_cell:
+			if has_floor_at(map_cell):
+				if selected_piece and selected_piece.board_pos == map_cell:
 					square_map.set_cell(
 						map_cell,
 						0,
@@ -207,22 +209,26 @@ func load_board_state(new_state) -> void:
 		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 
 
-func move_piece(piece: Node, pos: Vector2i) -> void:
+func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	# Pick up original piece
-	piece_map.set(piece.square_pos, null)
+	piece_map.set(piece.board_pos, null)
 
 	# "Capture" as necessary (literally just delete it)
-	var replaced_piece = piece_map.get(pos)
+	var replaced_piece = get_piece_at(pos)
 	if replaced_piece:
 		replaced_piece.queue_free()
 
 	# Move piece
-	piece.set_square_pos(pos)
+	piece.set_board_pos(pos)
 	piece_map[pos] = piece
 
 
-func check_floor(pos: Vector2i) -> bool:
+func has_floor_at(pos: Vector2i) -> bool:
 	return get_bit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+
+
+func get_piece_at(pos: Vector2i) -> Piece:
+	return piece_map.get(pos)
 
 
 func get_bit(bitfield: int, pos: int) -> int:
