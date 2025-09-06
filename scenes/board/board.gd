@@ -1,6 +1,6 @@
 extends Node2D
 
-const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
+const PIECE_SCENE := preload("res://scenes/piece/Piece.tscn")
 
 # Load all piece classes to prevent null pointers
 const PAWN_SCRIPT = preload("res://scenes/piece/Pawn.gd")
