@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d1kqs01ig1dug"]
+
+[node name="AudioManager" type="Node"]
+
+[node name="Movement" type="Node" parent="."]
+
+[node name="Pickup" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Place" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Capture" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Invalid" type="AudioStreamPlayer" parent="Movement"]
+
+[node name="Menu" type="Node" parent="."]
+
+[node name="Open" type="AudioStreamPlayer" parent="Menu"]
+
+[node name="Close" type="AudioStreamPlayer" parent="Menu"]
+
+[node name="Select" type="AudioStreamPlayer" parent="Menu"]
