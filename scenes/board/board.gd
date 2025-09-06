@@ -3,12 +3,12 @@ extends Node2D
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
 # Load all piece classes to prevent null pointers
-const PAWN_SCRIPT = preload("res://scenes/piece/Pawn.gd")
-const ROOK_SCRIPT = preload("res://scenes/piece/Rook.gd")
-const KNIGHT_SCRIPT = preload("res://scenes/piece/Knight.gd")
-const BISHOP_SCRIPT = preload("res://scenes/piece/Bishop.gd")
-const QUEEN_SCRIPT = preload("res://scenes/piece/Queen.gd")
-const KING_SCRIPT = preload("res://scenes/piece/King.gd")
+const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
+const ROOK_SCRIPT := preload("res://scenes/piece/Rook.gd")
+const KNIGHT_SCRIPT := preload("res://scenes/piece/Knight.gd")
+const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
+const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
+const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 
 # Sprite Indices
 const TILESET_ID := 0
@@ -72,8 +72,8 @@ const DEFAULT_STATE := {
 		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
-		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
-		{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
+		{"script": QUEEN_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
+		{"script": KING_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
 		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
 		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
 		{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
