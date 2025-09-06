@@ -92,10 +92,10 @@ var piece_map: Dictionary = {}
 var last_tile_highlighted: Vector2i
 
 
-## Creates a scene instance of the piece and places it in the pieces array [br]
-##[param piece_script]: The proloaded script for the piece [br]
-##[param pos]: The Vector2i for the board location [br]
-##[param player]: The player that controls the piece [br]
+## Creates a scene instance of the piece and places it in the pieces array
+##[param piece_script]: The proloaded script for the piece
+##[param pos]: The Vector2i for the board location
+##[param player]: The player that controls the piece
 func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
@@ -108,6 +108,7 @@ func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
 	load_board_state(DEFAULT_STATE)
+	MusicManager.play_random_song()
 
 
 func _process(_delta) -> void:
@@ -149,6 +150,7 @@ func _input(event) -> void:
 		if held_piece == null:
 			# Pick up piece
 			var piece_at_cell = piece_map.get(hovered_square)
+			AudioManager.play_pickup()
 			if piece_at_cell:
 				held_piece = piece_at_cell
 
@@ -162,6 +164,7 @@ func _input(event) -> void:
 			if check_floor(hovered_square):
 				# Put down piece
 				move_piece(held_piece, hovered_square)
+				AudioManager.play_place()
 			else:
 				# Revert location
 				move_piece(held_piece, held_piece.square_pos)
