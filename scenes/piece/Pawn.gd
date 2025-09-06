@@ -17,7 +17,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 
 	# En passant is also an option
 	if not piece_to_capture:
-		piece_to_capture = en_passant_to_capture_when_moved_to(pos)
+		piece_to_capture = get_en_passant_target(pos)
 
 	if piece_to_capture:
 		# Check diagonals
@@ -41,31 +41,23 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
 
 
-func en_passant_to_capture_when_moved_to(pos: Vector2i) -> Pawn:
-	var forward_direction := -1 if player else 1
+func get_en_passant_target(pos: Vector2i) -> Pawn:
+	var target = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
 
-	var en_passant_to_capture = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
-	if (
-		en_passant_to_capture
-		and en_passant_to_capture is Pawn
-		and en_passant_to_capture.player != player
-		and en_passant_to_capture.last_moved_half_move == board.half_moves - 1
-		and (
-			en_passant_to_capture.board_pos
-			== (
-				en_passant_to_capture.original_pos
-				+ Vector2i(0, 2 * en_passant_to_capture.forward_direction)
-			)
-		)
-	):
-		return en_passant_to_capture
-
-	return null
+	if not target:
+		return
+	if target.player == player:
+		return
+	if target.last_moved_half_move != board.half_moves - 1:
+		return
+	if target.board_pos != target.original_pos + Vector2i(0, 2 * target.forward_direction):
+		return
+	return target
 
 
 func additional_captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
 	var output: Array[Piece] = []
-	var en_passant = en_passant_to_capture_when_moved_to(pos)
+	var en_passant = get_en_passant_target(pos)
 	if en_passant:
 		output.push_back(en_passant)
 	return output
