@@ -8,19 +8,19 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	super.setup(board, pos, player)
 
 
-func piece_movement(pos: Vector2i) -> movement_outcome:
+func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 	var hori_diff = pos.x - board_pos.x
 	var vert_diff = pos.y - board_pos.y
 
 	# Can't capture own piece
 	if piece_to_capture and piece_to_capture.player == player:
-		return movement_outcome.BLOCKED
+		return MovementOutcome.BLOCKED
 
 	# Check knight shape
-	if not (abs(hori_diff) == 2 and abs(vert_diff) == 1
-		or abs(hori_diff) == 1 and abs(vert_diff) == 2
+	if not (
+		abs(hori_diff) == 2 and abs(vert_diff) == 1 or abs(hori_diff) == 1 and abs(vert_diff) == 2
 	):
-		return movement_outcome.BLOCKED
+		return MovementOutcome.BLOCKED
 
-	return movement_outcome.CAPTURE if piece_to_capture else movement_outcome.AVAILABLE
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE

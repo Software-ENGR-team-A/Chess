@@ -26,7 +26,6 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-
 const DEFAULT_STATE := {
 	squares =
 	[
@@ -189,9 +188,7 @@ func load_board_square(selected_piece: Piece) -> void:
 			if has_floor_at(map_cell):
 				var tiles = get_square_tile_at(map_cell, selected_piece)
 				square_map.set_cell(
-					map_cell,
-					TILESET_ID,
-					tiles.light if (row + col) % 2 == 0 else tiles.dark
+					map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark
 				)
 
 
@@ -199,17 +196,16 @@ func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary
 	if selected_piece:
 		if selected_piece.board_pos == map_cell:
 			return {"light": CYAN_TILE, "dark": DARK_CAN_TILE}
-		
+
 		var outcome = selected_piece.can_move_to(map_cell)
 
-		if outcome == Piece.movement_outcome.AVAILABLE:
+		if outcome == Piece.MovementOutcome.AVAILABLE:
 			return {"light": GREEN_TILE, "dark": DARK_GREEN_TILE}
 
-		if outcome == Piece.movement_outcome.CAPTURE:
+		if outcome == Piece.MovementOutcome.CAPTURE:
 			return {"light": RED_TILE, "dark": DARK_RED_TILE}
 
 	return {"light": WHITE_TILE, "dark": BLACK_TILE}
-
 
 
 func load_board_state(new_state) -> void:

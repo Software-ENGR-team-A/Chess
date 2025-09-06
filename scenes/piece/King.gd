@@ -8,13 +8,13 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	super.setup(board, pos, player)
 
 
-func piece_movement(pos: Vector2i) -> movement_outcome:
+func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 	if piece_to_capture and piece_to_capture.player == player:
-		return movement_outcome.BLOCKED
+		return MovementOutcome.BLOCKED
 
 	# Can only move one tile
 	if pos.distance_to(board_pos) > 1.5:
-		return movement_outcome.BLOCKED
+		return MovementOutcome.BLOCKED
 
-	return movement_outcome.CAPTURE if piece_to_capture else movement_outcome.AVAILABLE
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
