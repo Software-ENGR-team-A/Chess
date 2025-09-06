@@ -28,6 +28,10 @@ window/size/viewport_height=1296
 
 project/assembly_name="Chess and Balances"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg")
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
