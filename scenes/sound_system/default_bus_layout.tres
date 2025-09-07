@@ -1,0 +1,39 @@
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://dh30rdu230yb3"]
+
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
+resource_name = "Distortion"
+mode = 2
+pre_gain = 7.57
+drive = 0.13
+post_gain = -6.56
+
+[sub_resource type="AudioEffectEQ10" id="AudioEffectEQ10_j3pel"]
+resource_name = "EQ10"
+band_db/31_hz = -60.0
+band_db/62_hz = -40.4
+band_db/125_hz = -20.3
+band_db/250_hz = -13.4
+band_db/500_hz = -2.7
+band_db/1000_hz = -1.6
+band_db/2000_hz = -7.0
+band_db/4000_hz = -9.9
+band_db/8000_hz = -23.5
+band_db/16000_hz = -41.6
+
+[resource]
+bus/1/name = &"Sound Effects"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"Music"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = -11.952
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectDistortion_j3pel")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectEQ10_j3pel")
+bus/2/effect/1/enabled = true
