@@ -1,6 +1,7 @@
 extends Node2D
 
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
+const AUDIO_BUS := preload("res://assets/Audio/default_bus_layout.tres")
 
 # Load all piece classes to prevent null pointers
 const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
@@ -146,11 +147,11 @@ func _input(event) -> void:
 			square_map.set_cell(hovered_square, TILESET_ID, BLACK_TILE_HIGHLIGHTED)
 			last_tile_highlighted = hovered_square
 
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if held_piece == null:
 			# Pick up piece
 			var piece_at_cell = piece_map.get(hovered_square)
-			AudioManager.play_pickup()
+			AudioManager.play_sound(AudioManager.movement.pickup)
 			if piece_at_cell:
 				held_piece = piece_at_cell
 
@@ -164,7 +165,7 @@ func _input(event) -> void:
 			if check_floor(hovered_square):
 				# Put down piece
 				move_piece(held_piece, hovered_square)
-				AudioManager.play_place()
+				AudioManager.play_sound(AudioManager.movement.place)
 			else:
 				# Revert location
 				move_piece(held_piece, held_piece.square_pos)
