@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvkbxqgauwxll"]
+[gd_scene load_steps=4 format=3 uid="uid://cfueqjdlo844g"]
 
-[ext_resource type="Texture2D" uid="uid://bmche6gyf7bon" path="res://assets/Backgrounds/Black.png" id="1_gn8lm"]
-[ext_resource type="Script" uid="uid://bb5qfo26fkduu" path="res://scenes/Main Menu/main_menu.gd" id="1_hk6sr"]
+[ext_resource type="Texture2D" uid="uid://bmche6gyf7bon" path="res://assets/Backgrounds/Black.png" id="2_bqqt6"]
 
 [sub_resource type="SystemFont" id="SystemFont_hk6sr"]
 font_names = PackedStringArray("Impact")
@@ -16,7 +15,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_hk6sr")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -25,7 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_gn8lm")
+texture = ExtResource("2_bqqt6")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
