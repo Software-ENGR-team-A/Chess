@@ -161,7 +161,6 @@ func _input(event) -> void:
 
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
-
 				held_piece = piece_at_cell
 
 				# Bring to front
