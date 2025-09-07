@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvkbxqgauwxll"]
+
+[ext_resource type="Texture2D" uid="uid://bmche6gyf7bon" path="res://assets/Backgrounds/Black.png" id="1_gn8lm"]
+[ext_resource type="Script" uid="uid://bb5qfo26fkduu" path="res://scenes/Main Menu/main_menu.gd" id="1_hk6sr"]
+
+[sub_resource type="SystemFont" id="SystemFont_hk6sr"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_1o70l"]
+font_names = PackedStringArray("Impact")
+
+[node name="Main_Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hk6sr")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_gn8lm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Seperator" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = SubResource("SystemFont_hk6sr")
+theme_override_font_sizes/font_size = 256
+text = "Chess and Balances"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Seperator2" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Start_Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 180)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_1o70l")
+theme_override_font_sizes/font_size = 120
+text = "Start Game
+"
+
+[node name="Exit_Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 180)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_1o70l")
+theme_override_font_sizes/font_size = 120
+text = "Exit Game
+"
