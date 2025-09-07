@@ -158,10 +158,10 @@ func _input(event) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if held_piece == null:
 			# Pick up piece
+			AudioManager.play_sound(AudioManager.movement.pickup)
 
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
-
 				held_piece = piece_at_cell
 
 				# Bring to front
@@ -174,13 +174,14 @@ func _input(event) -> void:
 			# Try to put down piece
 			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
 				# Put down piece
-
 				move_piece_to(held_piece, hovered_square)
 				half_moves += 1
+				AudioManager.play_sound(AudioManager.movement.place)
 
 			else:
 				# Revert location
 				move_piece_to(held_piece, held_piece.board_pos)
+				AudioManager.play_sound(AudioManager.movement.invalid)
 
 			held_piece = null
 			load_board_square(null)
