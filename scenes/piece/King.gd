@@ -50,4 +50,4 @@ func movement_actions(pos: Vector2i) -> void:
 	var castle_target = get_castle_target_when_moved_to(pos)
 	if castle_target:
 		var castle_direction = (pos - original_pos).clampi(-1, 1)
-		castle_target.set_board_pos(original_pos + castle_direction)
+		board.move_piece_to(castle_target, original_pos + castle_direction)
