@@ -1,6 +1,6 @@
 extends Node
 
-@export var history_size: int = 4
+@export var history_size: int = 3
 @export var songs: Array[AudioStream]
 
 var recently_played: Array[AudioStream] = []
