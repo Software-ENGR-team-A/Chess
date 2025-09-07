@@ -46,6 +46,10 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 	return target
 
 
+func is_in_check() -> bool:
+	return false
+
+
 func movement_actions(pos: Vector2i) -> void:
 	print("KING MOVED")
 	var castle_target = get_castle_target_when_moved_to(pos)
