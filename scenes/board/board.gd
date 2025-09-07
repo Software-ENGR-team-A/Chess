@@ -16,7 +16,7 @@ const TILESET_ID := 0
 const WHITE_TILE := Vector2i(0, 3)
 const BLACK_TILE := Vector2i(0, 7)
 const CYAN_TILE := Vector2i(1, 3)
-const DARK_CAN_TILE := Vector2i(1, 7)
+const DARK_CYAN_TILE := Vector2i(1, 7)
 const GREEN_TILE := Vector2i(2, 3)
 const DARK_GREEN_TILE := Vector2i(2, 7)
 const PURPLE_TILE := Vector2i(3, 3)
@@ -142,7 +142,7 @@ func _input(event) -> void:
 		if hovered_square != last_tile_highlighted and last_tile_highlighted != null:
 			if square_map.get_cell_atlas_coords(last_tile_highlighted) == CYAN_TILE:
 				square_map.set_cell(last_tile_highlighted, TILESET_ID, WHITE_TILE)
-			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == DARK_CAN_TILE:
+			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == DARK_CYAN_TILE:
 				square_map.set_cell(last_tile_highlighted, TILESET_ID, BLACK_TILE)
 
 		# Set current tile
@@ -150,7 +150,7 @@ func _input(event) -> void:
 			square_map.set_cell(hovered_square, TILESET_ID, CYAN_TILE)
 			last_tile_highlighted = hovered_square
 		elif square_map.get_cell_atlas_coords(hovered_square) == BLACK_TILE:
-			square_map.set_cell(hovered_square, TILESET_ID, DARK_CAN_TILE)
+			square_map.set_cell(hovered_square, TILESET_ID, DARK_CYAN_TILE)
 			last_tile_highlighted = hovered_square
 
 	if event is InputEventMouseButton and event.pressed:
@@ -195,7 +195,7 @@ func load_board_square(selected_piece: Piece) -> void:
 func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
 	if selected_piece:
 		if selected_piece.board_pos == map_cell:
-			return {"light": CYAN_TILE, "dark": DARK_CAN_TILE}
+			return {"light": CYAN_TILE, "dark": DARK_CYAN_TILE}
 
 		var outcome = selected_piece.can_move_to(map_cell)
 
