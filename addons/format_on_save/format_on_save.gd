@@ -2,7 +2,8 @@
 class_name FormatOnSave extends EditorPlugin
 
 const SUCCESS: int = 0
-const ATO_RLD_STT: String = "text_editor/behavior/files/auto_reload_scripts_on_external_change"
+const AUTO_RLD_SET: String = "text_editor/behavior/files/auto_reload_scripts_on_external_change"
+
 var original_auto_reload_setting: bool
 
 
@@ -60,11 +61,13 @@ static func reload_script(text_edit: TextEdit, source_code: String) -> void:
 # For this workaround to work, we need to disable the "Reload/Resave" pop-up
 func activate_auto_reload_setting():
 	var settings := get_editor_interface().get_editor_settings()
-	original_auto_reload_setting = settings.get(ATO_RLD_STT)
-	settings.set(ATO_RLD_STT, true)
+	original_auto_reload_setting = settings.get(AUTO_RLD_SET)
+	settings.set(AUTO_RLD_SET, true)
+
 
 
 # If the plugin is disabled, let's attempt to restore the original editor setting
 func restore_original_auto_reload_setting():
 	var settings := get_editor_interface().get_editor_settings()
-	settings.set(ATO_RLD_STT, original_auto_reload_setting)
+	settings.set(AUTO_RLD_SET, original_auto_reload_setting)
+

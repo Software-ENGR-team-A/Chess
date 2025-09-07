@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://d1kqs01ig1dug"]
+
+[ext_resource type="Script" uid="uid://dlvmb6alpnxru" path="res://scenes/sound_system/audio_manager.gd" id="1_fagox"]
+[ext_resource type="AudioStream" uid="uid://pq4hhdoo16li" path="res://assets/Audio/Movement/Soft_Airy_Swish.ogg" id="2_jemhp"]
+[ext_resource type="AudioStream" uid="uid://1utu0xp8rq7m" path="res://assets/Audio/Movement/Crush8-Bit.ogg" id="3_ob0f7"]
+[ext_resource type="AudioStream" uid="uid://c5iwy1pcs3hm2" path="res://assets/Audio/Movement/Collision8-Bit.ogg" id="5_at6x8"]
+[ext_resource type="AudioStream" uid="uid://da2j3p83e3nh0" path="res://assets/Audio/Movement/SmallExplosion8-Bit.ogg" id="6_x5gnv"]
+[ext_resource type="AudioStream" uid="uid://76qhvfd2w1rk" path="res://assets/Audio/Movement/BossDeath.ogg" id="7_sbso7"]
+[ext_resource type="AudioStream" uid="uid://3hd0r4ghxld2" path="res://assets/Audio/Movement/Slash8-Bit.ogg" id="8_mp3ft"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_fagox")
+
+[node name="Movement" type="Node" parent="."]
+
+[node name="Pickup" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("2_jemhp")
+
+[node name="Place" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("3_ob0f7")
+
+[node name="Invalid" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("5_at6x8")
+
+[node name="Check" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("6_x5gnv")
+
+[node name="Checkmate" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("7_sbso7")
+
+[node name="Stalemate" type="AudioStreamPlayer" parent="Movement"]
+stream = ExtResource("8_mp3ft")
+
+[node name="Menu" type="Node" parent="."]
+
+[node name="Open" type="AudioStreamPlayer" parent="Menu"]
+
+[node name="Close" type="AudioStreamPlayer" parent="Menu"]
+
+[node name="Select" type="AudioStreamPlayer" parent="Menu"]
