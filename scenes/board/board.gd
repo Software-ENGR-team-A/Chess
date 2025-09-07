@@ -2,6 +2,7 @@ class_name Board
 extends Node2D
 
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
+const AUDIO_BUS := preload("res://assets/Audio/default_bus_layout.tres")
 
 # Load all piece classes to prevent null pointers
 const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
@@ -116,6 +117,7 @@ func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
 	load_board_state(DEFAULT_STATE)
+	MusicManager.play_random_song()
 
 
 func _process(_delta) -> void:
@@ -153,11 +155,13 @@ func _input(event) -> void:
 			square_map.set_cell(hovered_square, TILESET_ID, DARK_CYAN_TILE)
 			last_tile_highlighted = hovered_square
 
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if held_piece == null:
 			# Pick up piece
+
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
+
 				held_piece = piece_at_cell
 
 				# Bring to front
@@ -170,8 +174,10 @@ func _input(event) -> void:
 			# Try to put down piece
 			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
 				# Put down piece
+
 				move_piece_to(held_piece, hovered_square)
 				half_moves += 1
+
 			else:
 				# Revert location
 				move_piece_to(held_piece, held_piece.board_pos)
