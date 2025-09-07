@@ -19,7 +19,7 @@ func play_random_song():
 	next_song = songs.pick_random()  #pick a random one
 
 	# If the random song is the same song, try again up to SHUFFLE_LIMIT times
-	while (next_song == prev_song) and (shuffle_count <= SHUFFLE_LIMIT):
+	while (next_song == prev_song) and (shuffle_count < SHUFFLE_LIMIT):
 		next_song = songs.pick_random()
 		shuffle_count += 1
 
@@ -37,5 +37,5 @@ func set_volume(vol_db: float):
 	audio_player.volume_db = vol_db
 
 
-func _on_music_player_finished() -> void:
+func _on_music_player_finished() -> void:  # When the song is over, play another random one
 	play_random_song()
