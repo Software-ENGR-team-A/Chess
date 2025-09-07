@@ -9,8 +9,9 @@ enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
 
 var sprite_index := 0  # Where in the sprite sheet it exists
 var point_value := 0  # The point value for the engine
-var forward_direction: int
 var board: Board
+var previous_position: Vector2i
+var forward_direction: int
 
 var checked_cells: Dictionary
 var checked_cells_half_move: int
@@ -50,6 +51,19 @@ func capture() -> void:
 		board.piece_map.set(board_pos, null)
 
 	queue_free()
+
+
+## There is a big difference between using this function and
+## using can_move_to on pieces with a recursive search.
+##
+## can_move_to in recursive pieces is designed to store the
+## outcome of previous moves calculated in order to check if
+## the current one is valid, whereas this is a one-off.
+##
+## The distinction might be worth reconsidering later, but this
+## is fine for now.
+func look_in_direction(dir: Vector2i, repeat: int) -> Piece:
+	return board.look_in_direction(board_pos, dir, repeat)
 
 
 func can_move_to(pos: Vector2i) -> MovementOutcome:

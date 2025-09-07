@@ -232,13 +232,26 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	if replaced_piece:
 		replaced_piece.capture()
 
+	# Perform extra actions
+	piece.movement_actions(pos)
+
 	# Move piece
+	piece.previous_position = piece.board_pos
 	piece.set_board_pos(pos)
 	piece.last_moved_half_move = half_moves
 	piece_map[pos] = piece
 
-	# Perform extra actions
-	piece.movement_actions(pos)
+
+func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
+	var next = base + dir
+	if not has_floor_at(next) or repeat <= 0:
+		return
+
+	var piece = get_piece_at(next)
+	if piece:
+		return piece
+
+	return look_in_direction(next, dir, repeat - 1)
 
 
 func has_floor_at(pos: Vector2i) -> bool:

@@ -45,13 +45,20 @@ func get_en_passant_target(pos: Vector2i) -> Pawn:
 	var target = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
 
 	# Target must:
-	if not target:  # exist,
+	if not target:
+		# exist,
 		return
-	if target.player == player:  # be owned by the opposing team,
+	if not target is Pawn:
+		# be a pawn,
 		return
-	if target.last_moved_half_move != board.half_moves - 1:  # have just moved,
+	if target.player == player:
+		# be owned by the opposing team,
 		return
-	if target.board_pos != target.original_pos + Vector2i(0, 2 * target.forward_direction):  # and
+	if not target.previous_position or target.last_moved_half_move != board.half_moves - 1:
+		# have just moved,
+		return
+	if target.previous_position + Vector2i(0, 2 * target.forward_direction) != target.board_pos:
+		# and have done a double-advance
 		return
 
 	return target
