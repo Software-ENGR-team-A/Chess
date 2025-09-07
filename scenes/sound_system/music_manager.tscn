@@ -10,3 +10,5 @@ songs = Array[AudioStream]([ExtResource("2_v8i07"), ExtResource("3_mtasi")])
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"Music"
+
+[connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]

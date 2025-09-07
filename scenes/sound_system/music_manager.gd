@@ -35,3 +35,7 @@ func stop_music():
 
 func set_volume(vol_db: float):
 	audio_player.volume_db = vol_db
+
+
+func _on_music_player_finished() -> void:
+	play_random_song()
