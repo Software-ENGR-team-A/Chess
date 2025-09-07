@@ -54,7 +54,3 @@ func movement_actions(pos: Vector2i) -> void:
 		print(castle_target)
 		var castle_direction = (pos - original_pos).clampi(-1, 1)
 		castle_target.set_board_pos(original_pos + castle_direction)
-
-
-func capture() -> void:
-	AudioManager.play_sound(AudioManager.movement.checkmate)
