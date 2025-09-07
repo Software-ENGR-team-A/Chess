@@ -1,39 +1,49 @@
 extends Node
 
-const SHUFFLE_LIMIT = 4  #How many times it will try to prevent the same song from playing
-
+@export var history_size: int = 4
 @export var songs: Array[AudioStream]
 
-var prev_song  # The previous song played
-var next_song  # The next/current song played
+var recently_played: Array[AudioStream] = []
 
 @onready var audio_player: AudioStreamPlayer = $MusicPlayer
 
 
-func play_random_song():
-	var shuffle_count = 0  # Temp variable for shuffle retries
+func _ready() -> void:
+	if not songs.is_empty():
+		history_size = clamp(history_size, 0, songs.size() - 1)
+
+
+func play_random_song() -> void:
 	if songs.is_empty():  #If there are no songs, don't try
 		return
 
-	audio_player.stop()  # Stop the current song
-	next_song = songs.pick_random()  #pick a random one
+	var available_songs: Array[AudioStream] = []  # Songs that are chosen from
+	for song in songs:
+		if not recently_played.has(song):  # If the osong has not recently been played
+			available_songs.append(song)  # add it to the available_songs array
 
-	# If the random song is the same song, try again up to SHUFFLE_LIMIT times
-	while (next_song == prev_song) and (shuffle_count < SHUFFLE_LIMIT):
-		next_song = songs.pick_random()
-		shuffle_count += 1
+	if available_songs.is_empty():  # If there are no songs left
+		recently_played.clear()  # Clear the recently played array
+		available_songs = songs.duplicate()  # and add all songs to the available array
 
-	prev_song = next_song  # Change the stored previous song
-	audio_player.stream = next_song  # Set the next song in the player
+	var next_song: AudioStream = available_songs.pick_random()  # Pick a song at random
 
-	audio_player.play()  # SPIN THE RECORD BAYBEEEEEE
+	# SPIN THE RECORD BAYBEEEEEE
+	audio_player.stop()
+	audio_player.stream = next_song
+	audio_player.play()
+
+	recently_played.push_back(next_song)  # Add the played song to the recent queue
+
+	if recently_played.size() > history_size:  #if the queue is too large
+		recently_played.pop_front()  # take the oldest song out
 
 
-func stop_music():
+func stop_music() -> void:
 	audio_player.stop()
 
 
-func set_volume(vol_db: float):
+func set_volume(vol_db: float) -> void:
 	audio_player.volume_db = vol_db
 
 
