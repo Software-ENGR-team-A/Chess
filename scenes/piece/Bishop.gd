@@ -14,11 +14,11 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	var vert_diff = pos.y - board_pos.y
 
 	# Quick check to crop to intercardinal movement
-	if abs(hori_diff) != abs(vert_diff):
+	if not is_diagonal_move(board_pos, pos):
 		return MovementOutcome.BLOCKED
 
 	# Can't capture own piece
-	if piece_to_capture and piece_to_capture.player == player:
+	if is_blocked_by_own_piece(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	var offset = Vector2i(hori_diff, vert_diff)

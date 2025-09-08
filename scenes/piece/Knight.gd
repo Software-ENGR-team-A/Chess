@@ -14,7 +14,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	var vert_diff = pos.y - board_pos.y
 
 	# Can't capture own piece
-	if piece_to_capture and piece_to_capture.player == player:
+	if is_blocked_by_own_piece(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	# Check knight shape

@@ -10,7 +10,8 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
-	if piece_to_capture and piece_to_capture.player == player:
+
+	if is_blocked_by_own_piece(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	if get_castle_target_when_moved_to(pos):
