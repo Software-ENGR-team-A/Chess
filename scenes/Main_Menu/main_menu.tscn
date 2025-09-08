@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 [gd_scene load_steps=7 format=3 uid="uid://cfueqjdlo844g"]
+=======
+[gd_scene load_steps=5 format=3 uid="uid://cfueqjdlo844g"]
+>>>>>>> 5ea060b0f7ff079b84b5342eb581af1f3c25a3bb
 
 [ext_resource type="Script" uid="uid://bb5qfo26fkduu" path="res://scenes/Main_Menu/main_menu.gd" id="1_b3l1k"]
 [ext_resource type="Texture2D" uid="uid://bmche6gyf7bon" path="res://assets/Backgrounds/Black.png" id="2_bqqt6"]
@@ -9,6 +13,7 @@ font_names = PackedStringArray("Impact")
 [sub_resource type="SystemFont" id="SystemFont_1o70l"]
 font_names = PackedStringArray("Impact")
 
+<<<<<<< HEAD
 [sub_resource type="SystemFont" id="SystemFont_b3l1k"]
 font_names = PackedStringArray("Impact")
 
@@ -16,6 +21,9 @@ font_names = PackedStringArray("Impact")
 font_names = PackedStringArray("Impact")
 
 [node name="Main_Menu" type="Control" node_paths=PackedStringArray("start_button", "exit_button", "yes_button", "no_button")]
+=======
+[node name="Main_Menu" type="Control" node_paths=PackedStringArray("start_button", "exit_button")]
+>>>>>>> 5ea060b0f7ff079b84b5342eb581af1f3c25a3bb
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,8 +33,11 @@ grow_vertical = 2
 script = ExtResource("1_b3l1k")
 start_button = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Start_Button")
 exit_button = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Exit_Button")
+<<<<<<< HEAD
 yes_button = NodePath("Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/yes_button")
 no_button = NodePath("Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/no_button")
+=======
+>>>>>>> 5ea060b0f7ff079b84b5342eb581af1f3c25a3bb
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
