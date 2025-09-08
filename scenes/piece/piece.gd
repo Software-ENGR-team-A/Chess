@@ -120,6 +120,14 @@ func is_diagonal_move(start: Vector2i, target: Vector2i) -> bool:
 	return abs(start.x - target.x) == abs(start.y - target.y) and start.x != target.x
 
 
+## Returns [code]MovementOutcome.CAPTURE[/code] if there is a piece,
+## otherwise returns [code]MovementOutcome.AVAILABLE[/code]
+func check_capture(pos: Vector2i) -> MovementOutcome:
+	var piece_to_capture = board.get_piece_at(pos)
+
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
+
+
 ## Returns [code]true[/code] if the line between the piece and [param target_pos] is clear
 func check_line_of_sight(pos: Vector2i) -> MovementOutcome:
 	var offset = Vector2i(pos.x - board_pos.x, pos.y - board_pos.y)
@@ -130,11 +138,3 @@ func check_line_of_sight(pos: Vector2i) -> MovementOutcome:
 			return MovementOutcome.BLOCKED
 		current += direction
 	return check_capture(pos)
-
-
-## Returns [code]MovementOutcome.CAPTURE[/code] if there is a piece,
-## otherwise returns [code]MovementOutcome.AVAILABLE[/code]
-func check_capture(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
-
-	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
