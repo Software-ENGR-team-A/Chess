@@ -18,7 +18,7 @@ func _ready() -> void:
 	music_bus_idx = AudioServer.get_bus_index(bus_name)  # Set the bus index var
 	audio_player.bus = bus_name  # set the name of the audio player
 	if music_library:  # If the library exists, play the menu music on launch
-		play_playlist(music_library.main_menu_tracks)
+		play_playlist(music_library.gameplay_tracks)
 
 
 ## Plays the selected playlist through the Music Bus

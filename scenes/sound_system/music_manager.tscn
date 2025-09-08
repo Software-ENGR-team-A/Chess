@@ -17,8 +17,3 @@ metadata/_custom_type_script = "uid://d0ojdri2wc8u7"
 [node name="MusicManager" type="Node"]
 script = ExtResource("1_1wwso")
 music_library = SubResource("Resource_amhjc")
-
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
-bus = &"Music"
-
-[connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]
