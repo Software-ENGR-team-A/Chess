@@ -1,6 +1,8 @@
 class_name MainMenu
 extends Control
 
+const AUDIO_BUS := preload("res://assets/Audio/default_bus_layout.tres")
+
 @export var start_button: Button
 @export var option_button: Button
 @export var exit_button: Button
@@ -10,6 +12,8 @@ extends Control
 
 func _ready():
 	get_window().size = DisplayServer.screen_get_size()
+	MusicManager.play_random_song()
+	MusicManager.set_volume(2)
 	print(start_button)
 	start_button.button_down.connect(on_start_pressed)
 	option_button.button_down.connect(on_option_pressed)
@@ -17,6 +21,7 @@ func _ready():
 
 
 func on_start_pressed() -> void:
+	MusicManager.stop_music()
 	await get_tree().create_timer(.5).timeout
 	get_tree().change_scene_to_packed(chess_two_player)
 
