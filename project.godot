@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="Chess and Balances"
-run/main_scene="uid://cvkbxqgauwxll"
+run/main_scene="uid://c0bs6sbbrybcl"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+config/icon="uid://m7xduai1gw3g"
+
+[audio]
+
+buses/default_bus_layout="res://assets/Audio/default_bus_layout.tres"
 
 [autoload]
 

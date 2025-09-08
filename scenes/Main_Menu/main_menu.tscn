@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfueqjdlo844g"]
+[gd_scene load_steps=7 format=3 uid="uid://cfueqjdlo844g"]
 
+[ext_resource type="Script" uid="uid://bb5qfo26fkduu" path="res://scenes/Main_Menu/main_menu.gd" id="1_b3l1k"]
 [ext_resource type="Texture2D" uid="uid://bmche6gyf7bon" path="res://assets/Backgrounds/Black.png" id="2_bqqt6"]
 
 [sub_resource type="SystemFont" id="SystemFont_hk6sr"]
@@ -8,13 +9,24 @@ font_names = PackedStringArray("Impact")
 [sub_resource type="SystemFont" id="SystemFont_1o70l"]
 font_names = PackedStringArray("Impact")
 
-[node name="Main_Menu" type="Control"]
+[sub_resource type="SystemFont" id="SystemFont_b3l1k"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_xld3r"]
+font_names = PackedStringArray("Impact")
+
+[node name="Main_Menu" type="Control" node_paths=PackedStringArray("start_button", "exit_button", "yes_button", "no_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_b3l1k")
+start_button = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Start_Button")
+exit_button = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Exit_Button")
+yes_button = NodePath("Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/yes_button")
+no_button = NodePath("Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/no_button")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -81,3 +93,79 @@ theme_override_fonts/font = SubResource("SystemFont_1o70l")
 theme_override_font_sizes/font_size = 120
 text = "Exit Game
 "
+
+[node name="Conformation_Box" type="PopupPanel" parent="."]
+unique_name_in_owner = true
+gui_embed_subwindows = true
+initial_position = 2
+size = Vector2i(1928, 1088)
+
+[node name="TextureRect" type="TextureRect" parent="Conformation_Box"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1924.0
+offset_bottom = 1084.0
+texture = ExtResource("2_bqqt6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Conformation_Box/TextureRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Seperator" type="Control" parent="Conformation_Box/TextureRect/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Conformation_Box"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Conformation_Box/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 500
+
+[node name="Label" type="Label" parent="Conformation_Box/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_b3l1k")
+theme_override_font_sizes/font_size = 250
+text = "Are You Sure?
+"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Conformation_Box/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Conformation_Box/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1250, 250)
+layout_mode = 2
+theme_override_constants/separation = 250
+
+[node name="yes_button" type="Button" parent="Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xld3r")
+theme_override_font_sizes/font_size = 50
+text = "Yes"
+
+[node name="no_button" type="Button" parent="Conformation_Box/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 250)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xld3r")
+theme_override_font_sizes/font_size = 50
+text = "No"
