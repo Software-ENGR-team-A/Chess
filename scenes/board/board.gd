@@ -88,17 +88,17 @@ const DEFAULT_STATE := {
 	]
 }
 
-@export var state := {}
+var start_state := {}
 
 # Nodes
 var square_map: TileMapLayer
 var pieces: Node
 var held_piece: Node
 var piece_map: Dictionary = {}
-var half_moves = 0
 
 # State
 var last_tile_highlighted: Vector2i
+var half_moves = 0
 
 
 ## Creates a scene instance of the piece and places it in the pieces array
@@ -216,7 +216,7 @@ func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary
 
 
 func load_board_state(new_state) -> void:
-	state = new_state
+	start_state = new_state
 
 	# Reset Board
 	square_map.clear()
@@ -226,7 +226,8 @@ func load_board_state(new_state) -> void:
 	load_board_square(null)
 
 	# Load Pieces
-	for piece_data in state.pieces:  # Iterate through the board, creating instances of each piece
+	for piece_data in start_state.pieces:
+		# Iterate through the board, creating instances of each piece
 		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 
 
@@ -262,7 +263,7 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 
 
 func has_floor_at(pos: Vector2i) -> bool:
-	return get_bit(state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
 
 
 func get_piece_at(pos: Vector2i) -> Piece:
