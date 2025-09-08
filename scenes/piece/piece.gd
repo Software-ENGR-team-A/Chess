@@ -49,10 +49,12 @@ func get_sprite_index() -> int:
 func capture() -> void:
 	if board.get_piece_at(board_pos) == self:
 		board.piece_map.set(board_pos, null)
-		if self.is_class("King"):
+
+		if self is King:
 			AudioManager.play_sound(AudioManager.movement.checkmate)
 		else:
 			AudioManager.play_sound(AudioManager.movement.capture)
+
 	queue_free()
 
 
@@ -96,3 +98,19 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 
 func movement_actions(_pos: Vector2i) -> void:
 	pass
+
+
+func is_blocked_by_own_piece(piece: Piece) -> bool:
+	return piece and piece.player == player
+
+
+func is_horizontal_move(start: Vector2i, target: Vector2i) -> bool:
+	return start.y == target.y and start.x != target.x
+
+
+func is_vertical_move(start: Vector2i, target: Vector2i) -> bool:
+	return start.x == target.x and start.y != target.y
+
+
+func is_diagonal_move(start: Vector2i, target: Vector2i) -> bool:
+	return abs(start.x - target.x) == abs(start.y - target.y) and start.x != target.x
