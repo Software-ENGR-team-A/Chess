@@ -23,5 +23,3 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 		return MovementOutcome.BLOCKED
 
 	return check_line_of_sight(pos)
-
-	return check_capture(pos)
