@@ -101,7 +101,7 @@ func movement_actions(_pos: Vector2i) -> void:
 
 
 ## Returns [code]true[/code] if [param piece] is owned by the attacking player
-func is_blocked_by_own_piece(piece: Piece) -> bool:
+func is_blocked_by_friendly(piece: Piece) -> bool:
 	return piece and piece.player == player
 
 
@@ -121,16 +121,15 @@ func is_diagonal_move(start: Vector2i, target: Vector2i) -> bool:
 
 
 ## Returns [code]true[/code] if the line between the piece and [param target_pos] is clear
-func check_line_of_sight(target_pos: Vector2i) -> bool:
-	var direction = (target_pos - board_pos).sign()
-	var current_pos = board_pos + direction
-
-	while current_pos != target_pos:
-		if board.get_piece_at(current_pos) != null:
-			return false
-
-		current_pos += direction
-	return true
+func check_line_of_sight(pos: Vector2i) -> MovementOutcome:
+	var offset = Vector2i(pos.x - board_pos.x, pos.y - board_pos.y)
+	var direction = (pos - board_pos).sign()
+	var current = board_pos + direction
+	while current != pos:
+		if can_move_to(current) != MovementOutcome.AVAILABLE:
+			return MovementOutcome.BLOCKED
+		current += direction
+	return check_capture(pos)
 
 
 ## Returns [code]MovementOutcome.CAPTURE[/code] if there is a piece,

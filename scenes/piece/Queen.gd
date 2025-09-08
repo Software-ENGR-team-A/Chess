@@ -12,7 +12,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
-	if is_blocked_by_own_piece(piece_to_capture):
+	if is_blocked_by_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 	# Make sure move is a straight line
 	if not (
@@ -22,7 +22,6 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	):
 		return MovementOutcome.BLOCKED
 
-	if not check_line_of_sight(pos):
-		return MovementOutcome.BLOCKED
+	return check_line_of_sight(pos)
 
 	return check_capture(pos)

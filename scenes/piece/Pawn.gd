@@ -12,7 +12,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
-	if is_blocked_by_own_piece(piece_to_capture):
+	if is_blocked_by_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	# En passant is also an option
