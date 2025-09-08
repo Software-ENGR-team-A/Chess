@@ -1,19 +1,19 @@
 class_name MainMenu
 extends Control
 
-@onready
-var start_button: Button = $MarginContainer/HBoxContainer/VBoxContainer/Start_Button as Button
-@onready var exit_button: Button = $MarginContainer/HBoxContainer/VBoxContainer/Exit_Button as Button
-@onready var Chess_TwoPlayer = preload("res://scenes/board/board.tscn") as PackedScene
+@export var start_button: Button
+@export var exit_button: Button
+@onready var chess_two_player = preload("res://scenes/board/board.tscn") as PackedScene
 
 
 func _ready():
+	print(start_button)
 	start_button.button_down.connect(on_start_pressed)
 	exit_button.button_down.connect(on_exit_pressed)
 
 
 func on_start_pressed() -> void:
-	get_tree().change_scene_to_packed(Chess_TwoPlayer)
+	get_tree().change_scene_to_packed(chess_two_player)
 
 
 func on_exit_pressed() -> void:
