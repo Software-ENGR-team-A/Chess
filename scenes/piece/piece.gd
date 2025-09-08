@@ -51,7 +51,7 @@ func capture() -> void:
 		board.piece_map.set(board_pos, null)
 
 		if self is King:
-			AudioManager.play_sound(AudioManager.movement.checkmate)
+			AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 		else:
 			AudioManager.play_sound(AudioManager.movement.capture)
 
