@@ -114,3 +114,21 @@ func is_vertical_move(start: Vector2i, target: Vector2i) -> bool:
 
 func is_diagonal_move(start: Vector2i, target: Vector2i) -> bool:
 	return abs(start.x - target.x) == abs(start.y - target.y) and start.x != target.x
+
+
+func check_line_of_sight(target_pos: Vector2i) -> bool:
+	var direction = (target_pos - board_pos).sign()
+	var current_pos = board_pos + direction
+
+	while current_pos != target_pos:
+		if board.get_piece_at(current_pos) != null:
+			return false
+
+		current_pos += direction
+	return true
+
+
+func check_capture(pos: Vector2i) -> MovementOutcome:
+	var piece_to_capture = board.get_piece_at(pos)
+
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
