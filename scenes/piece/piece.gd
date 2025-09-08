@@ -9,7 +9,7 @@ enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
 
 var sprite_index := 0  # Where in the sprite sheet it exists
 var point_value := 0  # The point value for the engine
-var board: Board
+var board: Board  # The board state
 var previous_position: Vector2i
 var forward_direction: int
 
@@ -101,7 +101,7 @@ func movement_actions(_pos: Vector2i) -> void:
 
 
 ## Returns [code]true[/code] if [param piece] is owned by the attacking player
-func is_blocked_by_friendly(piece: Piece) -> bool:
+func is_friendly(piece: Piece) -> bool:
 	return piece and piece.player == player
 
 

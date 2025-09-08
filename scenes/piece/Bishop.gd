@@ -16,7 +16,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 		return MovementOutcome.BLOCKED
 
 	# Can't capture own piece
-	if is_blocked_by_friendly(piece_to_capture):
+	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	return check_line_of_sight(pos)
