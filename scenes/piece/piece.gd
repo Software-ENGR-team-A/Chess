@@ -100,22 +100,27 @@ func movement_actions(_pos: Vector2i) -> void:
 	pass
 
 
+## Returns [code]true[/code] if [param piece] is owned by the attacking player
 func is_blocked_by_own_piece(piece: Piece) -> bool:
 	return piece and piece.player == player
 
 
+## Returns [code]true[/code] a move between [param start] and [param target] is horizontal
 func is_horizontal_move(start: Vector2i, target: Vector2i) -> bool:
 	return start.y == target.y and start.x != target.x
 
 
+## Returns [code]true[/code] a move between [param start] and [param target] is vertical
 func is_vertical_move(start: Vector2i, target: Vector2i) -> bool:
 	return start.x == target.x and start.y != target.y
 
 
+## Returns [code]true[/code] if a move between [param start] and [param target] is diagonal
 func is_diagonal_move(start: Vector2i, target: Vector2i) -> bool:
 	return abs(start.x - target.x) == abs(start.y - target.y) and start.x != target.x
 
 
+## Returns [code]true[/code] if the line between the piece and [param target_pos] is clear
 func check_line_of_sight(target_pos: Vector2i) -> bool:
 	var direction = (target_pos - board_pos).sign()
 	var current_pos = board_pos + direction
@@ -128,6 +133,8 @@ func check_line_of_sight(target_pos: Vector2i) -> bool:
 	return true
 
 
+## Returns [code]MovementOutcome.CAPTURE[/code] if there is a piece,
+## otherwise returns [code]MovementOutcome.AVAILABLE[/code]
 func check_capture(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 
