@@ -31,14 +31,16 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 	if original_pos != board_pos:
 		return
 
-	var target: Piece
+	var direction: Vector2i
 
 	if pos == original_pos + Vector2i(-2, 0):
 		# Check left
-		target = look_in_direction(Vector2i(-1, 0), 16)
+		direction = Vector2i(-1, 0)
 	elif pos == original_pos + Vector2i(2, 0):
 		# Check right
-		target = look_in_direction(Vector2i(1, 0), 16)
+		direction = Vector2i(1, 0)
+
+	var target = look_in_direction(direction, 16)
 
 	if not target:
 		return
@@ -46,6 +48,11 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 		return
 	if target.board_pos != target.original_pos:
 		return
+
+	# Can't be in check in any spot along the way
+	for i in range(0, 3):
+		if in_check_at(board_pos + (i * direction)):
+			return
 
 	return target
 
