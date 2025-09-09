@@ -29,5 +29,4 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
-	# Move is valid, just indicate if it's also a capture
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE

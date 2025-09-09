@@ -22,5 +22,4 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if not has_line_of_movement_to(pos):
 		return MovementOutcome.BLOCKED
 
-	# Move is valid, just indicate if it's also a capture
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
