@@ -9,14 +9,18 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
-
 	# Quick check to crop to intercardinal movement
-	if not is_diagonal_move(board_pos, pos):
+	if not is_diagonal(pos):
 		return MovementOutcome.BLOCKED
+
+	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
-	return check_line_of_sight(pos)
+	if not has_line_of_movement_to(pos):
+		return MovementOutcome.BLOCKED
+
+	# Move is valid, just indicate if it's also a capture
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE

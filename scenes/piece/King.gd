@@ -21,7 +21,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if pos.distance_to(board_pos) > 1.5:
 		return MovementOutcome.BLOCKED
 
-	return check_capture(pos)
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
 
 
 func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
@@ -50,5 +50,5 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 func movement_actions(pos: Vector2i) -> void:
 	var castle_target = get_castle_target_when_moved_to(pos)
 	if castle_target:
-		var castle_direction = (pos - original_pos).clampi(-1, 1)
+		var castle_direction = (pos - original_pos).sign()
 		board.move_piece_to(castle_target, original_pos + castle_direction)

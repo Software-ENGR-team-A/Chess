@@ -19,14 +19,15 @@ func check_knight_shape(pos: Vector2i) -> bool:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
+	# Check knight shape
+	if not check_knight_shape(pos):
+		return MovementOutcome.BLOCKED
+
 	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
-	# Check knight shape
-	if not check_knight_shape(pos):
-		return MovementOutcome.BLOCKED
-
-	return check_capture(pos)
+	# Move is valid, just indicate if it's also a capture
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE

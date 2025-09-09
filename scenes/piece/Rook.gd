@@ -9,14 +9,18 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
-
 	# Quick check to crop to cardinal movement
-	if not (is_horizontal_move(board_pos, pos) or is_vertical_move(board_pos, pos)):
+	if not (is_horizontal(pos) or is_vertical(pos)):
 		return MovementOutcome.BLOCKED
+
+	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
-	return check_line_of_sight(pos)
+	if not has_line_of_movement_to(pos):
+		return MovementOutcome.BLOCKED
+
+	# Move is valid, just indicate if it's also a capture
+	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
