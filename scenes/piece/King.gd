@@ -11,7 +11,7 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.get_piece_at(pos)
 
-	if is_blocked_by_own_piece(piece_to_capture):
+	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
 	if get_castle_target_when_moved_to(pos):
@@ -50,5 +50,5 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 func movement_actions(pos: Vector2i) -> void:
 	var castle_target = get_castle_target_when_moved_to(pos)
 	if castle_target:
-		var castle_direction = (pos - original_pos).clampi(-1, 1)
+		var castle_direction = (pos - original_pos).sign()
 		board.move_piece_to(castle_target, original_pos + castle_direction)
