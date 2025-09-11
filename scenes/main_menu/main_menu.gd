@@ -1,7 +1,7 @@
 class_name MainMenu
 extends Control
 
-const AUDIO_BUS := preload("res://assets/Audio/default_bus_layout.tres")
+const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 @export var start_button: Button
 @export var option_button: Button
