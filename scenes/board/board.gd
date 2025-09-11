@@ -28,7 +28,7 @@ const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
 const DEFAULT_STATE := {
-	squares = # The starting board state (Rotated 90 degrees)
+	squares =  # The starting board state (Rotated 90 degrees)
 	[
 		0b0000000000000000,
 		0b0000000000000000,
@@ -100,6 +100,7 @@ var piece_map: Dictionary = {}
 var last_tile_highlighted: Vector2i
 var half_moves = 0
 
+
 func _ready() -> void:
 	square_map = $Squares
 	pieces = $Pieces
@@ -117,7 +118,7 @@ func _input(event) -> void:
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
 		var vport = get_viewport()
-		var screen_mouse_position = vport.get_mouse_position()  # Get the mouse position on the screen
+		var screen_mouse_position = vport.get_mouse_position()  # Get mouse position on screen
 		var world_pos = (
 			(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
 			* screen_mouse_position
@@ -185,7 +186,7 @@ func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	piece_map[pos] = new_piece
 	pieces.add_child(new_piece)
 
-	
+
 func load_board_square(selected_piece: Piece) -> void:
 	# Load Squares
 	for row in range(0, 16):
