@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Chess and Balances"
-run/main_scene="uid://c0bs6sbbrybcl"
+run/main_scene="uid://dxqgoubxk84a6"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://m7xduai1gw3g"
 
@@ -26,8 +26,8 @@ MusicManager="*res://scenes/sound_system/music_manager.tscn"
 
 [display]
 
-window/size/viewport_width=2304
-window/size/viewport_height=1296
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 
 [dotnet]
 
