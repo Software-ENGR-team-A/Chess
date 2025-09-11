@@ -21,9 +21,9 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if pos.distance_to(board_pos) > 1.5:
 		return MovementOutcome.BLOCKED
 
-	if in_check_at(pos):
-		return MovementOutcome.BLOCKED
-
+	# if in_check_at(pos):
+	# 	return MovementOutcome.BLOCKED
+	#
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
 
 
@@ -57,7 +57,11 @@ func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
 	return target
 
 
-func in_check_at(pos: Vector2i) -> bool:
+func in_check() -> Piece:
+	return in_check_at(board_pos)
+
+
+func in_check_at(pos: Vector2i) -> Piece:
 	var pieces = board.pieces.get_children()
 
 	for piece in pieces:
@@ -65,9 +69,9 @@ func in_check_at(pos: Vector2i) -> bool:
 			continue
 
 		if piece.can_move_to(pos):
-			return true
+			return piece
 
-	return false
+	return null
 
 
 func movement_actions(pos: Vector2i) -> void:

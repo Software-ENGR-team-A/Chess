@@ -27,7 +27,7 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-const DEFAULT_STATE := {
+var DEFAULT_STATE := {
 	squares =
 	[
 		0b0000000000000000,
@@ -88,36 +88,26 @@ const DEFAULT_STATE := {
 	]
 }
 
-var start_state := {}
+var piece_map: Dictionary = {}
+@export var start_state := {}
 
 # Nodes
 var square_map: TileMapLayer
 var pieces: Node
 var held_piece: Node
-var piece_map: Dictionary = {}
+var white_king: King
+var black_king: King
 
 # State
 var last_tile_highlighted: Vector2i
 var half_moves = 0
 
 
-## Creates a scene instance of the piece and places it in the pieces array
-##[param piece_script]: The proloaded script for the piece
-##[param pos]: The Vector2i for the board location
-##[param player]: The player that controls the piece
-func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
-	var new_piece = PIECE_SCENE.instantiate()
-	new_piece.set_script(piece_script)
-	new_piece.setup(self, pos, player)
-	piece_map[pos] = new_piece
-	pieces.add_child(new_piece)
-
-
 func _ready() -> void:
-	square_map = $Squares
-	pieces = $Pieces
-	load_board_state(DEFAULT_STATE)
-	MusicManager.play_random_song()
+	bind_nodes()
+	if is_og():
+		load_board_state(DEFAULT_STATE)
+		MusicManager.play_random_song()
 
 
 func _process(_delta) -> void:
@@ -168,7 +158,7 @@ func _input(event) -> void:
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				load_board_square(held_piece)
+				load_board_squares(held_piece)
 
 		else:
 			# Try to put down piece
@@ -184,10 +174,28 @@ func _input(event) -> void:
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
 			held_piece = null
-			load_board_square(null)
+			load_board_squares(null)
 
 
-func load_board_square(selected_piece: Piece) -> void:
+func bind_nodes() -> void:
+	square_map = $Squares
+	pieces = $Pieces
+
+
+func is_og() -> bool:
+	var tree = get_tree()
+	return tree and get_tree().get("root") == get_parent()
+
+
+func has_floor_at(pos: Vector2i) -> bool:
+	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+
+
+func get_piece_at(pos: Vector2i) -> Piece:
+	return piece_map.get(pos)
+
+
+func load_board_squares(selected_piece: Piece) -> void:
 	# Load Squares
 	for row in range(0, 16):
 		for col in range(0, 16):
@@ -223,12 +231,59 @@ func load_board_state(new_state) -> void:
 	for child in pieces.get_children():
 		child.queue_free()
 
-	load_board_square(null)
+	load_board_squares(null)
 
 	# Load Pieces
 	for piece_data in start_state.pieces:
 		# Iterate through the board, creating instances of each piece
-		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
+		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
+		if piece is King:
+			if not piece_data.player:
+				if white_king:
+					push_error("Multiple white kings defined")
+				white_king = piece
+			else:
+				if black_king:
+					push_error("Multiple black kings defined")
+				black_king = piece
+	
+	if not white_king:
+		push_error("No white king defined")
+
+	if not black_king:
+		push_error("No black king defined")
+
+
+func branch() -> Board:
+	var new_timeline = duplicate(0b0100)
+
+	# Fix vars
+	new_timeline.bind_nodes()
+	new_timeline.start_state = start_state
+	for piece in new_timeline.pieces.get_children():
+		new_timeline.piece_map.set(piece.board_pos, piece)
+		if piece is King:
+			if not piece.player:
+				new_timeline.black_king = piece
+			else:
+				new_timeline.white_king = piece
+		piece.board = new_timeline
+
+	return new_timeline
+
+
+## Creates a scene instance of the piece and places it in the pieces array
+##[param piece_script]: The proloaded script for the piece
+##[param pos]: The Vector2i for the board location
+##[param player]: The player that controls the piece
+func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Piece:
+	var new_piece = PIECE_SCENE.instantiate()
+	new_piece.set_script(piece_script)
+	new_piece.setup(self, pos, player)
+	piece_map[pos] = new_piece
+	pieces.add_child(new_piece)
+	new_piece.name = ("White" if player else "Black") + piece_script.get_global_name()
+	return new_piece
 
 
 func move_piece_to(piece: Node, pos: Vector2i) -> void:
@@ -260,14 +315,6 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 		return piece
 
 	return look_in_direction(next, dir, repeat - 1)
-
-
-func has_floor_at(pos: Vector2i) -> bool:
-	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
-
-
-func get_piece_at(pos: Vector2i) -> Piece:
-	return piece_map.get(pos)
 
 
 func get_bit(bitfield: int, pos: int) -> int:

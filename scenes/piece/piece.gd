@@ -6,12 +6,12 @@ enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
 @export var player := 0  # Black vs White
 @export var board_pos: Vector2i
 @export var original_pos: Vector2i
+@export var sprite_index := 0  # Where in the sprite sheet it exists
+@export var previous_position: Vector2i
+@export var forward_direction: int
+@export var point_value := 0  # The point value for the engine
 
-var sprite_index := 0  # Where in the sprite sheet it exists
-var point_value := 0  # The point value for the engine
 var board: Board  # Parent board node
-var previous_position: Vector2i
-var forward_direction: int
 
 var checked_cells: Dictionary
 var checked_cells_half_move: int
@@ -49,11 +49,13 @@ func get_sprite_index() -> int:
 func capture() -> void:
 	if board.get_piece_at(board_pos) == self:
 		board.piece_map.set(board_pos, null)
+		board.pieces.remove_child(self)
 
-		if self is King:
-			AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-		else:
-			AudioManager.play_sound(AudioManager.movement.capture)
+		if board.is_og():
+			if self is King:
+				AudioManager.play_sound(AudioManager.movement.checkmate, -15)
+			else:
+				AudioManager.play_sound(AudioManager.movement.capture)
 
 	queue_free()
 
@@ -103,9 +105,38 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 		return saved_move
 
 	# Check script
-	var can_move = _movement(pos)
-	checked_cells.set(pos, can_move)
-	return can_move
+	var move_outcome = _movement(pos)
+
+	if move_outcome != MovementOutcome.BLOCKED and board.is_og():
+		var new_timeline: Board = board.branch()
+
+		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
+		new_timeline.move_piece_to(timeline_piece, pos)
+
+		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
+		var check_piece = king_to_consider.in_check()
+		if check_piece:
+			# Make window
+			# var new_window = Window.new()
+			# new_window.size = Vector2(600, 600) # Set desired window size
+			# var screen_size = DisplayServer.screen_get_size()
+			# new_window.position = Vector2i(
+			# 	randi_range(0, int(screen_size.x) - 600),
+			# 	randi_range(0, int(screen_size.y) - 600)
+			# )
+			# get_tree().root.add_child(new_window)
+			# new_window.add_child(new_timeline)
+			# new_window.show()
+			# new_timeline.get_node("Camera").zoom = Vector2(4, 4)
+	
+			move_outcome = MovementOutcome.BLOCKED
+			new_timeline.load_board_squares(check_piece)
+
+		new_timeline.square_map.set_cell(king_to_consider.board_pos, new_timeline.TILESET_ID, Vector2i(3, 3))
+		new_timeline.queue_free()
+
+	checked_cells.set(pos, move_outcome)
+	return move_outcome
 
 
 ## Calculates if every square between [param pos] and the piece are open squares, and returns
