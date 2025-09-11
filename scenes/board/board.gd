@@ -248,6 +248,10 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	piece.set_board_pos(pos)
 	piece.last_moved_half_move = half_moves
 	piece_map[pos] = piece
+	
+	if piece is Pawn:
+		check_pawn_promotion(piece)
+
 
 
 func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
@@ -272,3 +276,17 @@ func get_piece_at(pos: Vector2i) -> Piece:
 
 func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
+
+func check_pawn_promotion(piece: Piece) -> void:
+	
+	if piece.player == 0 and piece.board_pos.y == 3:
+		promote_pawn(piece)
+	elif piece.player == 1 and piece.board_pos.y == -4:
+		promote_pawn(piece)
+#pawn
+func promote_pawn(pawn: Piece) -> void:
+	var pos = pawn.board_pos
+	var player = pawn.player
+
+	pawn.capture()
+	spawn_piece(QUEEN_SCRIPT, pos, player)
