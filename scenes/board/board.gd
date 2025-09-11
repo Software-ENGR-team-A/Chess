@@ -2,7 +2,7 @@ class_name Board
 extends Node2D
 
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
-const AUDIO_BUS := preload("res://assets/Audio/default_bus_layout.tres")
+const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 # Load all piece classes to prevent null pointers
 const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
