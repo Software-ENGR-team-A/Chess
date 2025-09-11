@@ -118,7 +118,7 @@ func _input(event) -> void:
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
 		var vport = get_viewport()
-		var screen_mouse_position = vport.get_mouse_position()  # Get the mouse position on the screen
+		var screen_mouse_position = vport.get_mouse_position()  # Get mouse position on screen
 		var world_pos = (
 			(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
 			* screen_mouse_position
