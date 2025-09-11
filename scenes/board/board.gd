@@ -28,7 +28,7 @@ const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
 const DEFAULT_STATE := {
-	squares =
+	squares = # The starting board state (Rotated 90 degrees)
 	[
 		0b0000000000000000,
 		0b0000000000000000,
@@ -99,19 +99,6 @@ var piece_map: Dictionary = {}
 # State
 var last_tile_highlighted: Vector2i
 var half_moves = 0
-
-
-## Creates a scene instance of the piece and places it in the pieces array
-##[param piece_script]: The proloaded script for the piece
-##[param pos]: The Vector2i for the board location
-##[param player]: The player that controls the piece
-func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
-	var new_piece = PIECE_SCENE.instantiate()
-	new_piece.set_script(piece_script)
-	new_piece.setup(self, pos, player)
-	piece_map[pos] = new_piece
-	pieces.add_child(new_piece)
-
 
 func _ready() -> void:
 	square_map = $Squares
@@ -187,6 +174,18 @@ func _input(event) -> void:
 			load_board_square(null)
 
 
+## Creates a scene instance of the piece and places it in the pieces array
+##[param piece_script]: The proloaded script for the piece
+##[param pos]: The Vector2i for the board location
+##[param player]: The player that controls the piece
+func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
+	var new_piece = PIECE_SCENE.instantiate()
+	new_piece.set_script(piece_script)
+	new_piece.setup(self, pos, player)
+	piece_map[pos] = new_piece
+	pieces.add_child(new_piece)
+
+	
 func load_board_square(selected_piece: Piece) -> void:
 	# Load Squares
 	for row in range(0, 16):
