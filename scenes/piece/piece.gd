@@ -128,11 +128,13 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 			# new_window.add_child(new_timeline)
 			# new_window.show()
 			# new_timeline.get_node("Camera").zoom = Vector2(4, 4)
-	
+
 			move_outcome = MovementOutcome.BLOCKED
 			new_timeline.load_board_squares(check_piece)
 
-		new_timeline.square_map.set_cell(king_to_consider.board_pos, new_timeline.TILESET_ID, Vector2i(3, 3))
+		new_timeline.square_map.set_cell(
+			king_to_consider.board_pos, new_timeline.TILESET_ID, Vector2i(3, 3)
+		)
 		new_timeline.queue_free()
 
 	checked_cells.set(pos, move_outcome)

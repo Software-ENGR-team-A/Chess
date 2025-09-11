@@ -27,7 +27,7 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-var DEFAULT_STATE := {
+const DEFAULT_STATE := {
 	squares =
 	[
 		0b0000000000000000,
@@ -88,7 +88,6 @@ var DEFAULT_STATE := {
 	]
 }
 
-var piece_map: Dictionary = {}
 @export var start_state := {}
 
 # Nodes
@@ -99,8 +98,9 @@ var white_king: King
 var black_king: King
 
 # State
-var last_tile_highlighted: Vector2i
 var half_moves = 0
+var last_tile_highlighted: Vector2i
+var piece_map: Dictionary = {}
 
 
 func _ready() -> void:
@@ -246,7 +246,7 @@ func load_board_state(new_state) -> void:
 				if black_king:
 					push_error("Multiple black kings defined")
 				black_king = piece
-	
+
 	if not white_king:
 		push_error("No white king defined")
 
