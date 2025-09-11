@@ -28,7 +28,7 @@ const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
 const DEFAULT_STATE := {
-	squares = # The starting board state (Rotated 90 degrees)
+	squares =  # The starting board state
 	[
 		0b0000000000000000,
 		0b0000000000000000,
@@ -99,6 +99,7 @@ var piece_map: Dictionary = {}
 # State
 var last_tile_highlighted: Vector2i
 var half_moves = 0
+
 
 func _ready() -> void:
 	square_map = $Squares
@@ -185,12 +186,12 @@ func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
 	piece_map[pos] = new_piece
 	pieces.add_child(new_piece)
 
-	
+
 func load_board_square(selected_piece: Piece) -> void:
 	# Load Squares
-	for row in range(0, 16):
-		for col in range(0, 16):
-			var map_cell = Vector2i(col - 8, row - 8)
+	for col in range(0, 16):
+		for row in range(0, 16):
+			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
 				var tiles = get_square_tile_at(map_cell, selected_piece)
 				square_map.set_cell(
@@ -262,7 +263,7 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 
 
 func has_floor_at(pos: Vector2i) -> bool:
-	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+	return get_bit(start_state.squares[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
 func get_piece_at(pos: Vector2i) -> Piece:

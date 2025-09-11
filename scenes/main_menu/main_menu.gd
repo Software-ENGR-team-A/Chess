@@ -14,7 +14,6 @@ func _ready():
 	get_window().size = DisplayServer.screen_get_size()
 	MusicManager.play_random_song()
 	MusicManager.set_volume(2)
-	print(start_button)
 	start_button.button_down.connect(on_start_pressed)
 	option_button.button_down.connect(on_option_pressed)
 	exit_button.button_down.connect(on_exit_pressed)
