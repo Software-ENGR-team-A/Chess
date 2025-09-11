@@ -166,6 +166,12 @@ func _input(event) -> void:
 				# Put down piece
 				move_piece_to(held_piece, hovered_square)
 				half_moves += 1
+
+				# Verify checkmate state for opposite player
+				var king_to_consider = white_king if half_moves % 2 == 0 else black_king
+				if is_og() and in_checkmate(king_to_consider):
+					print(("Black" if king_to_consider == white_king else "White") + " wins!")
+
 				AudioManager.play_sound(AudioManager.movement.place)
 
 			else:
@@ -183,8 +189,14 @@ func bind_nodes() -> void:
 
 
 func is_og() -> bool:
+	if not is_inside_tree():
+		return false
+
 	var tree = get_tree()
-	return tree and get_tree().get("root") == get_parent()
+	if tree == null:
+		return false
+
+	return tree.get("root") == get_parent()
 
 
 func has_floor_at(pos: Vector2i) -> bool:
@@ -208,6 +220,11 @@ func load_board_squares(selected_piece: Piece) -> void:
 
 
 func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+	var piece_at_cell = get_piece_at(map_cell)
+	if piece_at_cell is King:
+		if piece_at_cell.in_check():
+			return {"light": ORANGE_TILE, "dark": DARK_ORANGE_TILE}
+
 	if selected_piece:
 		if selected_piece.board_pos == map_cell:
 			return {"light": CYAN_TILE, "dark": DARK_CYAN_TILE}
@@ -303,6 +320,20 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	piece.set_board_pos(pos)
 	piece.last_moved_half_move = half_moves
 	piece_map[pos] = piece
+
+
+func in_checkmate(king: King) -> bool:
+	if king.in_check():
+		# Check every possible move
+		for enemy_piece: Piece in pieces.get_children():
+			if enemy_piece.player != king.player:
+				continue
+
+			if enemy_piece.has_valid_moves():
+				return false
+
+		return true
+	return false
 
 
 func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:

@@ -2,6 +2,9 @@ class_name Piece
 extends Node2D
 
 enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
+enum DebugTimelineModes { NONE, LOSSES, ALL }
+
+const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 
 @export var player := 0  # Black vs White
 @export var board_pos: Vector2i
@@ -88,6 +91,16 @@ func look_in_direction(offset: Vector2i, repeat: int) -> Piece:
 	return board.look_in_direction(board_pos, offset, repeat)
 
 
+func has_valid_moves() -> bool:
+	for row in range(0, 16):
+		for col in range(0, 16):
+			var map_cell = Vector2i(col - 8, row - 8)
+			if board.has_floor_at(map_cell):
+				if can_move_to(map_cell):
+					return true
+	return false
+
+
 ## Determines if the piece can legally move to [param pos] based on movement rules and board state.
 func can_move_to(pos: Vector2i) -> MovementOutcome:
 	# Can't move to itself or to somewhere without floor
@@ -109,6 +122,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 
 	if move_outcome != MovementOutcome.BLOCKED and board.is_og():
 		var new_timeline: Board = board.branch()
+		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
 		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
 		new_timeline.move_piece_to(timeline_piece, pos)
@@ -116,26 +130,26 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
 		var check_piece = king_to_consider.in_check()
 		if check_piece:
-			# Make window
-			# var new_window = Window.new()
-			# new_window.size = Vector2(600, 600) # Set desired window size
-			# var screen_size = DisplayServer.screen_get_size()
-			# new_window.position = Vector2i(
-			# 	randi_range(0, int(screen_size.x) - 600),
-			# 	randi_range(0, int(screen_size.y) - 600)
-			# )
-			# get_tree().root.add_child(new_window)
-			# new_window.add_child(new_timeline)
-			# new_window.show()
-			# new_timeline.get_node("Camera").zoom = Vector2(4, 4)
+			if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
+				show_debug_window = true
 
 			move_outcome = MovementOutcome.BLOCKED
 			new_timeline.load_board_squares(check_piece)
 
-		new_timeline.square_map.set_cell(
-			king_to_consider.board_pos, new_timeline.TILESET_ID, Vector2i(3, 3)
-		)
-		new_timeline.queue_free()
+		if show_debug_window:
+			# Make window
+			var new_window = Window.new()
+			new_window.size = Vector2(600, 600)  # Set desired window size
+			var screen_size = DisplayServer.screen_get_size()
+			new_window.position = Vector2i(
+				randi_range(0, int(screen_size.x) - 600), randi_range(0, int(screen_size.y) - 600)
+			)
+			get_tree().root.add_child(new_window)
+			new_window.add_child(new_timeline)
+			new_window.show()
+			new_timeline.get_node("Camera").zoom = Vector2(4, 4)
+		else:
+			new_timeline.queue_free()
 
 	checked_cells.set(pos, move_outcome)
 	return move_outcome
