@@ -55,10 +55,7 @@ func capture() -> void:
 		board.pieces.remove_child(self)
 
 		if board.is_og():
-			if self is King:
-				AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-			else:
-				AudioManager.play_sound(AudioManager.movement.capture)
+			AudioManager.play_sound(AudioManager.movement.capture)
 
 	queue_free()
 
@@ -120,6 +117,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 	# Check script
 	var move_outcome = _movement(pos)
 
+	# If still valid, check the future to see if the move puts the player into check
 	if move_outcome != MovementOutcome.BLOCKED and board.is_og():
 		var new_timeline: Board = board.branch()
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
@@ -136,8 +134,8 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 			move_outcome = MovementOutcome.BLOCKED
 			new_timeline.load_board_squares(check_piece)
 
+		# Debugging
 		if show_debug_window:
-			# Make window
 			var new_window = Window.new()
 			new_window.size = Vector2(600, 600)  # Set desired window size
 			var screen_size = DisplayServer.screen_get_size()

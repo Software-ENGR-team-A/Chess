@@ -170,6 +170,7 @@ func _input(event) -> void:
 				# Verify checkmate state for opposite player
 				var king_to_consider = white_king if half_moves % 2 == 0 else black_king
 				if is_og() and in_checkmate(king_to_consider):
+					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 					print(("Black" if king_to_consider == white_king else "White") + " wins!")
 
 				AudioManager.play_sound(AudioManager.movement.place)
@@ -191,12 +192,7 @@ func bind_nodes() -> void:
 func is_og() -> bool:
 	if not is_inside_tree():
 		return false
-
-	var tree = get_tree()
-	if tree == null:
-		return false
-
-	return tree.get("root") == get_parent()
+	return get_tree().get("root") == get_parent()
 
 
 func has_floor_at(pos: Vector2i) -> bool:
