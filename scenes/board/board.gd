@@ -28,7 +28,7 @@ const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
 const DEFAULT_STATE := {
-	squares =
+	squares =  # The starting board state
 	[
 		0b0000000000000000,
 		0b0000000000000000,
@@ -120,7 +120,7 @@ func _input(event) -> void:
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
 		var vport = get_viewport()
-		var screen_mouse_position = vport.get_mouse_position()  # Get the mouse position on the screen
+		var screen_mouse_position = vport.get_mouse_position()  # Get mouse position on screen
 		var world_pos = (
 			(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
 			* screen_mouse_position
@@ -205,9 +205,9 @@ func get_piece_at(pos: Vector2i) -> Piece:
 
 func load_board_squares(selected_piece: Piece) -> void:
 	# Load Squares
-	for row in range(0, 16):
-		for col in range(0, 16):
-			var map_cell = Vector2i(col - 8, row - 8)
+	for col in range(0, 16):
+		for row in range(0, 16):
+			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
 				var tiles = get_square_tile_at(map_cell, selected_piece)
 				square_map.set_cell(
