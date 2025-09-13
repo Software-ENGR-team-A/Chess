@@ -153,7 +153,7 @@ func _input(event) -> void:
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
 				held_piece = piece_at_cell
-
+				held_piece.show_shadow(true)
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
@@ -180,6 +180,7 @@ func _input(event) -> void:
 				move_piece_to(held_piece, held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
+			held_piece.show_shadow(false)
 			held_piece = null
 			load_board_squares(null)
 
