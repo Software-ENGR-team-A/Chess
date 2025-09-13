@@ -100,7 +100,6 @@ var piece_map: Dictionary = {}
 var last_tile_highlighted: Vector2i
 var half_moves = 0
 
-
 ## Creates a scene instance of the piece and places it in the pieces array
 ##[param piece_script]: The proloaded script for the piece
 ##[param pos]: The Vector2i for the board location
@@ -163,6 +162,7 @@ func _input(event) -> void:
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
 				held_piece = piece_at_cell
+				held_piece.show_shadow()
 
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
@@ -183,6 +183,7 @@ func _input(event) -> void:
 				move_piece_to(held_piece, held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
+			held_piece.hide_shadow()
 			held_piece = null
 			load_board_square(null)
 
@@ -227,7 +228,6 @@ func load_board_state(new_state) -> void:
 
 	# Load Pieces
 	for piece_data in start_state.pieces:
-		# Iterate through the board, creating instances of each piece
 		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 
 
