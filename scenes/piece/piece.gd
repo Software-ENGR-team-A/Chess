@@ -35,6 +35,8 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 func set_sprite(sprite: int) -> void:
 	sprite_index = sprite
 	$Sprite.frame = sprite_index + player * 32
+	if has_node("Shadow"):
+		$Shadow.frame = sprite_index + player * 32
 
 
 func set_board_pos(pos: Vector2i) -> void:
@@ -129,3 +131,15 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 
 func movement_actions(_pos: Vector2i) -> void:
 	pass
+
+
+func show_shadow(on: bool) -> void:
+	if has_node("Shadow"):
+		if on:
+			var shadow = $Shadow
+			shadow.visible = true
+			shadow.texture = $Sprite.texture
+			shadow.region_enabled = $Sprite.region_enabled
+			shadow.region_rect = $Sprite.region_rect
+		else:
+			$Shadow.visible = false
