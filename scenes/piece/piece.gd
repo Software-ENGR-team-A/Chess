@@ -131,15 +131,15 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 
 func movement_actions(_pos: Vector2i) -> void:
 	pass
-	
-func show_shadow() -> void:
-	if has_node("Shadow"):
-		var shadow = $Shadow
-		shadow.visible = true
-		shadow.texture = $Sprite.texture
-		shadow.region_enabled = $Sprite.region_enabled
-		shadow.region_rect = $Sprite.region_rect
 
-func hide_shadow() -> void:
+
+func show_shadow(on: bool) -> void:
 	if has_node("Shadow"):
-		$Shadow.visible = false
+		if on:
+			var shadow = $Shadow
+			shadow.visible = true
+			shadow.texture = $Sprite.texture
+			shadow.region_enabled = $Sprite.region_enabled
+			shadow.region_rect = $Sprite.region_rect
+		else:
+			$Shadow.visible = false
