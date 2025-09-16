@@ -90,10 +90,10 @@ const DEFAULT_STATE := {
 }
 
 @export var start_state := {}
+@export var square_map: TileMapLayer
+@export var pieces: Node
 
 # Nodes
-var square_map: TileMapLayer
-var pieces: Node
 var held_piece: Node
 var white_king: King
 var black_king: King
@@ -105,7 +105,6 @@ var piece_map: Dictionary = {}
 
 
 func _ready() -> void:
-	bind_nodes()
 	if is_og():
 		load_board_state(DEFAULT_STATE)
 		MusicManager.play_random_song()
@@ -184,13 +183,6 @@ func _input(event) -> void:
 			held_piece.show_shadow(false)
 			held_piece = null
 			color_board_squares(null)
-
-
-## Set the quick-access variables for children. Needed on creation and duplication of a board, as
-## duplicates do not copy references to their own children automatically.
-func bind_nodes() -> void:
-	square_map = $Squares
-	pieces = $Pieces
 
 
 ## Returns if the board is the actual "main" game instance being played. Used to distinguish from
@@ -289,7 +281,6 @@ func branch() -> Board:
 	var new_timeline = duplicate(0b0100)
 
 	# Fix vars
-	new_timeline.bind_nodes()
 	new_timeline.start_state = start_state
 	for piece in new_timeline.pieces.get_children():
 		new_timeline.piece_map.set(piece.board_pos, piece)
