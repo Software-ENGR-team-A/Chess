@@ -1,4 +1,4 @@
-@abstract class_name Piece
+class_name Piece
 extends Node2D
 
 enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
@@ -203,7 +203,8 @@ func has_line_of_movement_to(pos: Vector2i) -> bool:
 ## [code]AVAILABLE[/code], where [method can_move_to] would detect this and return
 ## [code]BLOCKED[/code]
 ##[param _pos]: Position to check for a movement outcome
-@abstract func _movement(_pos: Vector2i) -> MovementOutcome
+func _movement(_pos: Vector2i) -> MovementOutcome:
+	return MovementOutcome.BLOCKED
 
 
 ## Additional actions to perform when moving to [param _pos]. Note that capture of an existing piece
