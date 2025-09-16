@@ -14,6 +14,7 @@ const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 
 # Sprite Indices
 const TILESET_ID := 0
+
 const WHITE_TILE := Vector2i(0, 3)
 const BLACK_TILE := Vector2i(0, 7)
 const CYAN_TILE := Vector2i(1, 3)
@@ -153,12 +154,12 @@ func _input(event) -> void:
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
 				held_piece = piece_at_cell
-				held_piece.show_shadow(true)
+				held_piece.show_shadow()
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				load_board_squares(held_piece)
+				color_board_squares(held_piece)
 
 		else:
 			# Try to put down piece
@@ -182,41 +183,54 @@ func _input(event) -> void:
 
 			held_piece.show_shadow(false)
 			held_piece = null
-			load_board_squares(null)
+			color_board_squares(null)
 
 
+## Set the quick-access variables for children. Needed on creation and duplication of a board, as
+## duplicates do not copy references to their own children automatically.
 func bind_nodes() -> void:
 	square_map = $Squares
 	pieces = $Pieces
 
 
+## Returns if the board is the actual "main" game instance being played. Used to distinguish from
+## "fake" boards used for determining the outcomes of future moves, for instance.
 func is_og() -> bool:
 	if not is_inside_tree():
 		return false
 	return get_tree().get("root") == get_parent()
 
 
+## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,
+## as opposed to a hole.
 func has_floor_at(pos: Vector2i) -> bool:
 	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
 
 
+## Returns the [Piece] in the board's [member piece_map] at [param pos], or
+## [code]null[/code] if absent.
 func get_piece_at(pos: Vector2i) -> Piece:
 	return piece_map.get(pos)
 
 
-func load_board_squares(selected_piece: Piece) -> void:
+## Re-calculates all the tiles in the [member squares] TileMapLayer. If supplied a
+## [param selected_piece], the floor will indicate valid movement options for that piece.
+func color_board_squares(selected_piece: Piece) -> void:
 	# Load Squares
 	for col in range(0, 16):
 		for row in range(0, 16):
 			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
-				var tiles = get_square_tile_at(map_cell, selected_piece)
+				var tiles = calculate_square_tile_at(map_cell, selected_piece)
 				square_map.set_cell(
 					map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark
 				)
 
 
-func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+## Returns what tiles should be used for a given [param map_cell], indicating valid movement options
+## for an optional [param selected_piece]. Output format is a dictionary of the form
+## [code]{"light": LIGHT_TILE, "dark": DARK_TILE}[/code]
+func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
 	var piece_at_cell = get_piece_at(map_cell)
 	if piece_at_cell is King:
 		if piece_at_cell.in_check():
@@ -237,6 +251,8 @@ func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary
 	return {"light": WHITE_TILE, "dark": BLACK_TILE}
 
 
+## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
+## colours and loading [Piece] nodes as needed
 func load_board_state(new_state) -> void:
 	start_state = new_state
 
@@ -245,7 +261,7 @@ func load_board_state(new_state) -> void:
 	for child in pieces.get_children():
 		child.queue_free()
 
-	load_board_squares(null)
+	color_board_squares(null)
 
 	# Load Pieces
 	for piece_data in start_state.pieces:
@@ -268,6 +284,7 @@ func load_board_state(new_state) -> void:
 		push_error("No black king defined")
 
 
+## Creates and returns a copy of the current [Board]
 func branch() -> Board:
 	var new_timeline = duplicate(0b0100)
 
@@ -300,6 +317,10 @@ func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Piece:
 	return new_piece
 
 
+## Moves a [param piece] on the board to the specified [param pos]. Movements must be checked
+## for validity *before* calling this. If [param pos] contains a piece before moving, it is
+## automatically captured. Additional movement actions for the [param piece] will be triggered
+## automatically.
 func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	# Pick up original piece
 	piece_map.set(piece.board_pos, null)
@@ -319,6 +340,7 @@ func move_piece_to(piece: Node, pos: Vector2i) -> void:
 	piece_map[pos] = piece
 
 
+## Returns if the supplied [param king] is in checkmate based on the current board state.
 func in_checkmate(king: King) -> bool:
 	if king.in_check():
 		# Check every possible move
@@ -333,6 +355,10 @@ func in_checkmate(king: King) -> bool:
 	return false
 
 
+## Makes a recursive search from an origin point.
+##[param base]: The starting point to check from
+##[param dir]: The offset vector to check each iteration
+##[param repeat]: The maximum amount of times to perform the check
 func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 	var next = base + dir
 	if not has_floor_at(next) or repeat <= 0:
@@ -345,5 +371,6 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 	return look_in_direction(next, dir, repeat - 1)
 
 
+## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
 func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
