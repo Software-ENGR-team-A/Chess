@@ -10,6 +10,7 @@ script = ExtResource("1_q07he")
 zoom = Vector2(8, 8)
 
 [node name="Squares" type="TileMapLayer" parent="."]
+z_index = -1
 rotation = -4.80598e-05
 tile_set = ExtResource("2_kymhv")
 

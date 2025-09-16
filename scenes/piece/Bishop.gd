@@ -9,28 +9,17 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
-	var hori_diff = pos.x - board_pos.x
-	var vert_diff = pos.y - board_pos.y
-
 	# Quick check to crop to intercardinal movement
-	if not is_diagonal_move(board_pos, pos):
+	if not is_diagonal(pos):
 		return MovementOutcome.BLOCKED
+
+	var piece_to_capture = board.get_piece_at(pos)
 
 	# Can't capture own piece
-	if is_blocked_by_own_piece(piece_to_capture):
+	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
 
-	var offset = Vector2i(hori_diff, vert_diff)
-	var direction = offset.clampi(-1, 1)
-
-	if offset.length() > 1.5:
-		# Need to propogate backwards to check line of sight
-		var prev_in_path = can_move_to(pos + direction * -1)
-		if prev_in_path == MovementOutcome.AVAILABLE:
-			return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
-
+	if not has_line_of_movement_to(pos):
 		return MovementOutcome.BLOCKED
 
-	# Immediately touching piece, no need to back-search
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
