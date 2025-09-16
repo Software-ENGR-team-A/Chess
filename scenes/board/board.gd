@@ -164,7 +164,7 @@ func _input(event) -> void:
 			# Try to put down piece
 			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
 				# Put down piece
-				move_piece_to(held_piece, hovered_square)
+				held_piece.move_to(hovered_square)
 				half_moves += 1
 
 				# Verify checkmate state for opposite player
@@ -177,7 +177,7 @@ func _input(event) -> void:
 
 			else:
 				# Revert location
-				move_piece_to(held_piece, held_piece.board_pos)
+				held_piece.set_board_pos(held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
 			held_piece.show_shadow(false)
@@ -306,29 +306,6 @@ func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Piece:
 	pieces.add_child(new_piece)
 	new_piece.name = ("White" if player else "Black") + piece_script.get_global_name()
 	return new_piece
-
-
-## Moves a [param piece] on the board to the specified [param pos]. Movements must be checked
-## for validity *before* calling this. If [param pos] contains a piece before moving, it is
-## automatically captured. Additional movement actions for the [param piece] will be triggered
-## automatically.
-func move_piece_to(piece: Node, pos: Vector2i) -> void:
-	# Pick up original piece
-	piece_map.set(piece.board_pos, null)
-
-	# Capture
-	var replaced_piece = get_piece_at(pos)
-	if replaced_piece:
-		replaced_piece.capture()
-
-	# Perform extra actions
-	piece.movement_actions(pos)
-
-	# Move piece
-	piece.previous_position = piece.board_pos
-	piece.set_board_pos(pos)
-	piece.last_moved_half_move = half_moves
-	piece_map[pos] = piece
 
 
 ## Returns if the supplied [param king] is in checkmate based on the current board state.

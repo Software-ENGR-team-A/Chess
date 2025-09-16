@@ -48,6 +48,28 @@ func set_sprite(sprite: int) -> void:
 		$Shadow.frame = sprite_index + player * 32
 
 
+## Moves the piece to the specified [param pos]. Movements must be checked for validity *before*
+## calling this. If [param pos] contains a piece before moving, it is automatically captured.
+## Additional movement actions will be triggered automatically.
+func move_to(pos: Vector2i) -> void:
+	# Pick up original piece
+	board.piece_map.set(board_pos, null)
+
+	# Capture
+	var replaced_piece = board.get_piece_at(pos)
+	if replaced_piece:
+		replaced_piece.capture()
+
+	# Perform extra actions
+	movement_actions(pos)
+
+	# Move piece
+	previous_position = board_pos
+	set_board_pos(pos)
+	last_moved_half_move = board.half_moves
+	board.piece_map[pos] = self
+
+
 ## Changes the visual and saved [member board_pos] to [param pos]
 func set_board_pos(pos: Vector2i) -> void:
 	board_pos = pos
@@ -130,7 +152,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
 		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
-		new_timeline.move_piece_to(timeline_piece, pos)
+		timeline_piece.move_to(pos)
 
 		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
 		var check_piece = king_to_consider.in_check()
@@ -186,7 +208,7 @@ func has_line_of_movement_to(pos: Vector2i) -> bool:
 
 ## Additional actions to perform when moving to [param _pos]. Note that capture of an existing piece
 ## at [param _pos] is implied and performed automatically on movement, as directed in
-## [method Board.move_piece_to]
+## [method move_to]
 func movement_actions(_pos: Vector2i) -> void:
 	pass
 
