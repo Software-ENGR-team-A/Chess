@@ -14,6 +14,7 @@ const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 
 # Sprite Indices
 const TILESET_ID := 0
+
 const WHITE_TILE := Vector2i(0, 3)
 const BLACK_TILE := Vector2i(0, 7)
 const CYAN_TILE := Vector2i(1, 3)
@@ -88,24 +89,29 @@ const DEFAULT_STATE := {
 	]
 }
 
-var start_state := {}
+@export var start_state := {}
+@export var square_map: TileMapLayer
+@export var pieces: Node
 
 # Nodes
-var square_map: TileMapLayer
-var pieces: Node
 var held_piece: Node
-var piece_map: Dictionary = {}
+var white_king: King
+var black_king: King
 
 # State
+var half_moves := 0
 var last_tile_highlighted: Vector2i
-var half_moves = 0
+var piece_map: Dictionary = {}
+
+# Debug
+var debug_timelines := []
+var debug_timelines_half_move := half_moves
 
 
 func _ready() -> void:
-	square_map = $Squares
-	pieces = $Pieces
-	load_board_state(DEFAULT_STATE)
-	MusicManager.play_random_song()
+	if is_og():
+		load_board_state(DEFAULT_STATE)
+		MusicManager.play_random_song()
 
 
 func _process(_delta) -> void:
@@ -151,61 +157,91 @@ func _input(event) -> void:
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
 				held_piece = piece_at_cell
-				held_piece.show_shadow(true)
+				held_piece.show_shadow()
 				# Bring to front
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				load_board_square(held_piece)
+				color_board_squares(held_piece)
 
 		else:
 			# Try to put down piece
-			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
+			if (
+				has_floor_at(hovered_square)
+				and Piece.movement_safe_for_king(held_piece.movement_outcome_at(hovered_square))
+			):
 				# Put down piece
-				move_piece_to(held_piece, hovered_square)
+				held_piece.move_to(hovered_square)
 				half_moves += 1
+
+				# Verify checkmate state for opposite player
+				var king_to_consider = white_king if half_moves % 2 == 0 else black_king
+				if is_og() and in_checkmate(king_to_consider):
+					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
+					print(("Black" if king_to_consider == white_king else "White") + " wins!")
+
 				AudioManager.play_sound(AudioManager.movement.place)
 
 			else:
 				# Revert location
-				move_piece_to(held_piece, held_piece.board_pos)
+				held_piece.set_board_pos(held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
 			held_piece.show_shadow(false)
 			held_piece = null
-			load_board_square(null)
+			color_board_squares(null)
 
 
-## Creates a scene instance of the piece and places it in the pieces array
-##[param piece_script]: The proloaded script for the piece
-##[param pos]: The Vector2i for the board location
-##[param player]: The player that controls the piece
-func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> void:
-	var new_piece = PIECE_SCENE.instantiate()
-	new_piece.set_script(piece_script)
-	new_piece.setup(self, pos, player)
-	piece_map[pos] = new_piece
-	pieces.add_child(new_piece)
+## Returns if the board is the actual "main" game instance being played. Used to distinguish from
+## "fake" boards used for determining the outcomes of future moves, for instance.
+func is_og() -> bool:
+	if not is_inside_tree():
+		return false
+	return get_tree().get("root") == get_parent()
 
 
-func load_board_square(selected_piece: Piece) -> void:
+## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,
+## as opposed to a hole.
+func has_floor_at(pos: Vector2i) -> bool:
+	if pos.x < -8 or pos.x > 8:
+		return false
+	return get_bit(start_state.squares[pos.y - 8], 16 - pos.x - 8 - 1)
+
+
+## Returns the [Piece] in the board's [member piece_map] at [param pos], or
+## [code]null[/code] if absent.
+func get_piece_at(pos: Vector2i) -> Piece:
+	return piece_map.get(pos)
+
+
+## Re-calculates all the tiles in the [member squares] TileMapLayer. If supplied a
+## [param selected_piece], the floor will indicate valid movement options for that piece.
+func color_board_squares(selected_piece: Piece) -> void:
 	# Load Squares
 	for col in range(0, 16):
 		for row in range(0, 16):
 			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
-				var tiles = get_square_tile_at(map_cell, selected_piece)
+				var tiles = calculate_square_tile_at(map_cell, selected_piece)
 				square_map.set_cell(
 					map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark
 				)
 
 
-func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+## Returns what tiles should be used for a given [param map_cell], indicating valid movement options
+## for an optional [param selected_piece]. Output format is a dictionary of the form
+## [code]{"light": LIGHT_TILE, "dark": DARK_TILE}[/code]
+func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+	var piece_at_cell = get_piece_at(map_cell)
+	if piece_at_cell is King:
+		if piece_at_cell.in_check():
+			return {"light": ORANGE_TILE, "dark": DARK_ORANGE_TILE}
+
 	if selected_piece:
 		if selected_piece.board_pos == map_cell:
 			return {"light": CYAN_TILE, "dark": DARK_CYAN_TILE}
 
-		var outcome = selected_piece.can_move_to(map_cell)
+		var outcome = selected_piece.movement_outcome_at(map_cell)
 
 		if outcome == Piece.MovementOutcome.AVAILABLE:
 			return {"light": GREEN_TILE, "dark": DARK_GREEN_TILE}
@@ -216,6 +252,8 @@ func get_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary
 	return {"light": WHITE_TILE, "dark": BLACK_TILE}
 
 
+## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
+## colours and loading [Piece] nodes as needed
 func load_board_state(new_state) -> void:
 	start_state = new_state
 
@@ -224,32 +262,80 @@ func load_board_state(new_state) -> void:
 	for child in pieces.get_children():
 		child.queue_free()
 
-	load_board_square(null)
+	color_board_squares(null)
 
 	# Load Pieces
 	for piece_data in start_state.pieces:
-		spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
+		# Iterate through the board, creating instances of each piece
+		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
+		if piece is King:
+			if not piece_data.player:
+				if white_king:
+					push_error("Multiple white kings defined")
+				white_king = piece
+			else:
+				if black_king:
+					push_error("Multiple black kings defined")
+				black_king = piece
+
+	if not white_king:
+		push_error("No white king defined")
+
+	if not black_king:
+		push_error("No black king defined")
 
 
-func move_piece_to(piece: Node, pos: Vector2i) -> void:
-	# Pick up original piece
-	piece_map.set(piece.board_pos, null)
+## Creates and returns a copy of the current [Board]
+func branch() -> Board:
+	var new_timeline = duplicate(0b0100)
 
-	# Capture
-	var replaced_piece = get_piece_at(pos)
-	if replaced_piece:
-		replaced_piece.capture()
+	# Fix vars
+	new_timeline.start_state = start_state
+	for piece in new_timeline.pieces.get_children():
+		new_timeline.piece_map.set(piece.board_pos, piece)
+		if piece is King:
+			if not piece.player:
+				new_timeline.black_king = piece
+			else:
+				new_timeline.white_king = piece
+		piece.board = new_timeline
 
-	# Perform extra actions
-	piece.movement_actions(pos)
-
-	# Move piece
-	piece.previous_position = piece.board_pos
-	piece.set_board_pos(pos)
-	piece.last_moved_half_move = half_moves
-	piece_map[pos] = piece
+	return new_timeline
 
 
+## Creates a scene instance of the piece and places it in the pieces array
+##[param piece_script]: The proloaded script for the piece
+##[param pos]: The Vector2i for the board location
+##[param player]: The player that controls the piece
+func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Piece:
+	var new_piece = PIECE_SCENE.instantiate()
+	new_piece.set_script(piece_script)
+	new_piece.setup(self, pos, player)
+	piece_map[pos] = new_piece
+	pieces.add_child(new_piece)
+	new_piece.name = ("White" if player else "Black") + piece_script.get_global_name()
+	return new_piece
+
+
+## Returns if the supplied [param king] is in checkmate based on the current board state.
+func in_checkmate(king: King) -> bool:
+	if king.in_check():
+		# Check every possible move
+		for enemy_piece: Piece in pieces.get_children():
+			if enemy_piece.player != king.player:
+				continue
+
+			if enemy_piece.has_valid_moves():
+				return false
+
+		return true
+	return false
+
+
+## Makes a recursive search from an origin point.
+##[param base]: The starting point to check from
+##[param dir]: The offset vector to check each iteration
+##[param repeat]: The maximum amount of times to perform the check
 func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 	var next = base + dir
 	if not has_floor_at(next) or repeat <= 0:
@@ -262,13 +348,32 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 	return look_in_direction(next, dir, repeat - 1)
 
 
-func has_floor_at(pos: Vector2i) -> bool:
-	return get_bit(start_state.squares[pos.y - 8], 16 - pos.x - 8 - 1)
+## Creates a window to show the supplied [param board]. When [member half_moves] changes,
+## all previous windows are deleted to reduce clutter.
+func show_debug_timeline(board: Board) -> void:
+	if half_moves != debug_timelines_half_move:
+		for window in debug_timelines:
+			window.visible = false
+			window.queue_free()
+		debug_timelines.clear()
+		debug_timelines_half_move = half_moves
+
+	var new_window = Window.new()
+	new_window.size = Vector2(600, 600)  # Set desired window size
+	var screen_size = DisplayServer.screen_get_size()
+	new_window.position = Vector2i(
+		# randi_range(0, int(screen_size.x) - 600), randi_range(0, int(screen_size.y) - 600)
+		debug_timelines.size() * 20 + 20,
+		debug_timelines.size() * 20 + 20
+	)
+	get_tree().root.add_child(new_window)
+	new_window.add_child(board)
+	new_window.show()
+	board.get_node("Camera").zoom = Vector2(4, 4)
+
+	debug_timelines.push_back(new_window)
 
 
-func get_piece_at(pos: Vector2i) -> Piece:
-	return piece_map.get(pos)
-
-
-func get_bit(bitfield: int, pos: int) -> int:
+## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
+static func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1
