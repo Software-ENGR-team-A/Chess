@@ -166,7 +166,10 @@ func _input(event) -> void:
 
 		else:
 			# Try to put down piece
-			if has_floor_at(hovered_square) and held_piece.movement_outcome_at(hovered_square):
+			if (
+				has_floor_at(hovered_square)
+				and Piece.movement_safe_for_king(held_piece.movement_outcome_at(hovered_square))
+			):
 				# Put down piece
 				held_piece.move_to(hovered_square)
 				half_moves += 1
@@ -370,5 +373,5 @@ func show_debug_timeline(board: Board) -> void:
 
 
 ## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
-func get_bit(bitfield: int, pos: int) -> int:
+static func get_bit(bitfield: int, pos: int) -> int:
 	return (bitfield >> pos) & 1

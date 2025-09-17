@@ -1,7 +1,7 @@
 class_name Piece
 extends Node2D
 
-enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE }
+enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE, AVAILABLE_BAD_FOR_KING, CAPTURE_BAD_FOR_KING }
 enum DebugTimelineModes { NONE, LOSSES, ALL }
 
 const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
@@ -122,7 +122,7 @@ func has_valid_moves() -> bool:
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
 			if board.has_floor_at(map_cell):
-				if movement_outcome_at(map_cell) == MovementOutcome.AVAILABLE:
+				if movement_safe_for_king(movement_outcome_at(map_cell)):
 					return true
 	return false
 
@@ -161,7 +161,11 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 			if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
 				show_debug_window = true
 
-			move_outcome = MovementOutcome.BLOCKED
+			if move_outcome == MovementOutcome.AVAILABLE:
+				move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
+			elif move_outcome == MovementOutcome.CAPTURE:
+				move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
+
 			new_timeline.color_board_squares(check_piece)
 
 		# Debugging
@@ -186,7 +190,7 @@ func has_line_of_movement_to(pos: Vector2i) -> bool:
 
 	# Check if dependent movement is valid
 	var direction_to_piece = (board_pos - pos).sign()
-	return movement_outcome_at(pos + direction_to_piece) == MovementOutcome.AVAILABLE
+	return movement_available(movement_outcome_at(pos + direction_to_piece))
 
 
 ## The internal piece movement method. Should probably only be used in conjunction with
@@ -218,3 +222,13 @@ func show_shadow(on: bool = true) -> void:
 			shadow.region_rect = $Sprite.region_rect
 		else:
 			$Shadow.visible = false
+
+
+## Checks if [param outcome] does not put the king in danger
+static func movement_safe_for_king(outcome: MovementOutcome) -> bool:
+	return outcome == MovementOutcome.AVAILABLE or outcome == MovementOutcome.CAPTURE
+
+
+## Checks if [param outcome] is available, whether or not it puts the king in danger
+static func movement_available(outcome: MovementOutcome) -> bool:
+	return outcome == MovementOutcome.AVAILABLE or outcome == MovementOutcome.AVAILABLE_BAD_FOR_KING
