@@ -12,9 +12,6 @@ texture = ExtResource("2_huli3")
 hframes = 8
 vframes = 8
 
-[node name="DebugCamera" type="Camera2D" parent="."]
-zoom = Vector2(16, 16)
-
 [node name="Shadow" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0, 0, 0, 0.243137)
