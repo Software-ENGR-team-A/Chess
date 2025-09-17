@@ -11,6 +11,7 @@ const KNIGHT_SCRIPT := preload("res://scenes/piece/Knight.gd")
 const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
 const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/King.gd")
+const ROACH_SCRIPT := preload("res://scenes/piece/Roach.gd")
 
 # Sprite Indices
 const TILESET_ID := 0
@@ -74,7 +75,7 @@ const DEFAULT_STATE := {
 		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, 2), "player": 1},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, 2), "player": 1},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(0, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(1, 2), "player": 1},
+		{"script": ROACH_SCRIPT, "pos": Vector2i(1, 2), "player": 1},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
 		# Black Back Row
