@@ -122,13 +122,13 @@ func has_valid_moves() -> bool:
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
 			if board.has_floor_at(map_cell):
-				if can_move_to(map_cell):
+				if movement_outcome_at(map_cell) == MovementOutcome.AVAILABLE:
 					return true
 	return false
 
 
 ## Determines if the piece can legally move to [param pos] based on movement rules and board state.
-func can_move_to(pos: Vector2i) -> MovementOutcome:
+func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 	# Can't move to itself or to somewhere without floor
 	if pos == board_pos or not board.has_floor_at(pos):
 		return MovementOutcome.BLOCKED
@@ -186,11 +186,11 @@ func has_line_of_movement_to(pos: Vector2i) -> bool:
 
 	# Check if dependent movement is valid
 	var direction_to_piece = (board_pos - pos).sign()
-	return can_move_to(pos + direction_to_piece) == MovementOutcome.AVAILABLE
+	return movement_outcome_at(pos + direction_to_piece) == MovementOutcome.AVAILABLE
 
 
 ## The internal piece movement method. Should probably only be used in conjunction with
-## [method can_move_to]. This does *not* take in mind moves that are invalid as a result
+## [method movement_outcome_at]. This does *not* take in mind moves that are invalid as a result
 ## of check / checkmate rules. For instance, movement for a pinned piece may return
 ## [code]AVAILABLE[/code], where [method can_move_to] would detect this and return
 ## [code]BLOCKED[/code]

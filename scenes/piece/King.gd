@@ -68,7 +68,7 @@ func in_check_at(pos: Vector2i) -> Piece:
 		if piece.player == player:
 			continue
 
-		if piece.can_move_to(pos):
+		if piece.movement_outcome_at(pos):
 			return piece
 
 	return null

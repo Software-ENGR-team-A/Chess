@@ -166,7 +166,7 @@ func _input(event) -> void:
 
 		else:
 			# Try to put down piece
-			if has_floor_at(hovered_square) and held_piece.can_move_to(hovered_square):
+			if has_floor_at(hovered_square) and held_piece.movement_outcome_at(hovered_square):
 				# Put down piece
 				held_piece.move_to(hovered_square)
 				half_moves += 1
@@ -236,7 +236,7 @@ func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dict
 		if selected_piece.board_pos == map_cell:
 			return {"light": CYAN_TILE, "dark": DARK_CYAN_TILE}
 
-		var outcome = selected_piece.can_move_to(map_cell)
+		var outcome = selected_piece.movement_outcome_at(map_cell)
 
 		if outcome == Piece.MovementOutcome.AVAILABLE:
 			return {"light": GREEN_TILE, "dark": DARK_GREEN_TILE}
