@@ -21,10 +21,6 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if pos.distance_to(board_pos) > 1.5:
 		return MovementOutcome.BLOCKED
 
-	# *Technically* redundant, but more efficient
-	if in_check_at(pos):
-		return MovementOutcome.BLOCKED
-
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
 
 
