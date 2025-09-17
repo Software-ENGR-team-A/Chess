@@ -209,6 +209,22 @@ func has_floor_at(pos: Vector2i) -> bool:
 	return get_bit(square_bitmaps[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
+func set_floor_at(pos: Vector2i, on: bool) -> bool:
+	if pos.clampi(-8, 7) != pos:
+		return false
+
+	var has_floor := has_floor_at(pos)
+	var to_add := 1 << (16 - pos.x - 8 - 1)
+
+	if has_floor and not on:
+		to_add = -1 * to_add
+	elif not (has_floor and on):
+		return false
+
+	square_bitmaps[pos.y - 8] += to_add
+	return true
+
+
 ## Returns the [Piece] in the board's [member piece_map] at [param pos], or
 ## [code]null[/code] if absent.
 func get_piece_at(pos: Vector2i) -> Piece:
@@ -227,6 +243,8 @@ func color_board_squares(selected_piece: Piece) -> void:
 				square_map.set_cell(
 					map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark
 				)
+			elif square_map.get_cell_tile_data(map_cell):
+				square_map.erase_cell(map_cell)
 
 
 ## Returns what tiles should be used for a given [param map_cell], indicating valid movement options
