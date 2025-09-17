@@ -34,7 +34,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 		if (
 			board_pos == original_pos
 			and pos == (board_pos + Vector2i(0, 2 * self.forward_direction))
-			and can_move_to(board_pos + Vector2i(0, self.forward_direction))
+			and movement_outcome_at(board_pos + Vector2i(0, self.forward_direction))
 		):
 			return MovementOutcome.AVAILABLE
 
