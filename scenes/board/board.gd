@@ -28,7 +28,12 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-const DEFAULT_STATE := {
+@export var square_bitmaps := []
+@export var start_pieces := []
+@export var square_map: TileMapLayer
+@export var pieces: Node
+
+var default_state := {
 	squares =  # The starting board state
 	[
 		0b0000000000000000,
@@ -89,10 +94,6 @@ const DEFAULT_STATE := {
 	]
 }
 
-@export var start_state := {}
-@export var square_map: TileMapLayer
-@export var pieces: Node
-
 # Nodes
 var held_piece: Node
 var white_king: King
@@ -110,7 +111,7 @@ var debug_timelines_half_move := half_moves
 
 func _ready() -> void:
 	if is_og():
-		load_board_state(DEFAULT_STATE)
+		load_board_state(default_state)
 		MusicManager.play_random_song()
 
 
@@ -205,7 +206,7 @@ func is_og() -> bool:
 func has_floor_at(pos: Vector2i) -> bool:
 	if pos.x < -8 or pos.x > 8:
 		return false
-	return get_bit(start_state.squares[pos.y - 8], 16 - pos.x - 8 - 1)
+	return get_bit(square_bitmaps[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
 ## Returns the [Piece] in the board's [member piece_map] at [param pos], or
@@ -255,7 +256,8 @@ func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dict
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
 ## colours and loading [Piece] nodes as needed
 func load_board_state(new_state) -> void:
-	start_state = new_state
+	square_bitmaps = new_state.squares
+	start_pieces = new_state.pieces
 
 	# Reset Board
 	square_map.clear()
@@ -265,7 +267,7 @@ func load_board_state(new_state) -> void:
 	color_board_squares(null)
 
 	# Load Pieces
-	for piece_data in start_state.pieces:
+	for piece_data in start_pieces:
 		# Iterate through the board, creating instances of each piece
 		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 		if piece is King:
@@ -287,10 +289,12 @@ func load_board_state(new_state) -> void:
 
 ## Creates and returns a copy of the current [Board]
 func branch() -> Board:
-	var new_timeline = duplicate(0b0100)
+	var new_timeline: Board = duplicate(0b0100)
 
 	# Fix vars
-	new_timeline.start_state = start_state
+	new_timeline.square_bitmaps = square_bitmaps.duplicate(true)
+	new_timeline.start_pieces = start_pieces
+
 	for piece in new_timeline.pieces.get_children():
 		new_timeline.piece_map.set(piece.board_pos, piece)
 		if piece is King:
