@@ -21,6 +21,10 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.CAPTURE if piece_to_capture else MovementOutcome.AVAILABLE
 
 
+func movement_actions(pos: Vector2i) -> void:
+	board.set_floor_at(board_pos, false)
+
+
 func capture() -> void:
 	var valid_locations = []
 	for i in range(-1, 1):

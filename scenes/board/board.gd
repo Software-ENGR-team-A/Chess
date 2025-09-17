@@ -54,7 +54,7 @@ var default_state := {
 		# White Front Row
 		{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(-3, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -3), "player": 0},
+		{"script": ROACH_SCRIPT, "pos": Vector2i(-2, -3), "player": 0},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, -3), "player": 0},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(0, -3), "player": 0},
 		{"script": PAWN_SCRIPT, "pos": Vector2i(1, -3), "player": 0},
