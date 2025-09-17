@@ -153,6 +153,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 
 		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
 		timeline_piece.move_to(pos)
+		new_timeline.half_moves += 1
 
 		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
 		var check_piece = king_to_consider.in_check()
@@ -165,16 +166,7 @@ func can_move_to(pos: Vector2i) -> MovementOutcome:
 
 		# Debugging
 		if show_debug_window:
-			var new_window = Window.new()
-			new_window.size = Vector2(600, 600)  # Set desired window size
-			var screen_size = DisplayServer.screen_get_size()
-			new_window.position = Vector2i(
-				randi_range(0, int(screen_size.x) - 600), randi_range(0, int(screen_size.y) - 600)
-			)
-			get_tree().root.add_child(new_window)
-			new_window.add_child(new_timeline)
-			new_window.show()
-			new_timeline.get_node("Camera").zoom = Vector2(4, 4)
+			board.show_debug_timeline(new_timeline)
 		else:
 			new_timeline.queue_free()
 

@@ -99,9 +99,13 @@ var white_king: King
 var black_king: King
 
 # State
-var half_moves = 0
+var half_moves := 0
 var last_tile_highlighted: Vector2i
 var piece_map: Dictionary = {}
+
+# Debug
+var debug_timelines := []
+var debug_timelines_half_move := half_moves
 
 
 func _ready() -> void:
@@ -337,6 +341,32 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 		return piece
 
 	return look_in_direction(next, dir, repeat - 1)
+
+
+## Creates a window to show the supplied [param board]. When [member half_moves] changes,
+## all previous windows are deleted to reduce clutter.
+func show_debug_timeline(board: Board) -> void:
+	if half_moves != debug_timelines_half_move:
+		for window in debug_timelines:
+			window.visible = false
+			window.queue_free()
+		debug_timelines.clear()
+		debug_timelines_half_move = half_moves
+
+	var new_window = Window.new()
+	new_window.size = Vector2(600, 600)  # Set desired window size
+	var screen_size = DisplayServer.screen_get_size()
+	new_window.position = Vector2i(
+		# randi_range(0, int(screen_size.x) - 600), randi_range(0, int(screen_size.y) - 600)
+		debug_timelines.size() * 20 + 20,
+		debug_timelines.size() * 20 + 20
+	)
+	get_tree().root.add_child(new_window)
+	new_window.add_child(board)
+	new_window.show()
+	board.get_node("Camera").zoom = Vector2(4, 4)
+
+	debug_timelines.push_back(new_window)
 
 
 ## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
