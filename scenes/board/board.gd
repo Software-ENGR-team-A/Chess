@@ -203,7 +203,9 @@ func is_og() -> bool:
 ## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,
 ## as opposed to a hole.
 func has_floor_at(pos: Vector2i) -> bool:
-	return get_bit(start_state.squares[pos.x - 8], 16 - pos.y - 8 - 1)
+	if pos.x < -8 or pos.x > 8:
+		return false
+	return get_bit(start_state.squares[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
 ## Returns the [Piece] in the board's [member piece_map] at [param pos], or
