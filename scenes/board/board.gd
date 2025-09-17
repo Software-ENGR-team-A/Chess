@@ -209,6 +209,9 @@ func has_floor_at(pos: Vector2i) -> bool:
 	return get_bit(square_bitmaps[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
+## Creates or destroys a square tile on the board. Returns if a change was made or not
+## [param pos]: The tile to change
+## [param on]: Whether to enable or disable the file
 func set_floor_at(pos: Vector2i, on: bool) -> bool:
 	if pos.clampi(-8, 7) != pos:
 		return false
