@@ -121,7 +121,7 @@ func has_valid_moves() -> bool:
 	for row in range(0, 16):
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
-			if board.has_floor_at(map_cell):
+			if board.squares.has_floor_at(map_cell):
 				if movement_safe_for_king(movement_outcome_at(map_cell)):
 					return true
 	return false
@@ -130,7 +130,7 @@ func has_valid_moves() -> bool:
 ## Determines if the piece can legally move to [param pos] based on movement rules and board state.
 func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 	# Can't move to itself or to somewhere without floor
-	if pos == board_pos or not board.has_floor_at(pos):
+	if pos == board_pos or not board.squares.has_floor_at(pos):
 		return MovementOutcome.BLOCKED
 
 	# Reset saved cells if move changed
@@ -152,19 +152,21 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
 		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
-		timeline_piece.move_to(pos)
+		if timeline_piece: # TODO shouldnt be needed
+			timeline_piece.move_to(pos)
 		new_timeline.half_moves += 1
 
 		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
-		var check_piece = king_to_consider.in_check()
-		if check_piece:
-			if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
-				show_debug_window = true
+		if king_to_consider: # TODO shouldnt be needed
+			var check_piece = king_to_consider.in_check()
+			if check_piece:
+				if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
+					show_debug_window = true
 
-			if move_outcome == MovementOutcome.AVAILABLE:
-				move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
-			elif move_outcome == MovementOutcome.CAPTURE:
-				move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
+				if move_outcome == MovementOutcome.AVAILABLE:
+					move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
+				elif move_outcome == MovementOutcome.CAPTURE:
+					move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
 
 			new_timeline.color_board_squares(check_piece)
 

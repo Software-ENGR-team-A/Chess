@@ -1,29 +1,12 @@
 class_name Board
 extends Node2D
 
+const BOARD_SCENE := preload("res://scenes/board/board.tscn")
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
-
-# Sprite Indices
-const TILESET_ID := 0
-
-const WHITE_TILE := Vector2i(0, 3)
-const BLACK_TILE := Vector2i(0, 7)
-const CYAN_TILE := Vector2i(1, 3)
-const DARK_CYAN_TILE := Vector2i(1, 7)
-const GREEN_TILE := Vector2i(2, 3)
-const DARK_GREEN_TILE := Vector2i(2, 7)
-const PURPLE_TILE := Vector2i(3, 3)
-const DARK_PURPLE_TILE := Vector2i(3, 7)
-const ORANGE_TILE := Vector2i(4, 3)
-const DARK_ORANGE_TILE := Vector2i(4, 7)
-const RED_TILE := Vector2i(5, 3)
-const DARK_RED_TILE := Vector2i(5, 7)
-
-@export var square_map: TileMapLayer
+@export var squares: BoardSquares
 @export var pieces: Node
-var square_bitmaps := []
 var start_pieces := []
 
 var queued_bitmaps: Array
@@ -36,7 +19,6 @@ var black_king: King
 
 # State
 var half_moves := 0
-var last_tile_highlighted: Vector2i
 var piece_map: Dictionary = {}
 
 # Debug
@@ -63,7 +45,7 @@ func _process(_delta) -> void:
 
 
 func _input(event) -> void:
-	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
+	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
 
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
@@ -78,20 +60,7 @@ func _input(event) -> void:
 		held_piece.position = round(world_pos)
 
 	else:
-		# Reset previous tile
-		if hovered_square != last_tile_highlighted and last_tile_highlighted != null:
-			if square_map.get_cell_atlas_coords(last_tile_highlighted) == CYAN_TILE:
-				square_map.set_cell(last_tile_highlighted, TILESET_ID, WHITE_TILE)
-			elif square_map.get_cell_atlas_coords(last_tile_highlighted) == DARK_CYAN_TILE:
-				square_map.set_cell(last_tile_highlighted, TILESET_ID, BLACK_TILE)
-
-		# Set current tile
-		if square_map.get_cell_atlas_coords(hovered_square) == WHITE_TILE:
-			square_map.set_cell(hovered_square, TILESET_ID, CYAN_TILE)
-			last_tile_highlighted = hovered_square
-		elif square_map.get_cell_atlas_coords(hovered_square) == BLACK_TILE:
-			square_map.set_cell(hovered_square, TILESET_ID, DARK_CYAN_TILE)
-			last_tile_highlighted = hovered_square
+		squares.set_highlight(hovered_square)
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if held_piece == null:
@@ -106,12 +75,12 @@ func _input(event) -> void:
 				pieces.move_child(held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				color_board_squares(held_piece)
+				squares.recolor(held_piece, self)
 
 		else:
 			# Try to put down piece
 			if (
-				has_floor_at(hovered_square)
+				squares.has_floor_at(hovered_square)
 				and Piece.movement_safe_for_king(held_piece.movement_outcome_at(hovered_square))
 			):
 				# Put down piece
@@ -133,7 +102,7 @@ func _input(event) -> void:
 
 			held_piece.show_shadow(false)
 			held_piece = null
-			color_board_squares(null)
+			squares.recolor(null, self)
 
 
 ## Returns if the board is the actual "main" game instance being played. Used to distinguish from
@@ -144,89 +113,21 @@ func is_og() -> bool:
 	return get_tree().get("root") == get_parent()
 
 
-## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,
-## as opposed to a hole.
-func has_floor_at(pos: Vector2i) -> bool:
-	if pos.x < -8 or pos.x > 8:
-		return false
-	return get_bit(square_bitmaps[pos.y - 8], 16 - pos.x - 8 - 1)
-
-
-## Creates or destroys a square tile on the board. Returns if a change was made or not
-## [param pos]: The tile to change
-## [param on]: Whether to enable or disable the file
-func set_floor_at(pos: Vector2i, on: bool) -> bool:
-	if pos.clampi(-8, 7) != pos:
-		return false
-
-	var has_floor := has_floor_at(pos)
-	var to_add := 1 << (16 - pos.x - 8 - 1)
-
-	if has_floor and not on:
-		to_add = -1 * to_add
-	elif not (has_floor and on):
-		return false
-
-	square_bitmaps[pos.y - 8] += to_add
-	return true
-
-
 ## Returns the [Piece] in the board's [member piece_map] at [param pos], or
 ## [code]null[/code] if absent.
 func get_piece_at(pos: Vector2i) -> Piece:
 	return piece_map.get(pos)
 
 
-## Re-calculates all the tiles in the [member squares] TileMapLayer. If supplied a
-## [param selected_piece], the floor will indicate valid movement options for that piece.
-func color_board_squares(selected_piece: Piece) -> void:
-	# Load Squares
-	for col in range(0, 16):
-		for row in range(0, 16):
-			var map_cell = Vector2i(row - 8, col - 8)
-			if has_floor_at(map_cell):
-				var tiles = calculate_square_tile_at(map_cell, selected_piece)
-				square_map.set_cell(
-					map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark
-				)
-			elif square_map.get_cell_tile_data(map_cell):
-				square_map.erase_cell(map_cell)
-
-
-## Returns what tiles should be used for a given [param map_cell], indicating valid movement options
-## for an optional [param selected_piece]. Output format is a dictionary of the form
-## [code]{"light": LIGHT_TILE, "dark": DARK_TILE}[/code]
-func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
-	var piece_at_cell = get_piece_at(map_cell)
-	if piece_at_cell is King:
-		if piece_at_cell.in_check():
-			return {"light": ORANGE_TILE, "dark": DARK_ORANGE_TILE}
-
-	if selected_piece:
-		if selected_piece.board_pos == map_cell:
-			return {"light": CYAN_TILE, "dark": DARK_CYAN_TILE}
-
-		var outcome = selected_piece.movement_outcome_at(map_cell)
-
-		if outcome == Piece.MovementOutcome.AVAILABLE:
-			return {"light": GREEN_TILE, "dark": DARK_GREEN_TILE}
-
-		if outcome == Piece.MovementOutcome.CAPTURE:
-			return {"light": RED_TILE, "dark": DARK_RED_TILE}
-
-	return {"light": WHITE_TILE, "dark": BLACK_TILE}
-
-
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
 ## colours and loading [Piece] nodes as needed
-func load_queued_state(bitmaps, new_pieces) -> void:
-	square_bitmaps = bitmaps
+func load_queued_state(squares_data, new_pieces) -> void:
+	squares.floor_data = squares_data
 
 	# Reset Board
-	color_board_squares(null)
+	squares.recolor(null, self)
 	for child in pieces.get_children():
 		child.queue_free()
-
 
 	# Load Pieces
 	for piece_data in new_pieces:
@@ -251,10 +152,12 @@ func load_queued_state(bitmaps, new_pieces) -> void:
 
 ## Creates and returns a copy of the current [Board]
 func branch() -> Board:
-	var new_timeline: Board = duplicate(0b0100)
+	var new_timeline := BOARD_SCENE.instantiate()
+	# TODO fix []
+	new_timeline.setup(squares.floor_data, [])
 
 	# Fix vars
-	new_timeline.square_bitmaps = square_bitmaps.duplicate(true)
+	new_timeline.squares.floor_data = squares.floor_data.duplicate(true)
 	new_timeline.start_pieces = start_pieces
 
 	for piece in new_timeline.pieces.get_children():
@@ -304,7 +207,7 @@ func in_checkmate(king: King) -> bool:
 ##[param repeat]: The maximum amount of times to perform the check
 func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 	var next = base + dir
-	if not has_floor_at(next) or repeat <= 0:
+	if not squares.has_floor_at(next) or repeat <= 0:
 		return
 
 	var piece = get_piece_at(next)
@@ -338,8 +241,3 @@ func show_debug_timeline(board: Board) -> void:
 	board.get_node("Camera").zoom = Vector2(4, 4)
 
 	debug_timelines.push_back(new_window)
-
-
-## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
-static func get_bit(bitfield: int, pos: int) -> int:
-	return (bitfield >> pos) & 1

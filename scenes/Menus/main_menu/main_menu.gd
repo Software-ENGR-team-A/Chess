@@ -4,12 +4,6 @@ extends Control
 const BOARD_SCENE := preload("res://scenes/board/board.tscn")
 const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
-@export var start_button: Button
-@export var option_button: Button
-@export var exit_button: Button
-@onready var chess_two_player = preload("res://scenes/board/board.tscn") as PackedScene
-#going to add a new scene for options
-
 # Load all piece classes to prevent null pointers
 const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
 const ROOK_SCRIPT := preload("res://scenes/piece/Rook.gd")
@@ -17,6 +11,10 @@ const KNIGHT_SCRIPT := preload("res://scenes/piece/Knight.gd")
 const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
 const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/King.gd")
+
+@export var start_button: Button
+@export var option_button: Button
+@export var exit_button: Button
 
 var default_squares = [
 	0b0000000000000000,
@@ -75,6 +73,7 @@ var default_pieces = [
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
 	{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 ]
+
 
 func _ready():
 	get_window().size = DisplayServer.screen_get_size()
