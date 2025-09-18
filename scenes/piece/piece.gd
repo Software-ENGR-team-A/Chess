@@ -53,10 +53,10 @@ func set_sprite(sprite: int) -> void:
 ## Additional movement actions will be triggered automatically.
 func move_to(pos: Vector2i) -> void:
 	# Pick up original piece
-	board.piece_map.set(board_pos, null)
+	board.pieces.map.set(board_pos, null)
 
 	# Capture
-	var replaced_piece = board.get_piece_at(pos)
+	var replaced_piece = board.pieces.at(pos)
 	if replaced_piece:
 		replaced_piece.capture()
 
@@ -67,7 +67,7 @@ func move_to(pos: Vector2i) -> void:
 	previous_position = board_pos
 	set_board_pos(pos)
 	last_moved_half_move = board.half_moves
-	board.piece_map[pos] = self
+	board.pieces.map[pos] = self
 
 
 ## Changes the visual and saved [member board_pos] to [param pos]
@@ -78,7 +78,7 @@ func set_board_pos(pos: Vector2i) -> void:
 
 ## Removes the piece from its parent [Board] and removes self from memory
 func capture() -> void:
-	if board.get_piece_at(board_pos) == self:
+	if board.pieces.at(board_pos) == self:
 		board.piece_map.set(board_pos, null)
 		board.pieces.remove_child(self)
 
@@ -151,12 +151,12 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 		var new_timeline: Board = board.branch()
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
-		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
+		var timeline_piece: Piece = new_timeline.pieces.at(board_pos)
 		if timeline_piece: # TODO shouldnt be needed
 			timeline_piece.move_to(pos)
 		new_timeline.half_moves += 1
 
-		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
+		var king_to_consider: King = new_timeline.pieces.white_king if player else new_timeline.pieces.black_king
 		if king_to_consider: # TODO shouldnt be needed
 			var check_piece = king_to_consider.in_check()
 			if check_piece:

@@ -51,13 +51,13 @@ func set_at(pos: Vector2i, on: bool) -> void:
 
 ## Re-calculates all the tiles. If supplied a ## [param selected_piece], the floor will indicating
 ##valid movement options for that piece.
-func recolor(selected_piece: Piece, board: Board) -> void:
+func recolor(selected_piece: Piece, pieces: BoardPieces) -> void:
 	# Load Squares
 	for col in range(0, 16):
 		for row in range(0, 16):
 			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
-				var tiles = calculate_square_tile_at(map_cell, selected_piece, board)
+				var tiles = calculate_square_tile_at(map_cell, selected_piece, pieces)
 				set_cell(map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark)
 			elif get_cell_tile_data(map_cell):
 				erase_cell(map_cell)
@@ -67,9 +67,9 @@ func recolor(selected_piece: Piece, board: Board) -> void:
 ## for an optional [param selected_piece]. Output format is a dictionary of the form
 ## [code]{"light": LIGHT_TILE, "dark": DARK_TILE}[/code]
 func calculate_square_tile_at(
-	map_cell: Vector2i, selected_piece: Piece, board: Board
+	map_cell: Vector2i, selected_piece: Piece, pieces: BoardPieces
 ) -> Dictionary:
-	var piece_at_cell = board.get_piece_at(map_cell)
+	var piece_at_cell = pieces.at(map_cell)
 	if piece_at_cell is King:
 		if piece_at_cell.in_check():
 			return {"light": ORANGE_TILE, "dark": DARK_ORANGE_TILE}
