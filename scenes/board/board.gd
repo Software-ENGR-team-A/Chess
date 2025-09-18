@@ -4,13 +4,6 @@ extends Node2D
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
-# Load all piece classes to prevent null pointers
-const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
-const ROOK_SCRIPT := preload("res://scenes/piece/Rook.gd")
-const KNIGHT_SCRIPT := preload("res://scenes/piece/Knight.gd")
-const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
-const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
-const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 
 # Sprite Indices
 const TILESET_ID := 0
@@ -28,71 +21,13 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-@export var square_bitmaps := []
-@export var start_pieces := []
 @export var square_map: TileMapLayer
 @export var pieces: Node
+var square_bitmaps := []
+var start_pieces := []
 
-var default_state := {
-	squares =  # The starting board state
-	[
-		0b0000000000000000,
-		0b0000000000000000,
-		0b0000000000000000,
-		0b0000000000000000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000111111110000,
-		0b0000000000000000,
-		0b0000000000000000,
-		0b0000000000000000,
-		0b0000000000000000
-	],
-	pieces =
-	[
-		# White Front Row
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-3, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(0, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(1, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(2, -3), "player": 0},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(3, -3), "player": 0},
-		# White Back Row
-		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
-		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
-		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
-		{"script": KING_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
-		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
-		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
-		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
-		{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
-		# Black Front Row
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-4, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-3, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-2, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(-1, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(0, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(1, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
-		{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
-		# Black Back Row
-		{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
-		{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
-		{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
-		{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
-		{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
-		{"script": BISHOP_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
-		{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
-		{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
-	]
-}
+var queued_bitmaps: Array
+var queued_pieces: Array
 
 # Nodes
 var held_piece: Node
@@ -109,9 +44,17 @@ var debug_timelines := []
 var debug_timelines_half_move := half_moves
 
 
+func setup(bitmaps, pieces_data) -> void:
+	queued_bitmaps = bitmaps
+	queued_pieces = pieces_data
+
+
 func _ready() -> void:
 	if is_og():
-		load_board_state(default_state)
+		load_queued_state(queued_bitmaps, queued_pieces)
+		queued_bitmaps = []
+		queued_pieces = []
+
 		MusicManager.play_random_song()
 
 
@@ -276,19 +219,17 @@ func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dict
 
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
 ## colours and loading [Piece] nodes as needed
-func load_board_state(new_state) -> void:
-	square_bitmaps = new_state.squares
-	start_pieces = new_state.pieces
+func load_queued_state(bitmaps, new_pieces) -> void:
+	square_bitmaps = bitmaps
 
 	# Reset Board
-	square_map.clear()
+	color_board_squares(null)
 	for child in pieces.get_children():
 		child.queue_free()
 
-	color_board_squares(null)
 
 	# Load Pieces
-	for piece_data in start_pieces:
+	for piece_data in new_pieces:
 		# Iterate through the board, creating instances of each piece
 		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 		if piece is King:
