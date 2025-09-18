@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0bs6sbbrybcl"]
+[gd_scene load_steps=5 format=3 uid="uid://c0bs6sbbrybcl"]
 
 [ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
 [ext_resource type="TileSet" uid="uid://csjjpcar6usnu" path="res://assets/spritesheet.tres" id="2_kymhv"]
+[ext_resource type="Texture2D" uid="uid://p0vmoyd3s210" path="res://assets/spritesheet.png" id="3_knosr"]
+[ext_resource type="Script" uid="uid://cv0lyl3vphqw5" path="res://scenes/board/box_cursor.gd" id="4_q07he"]
 
-[node name="Board" type="Node2D" node_paths=PackedStringArray("square_map", "pieces")]
+[node name="Board" type="Node2D" node_paths=PackedStringArray("square_map", "pieces", "box_cursor")]
 script = ExtResource("1_q07he")
 square_map = NodePath("Squares")
 pieces = NodePath("Pieces")
+box_cursor = NodePath("BoxCursor")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(8, 8)
@@ -15,5 +18,13 @@ zoom = Vector2(8, 8)
 z_index = -1
 rotation = -4.80598e-05
 tile_set = ExtResource("2_kymhv")
+
+[node name="BoxCursor" type="Sprite2D" parent="."]
+texture = ExtResource("3_knosr")
+centered = false
+hframes = 8
+vframes = 8
+frame = 38
+script = ExtResource("4_q07he")
 
 [node name="Pieces" type="Node2D" parent="."]
