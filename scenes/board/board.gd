@@ -68,17 +68,23 @@ func _input(event) -> void:
 			# Try to put down piece
 			if (
 				squares.has_floor_at(hovered_square)
-				and Piece.movement_safe_for_king(pieces.held_piece.movement_outcome_at(hovered_square))
+				and Piece.movement_safe_for_king(
+					pieces.held_piece.movement_outcome_at(hovered_square)
+				)
 			):
 				# Put down piece
 				pieces.held_piece.move_to(hovered_square)
 				half_moves += 1
 
 				# Verify checkmate state for opposite player
-				var king_to_consider = pieces.white_king if half_moves % 2 == 0 else pieces.black_king
-				if is_og() and in_checkmate(king_to_consider):
+				var king_to_consider = (
+					pieces.white_king if half_moves % 2 == 0 else pieces.black_king
+				)
+				if is_og() and king_to_consider.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-					print(("Black" if king_to_consider == pieces.white_king else "White") + " wins!")
+					print(
+						("Black" if king_to_consider == pieces.white_king else "White") + " wins!"
+					)
 
 				AudioManager.play_sound(AudioManager.movement.place)
 
@@ -127,21 +133,6 @@ func branch() -> Board:
 		piece.board = new_timeline
 
 	return new_timeline
-
-
-## Returns if the supplied [param king] is in checkmate based on the current board state.
-func in_checkmate(king: King) -> bool:
-	if king.in_check():
-		# Check every possible move
-		for enemy_piece: Piece in pieces.get_children():
-			if enemy_piece.player != king.player:
-				continue
-
-			if enemy_piece.has_valid_moves():
-				return false
-
-		return true
-	return false
 
 
 ## Makes a recursive search from an origin point.

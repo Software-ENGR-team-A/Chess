@@ -152,12 +152,14 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
 		var timeline_piece: Piece = new_timeline.pieces.at(board_pos)
-		if timeline_piece: # TODO shouldnt be needed
+		if timeline_piece:  # TODO shouldnt be needed
 			timeline_piece.move_to(pos)
 		new_timeline.half_moves += 1
 
-		var king_to_consider: King = new_timeline.pieces.white_king if player else new_timeline.pieces.black_king
-		if king_to_consider: # TODO shouldnt be needed
+		var king_to_consider: King = (
+			new_timeline.pieces.white_king if player else new_timeline.pieces.black_king
+		)
+		if king_to_consider:  # TODO shouldnt be needed
 			var check_piece = king_to_consider.in_check()
 			if check_piece:
 				if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:

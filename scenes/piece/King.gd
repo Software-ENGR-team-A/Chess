@@ -70,6 +70,21 @@ func in_check_at(pos: Vector2i) -> Piece:
 	return null
 
 
+## Returns if the supplied [param king] is in checkmate based on the current board state.
+func in_checkmate() -> bool:
+	if in_check():
+		# Check every possible move
+		for enemy_piece: Piece in board.pieces.get_children():
+			if enemy_piece.player != player:
+				continue
+
+			if enemy_piece.has_valid_moves():
+				return false
+
+		return true
+	return false
+
+
 func movement_actions(pos: Vector2i) -> void:
 	var castle_target = get_castle_target_when_moved_to(pos)
 	if castle_target:
