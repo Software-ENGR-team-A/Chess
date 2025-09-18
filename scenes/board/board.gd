@@ -32,6 +32,7 @@ const DARK_RED_TILE := Vector2i(5, 7)
 @export var start_pieces := []
 @export var square_map: TileMapLayer
 @export var pieces: Node
+@export var box_cursor: BoxCursor
 
 var default_state := {
 	squares =  # The starting board state
@@ -122,6 +123,8 @@ func _process(_delta) -> void:
 func _input(event) -> void:
 	var hovered_square = square_map.local_to_map(square_map.get_local_mouse_position())
 
+	box_cursor.lerp_to_board_pos(hovered_square)
+
 	if held_piece != null:
 		# Fetch world position from cursor in viewport
 		var vport = get_viewport()
@@ -153,10 +156,12 @@ func _input(event) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if held_piece == null:
 			# Pick up piece
+			box_cursor.set_board_pos(hovered_square)
 			AudioManager.play_sound(AudioManager.movement.pickup)
 
 			var piece_at_cell = get_piece_at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 				held_piece = piece_at_cell
 				held_piece.show_shadow()
 				# Bring to front
@@ -166,6 +171,7 @@ func _input(event) -> void:
 				color_board_squares(held_piece)
 
 		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			# Try to put down piece
 			if (
 				has_floor_at(hovered_square)
@@ -191,6 +197,11 @@ func _input(event) -> void:
 			held_piece.show_shadow(false)
 			held_piece = null
 			color_board_squares(null)
+
+
+func _notification(event):
+	if event == NOTIFICATION_WM_CLOSE_REQUEST:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 ## Returns if the board is the actual "main" game instance being played. Used to distinguish from
