@@ -163,9 +163,7 @@ func show_debug_timeline(board: Board) -> void:
 
 	var new_window = Window.new()
 	new_window.size = Vector2(600, 600)  # Set desired window size
-	var screen_size = DisplayServer.screen_get_size()
 	new_window.position = Vector2i(
-		# randi_range(0, int(screen_size.x) - 600), randi_range(0, int(screen_size.y) - 600)
 		debug_timelines.size() * 20 + 20,
 		debug_timelines.size() * 20 + 20
 	)
