@@ -22,11 +22,6 @@ var checked_cells_half_move: int
 var last_moved_half_move := 0
 
 
-func _ready() -> void:
-	self.set_sprite(sprite_index)
-	set_sprite(sprite_index)
-
-
 ## Sets all the root information for a piece.
 ## [param board]: The [Board] that owns the piece
 ## [param pos]: Starting position of the piece
@@ -37,6 +32,16 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	original_pos = board_pos
 	self.player = player
 	forward_direction = -1 if player else 1
+
+
+func _ready() -> void:
+	self.set_sprite(sprite_index)
+	set_sprite(sprite_index)
+
+
+func branch() -> Piece:
+	var new_piece = duplicate()
+	return new_piece
 
 
 ## Sets the sprite of the piece based on the owning player. White pieces get the n'th [param sprite]
@@ -53,10 +58,10 @@ func set_sprite(sprite: int) -> void:
 ## Additional movement actions will be triggered automatically.
 func move_to(pos: Vector2i) -> void:
 	# Pick up original piece
-	board.piece_map.set(board_pos, null)
+	board.pieces.map.set(board_pos, null)
 
 	# Capture
-	var replaced_piece = board.get_piece_at(pos)
+	var replaced_piece = board.pieces.at(pos)
 	if replaced_piece:
 		replaced_piece.capture()
 
@@ -67,7 +72,7 @@ func move_to(pos: Vector2i) -> void:
 	previous_position = board_pos
 	set_board_pos(pos)
 	last_moved_half_move = board.half_moves
-	board.piece_map[pos] = self
+	board.pieces.map[pos] = self
 
 
 ## Changes the visual and saved [member board_pos] to [param pos]
@@ -78,8 +83,8 @@ func set_board_pos(pos: Vector2i) -> void:
 
 ## Removes the piece from its parent [Board] and removes self from memory
 func capture() -> void:
-	if board.get_piece_at(board_pos) == self:
-		board.piece_map.set(board_pos, null)
+	if board.pieces.at(board_pos) == self:
+		board.pieces.map.set(board_pos, null)
 		board.pieces.remove_child(self)
 
 		if board.is_og():
@@ -121,7 +126,7 @@ func has_valid_moves() -> bool:
 	for row in range(0, 16):
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
-			if board.has_floor_at(map_cell):
+			if board.squares.has_floor_at(map_cell):
 				if movement_safe_for_king(movement_outcome_at(map_cell)):
 					return true
 	return false
@@ -130,7 +135,7 @@ func has_valid_moves() -> bool:
 ## Determines if the piece can legally move to [param pos] based on movement rules and board state.
 func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 	# Can't move to itself or to somewhere without floor
-	if pos == board_pos or not board.has_floor_at(pos):
+	if pos == board_pos or not board.squares.has_floor_at(pos):
 		return MovementOutcome.BLOCKED
 
 	# Reset saved cells if move changed
@@ -151,22 +156,26 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 		var new_timeline: Board = board.branch()
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
-		var timeline_piece: Piece = new_timeline.get_piece_at(board_pos)
-		timeline_piece.move_to(pos)
+		var timeline_piece: Piece = new_timeline.pieces.at(board_pos)
+		if timeline_piece:  # TODO shouldnt be needed
+			timeline_piece.move_to(pos)
 		new_timeline.half_moves += 1
 
-		var king_to_consider: King = new_timeline.white_king if player else new_timeline.black_king
-		var check_piece = king_to_consider.in_check()
-		if check_piece:
-			if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
-				show_debug_window = true
+		var king_to_consider: King = (
+			new_timeline.pieces.white_king if player else new_timeline.pieces.black_king
+		)
+		if king_to_consider:  # TODO shouldnt be needed
+			var check_piece = king_to_consider.in_check()
+			if check_piece:
+				if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
+					show_debug_window = true
 
-			if move_outcome == MovementOutcome.AVAILABLE:
-				move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
-			elif move_outcome == MovementOutcome.CAPTURE:
-				move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
+				if move_outcome == MovementOutcome.AVAILABLE:
+					move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
+				elif move_outcome == MovementOutcome.CAPTURE:
+					move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
 
-			new_timeline.color_board_squares(check_piece)
+			new_timeline.squares.recolor(check_piece)
 
 		# Debugging
 		if show_debug_window:

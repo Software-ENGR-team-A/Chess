@@ -9,7 +9,7 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
+	var piece_to_capture = board.pieces.at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
@@ -42,7 +42,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 
 
 func get_en_passant_target(pos: Vector2i) -> Pawn:
-	var target = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
+	var target = board.pieces.at(pos + Vector2i(0, -self.forward_direction))
 
 	# Target must:
 	if not target:

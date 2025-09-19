@@ -9,7 +9,7 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
+	var piece_to_capture = board.pieces.at(pos)
 
 	if is_friendly(piece_to_capture):
 		return MovementOutcome.BLOCKED
@@ -68,6 +68,21 @@ func in_check_at(pos: Vector2i) -> Piece:
 			return piece
 
 	return null
+
+
+## Returns if the supplied [param king] is in checkmate based on the current board state.
+func in_checkmate() -> bool:
+	if in_check():
+		# Check every possible move
+		for enemy_piece: Piece in board.pieces.get_children():
+			if enemy_piece.player != player:
+				continue
+
+			if enemy_piece.has_valid_moves():
+				return false
+
+		return true
+	return false
 
 
 func movement_actions(pos: Vector2i) -> void:

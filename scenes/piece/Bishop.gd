@@ -13,7 +13,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 	if not is_diagonal(pos):
 		return MovementOutcome.BLOCKED
 
-	var piece_to_capture = board.get_piece_at(pos)
+	var piece_to_capture = board.pieces.at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
