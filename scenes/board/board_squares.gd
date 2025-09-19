@@ -18,8 +18,15 @@ const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
 # State
+var board: Board
 var floor_data := []
 var last_tile_highlighted: Vector2i
+
+
+func setup(board, floor_data) -> void:
+	self.board = board
+	self.floor_data = floor_data
+	self.recolor(null)
 
 
 ## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,
@@ -30,9 +37,9 @@ func has_floor_at(pos: Vector2i) -> bool:
 	return get_bit(floor_data[pos.y - 8], 16 - pos.x - 8 - 1)
 
 
-## Creates or destroys a square tile on the board. Returns if a change was made or not
+## Adds or removes floor on the board
 ## [param pos]: The tile to change
-## [param on]: Whether to enable or disable the file
+## [param on]: Whether to enable or disable the tile
 func set_at(pos: Vector2i, on: bool) -> void:
 	if pos.clampi(-8, 7) != pos:
 		return
@@ -49,15 +56,15 @@ func set_at(pos: Vector2i, on: bool) -> void:
 	return
 
 
-## Re-calculates all the tiles. If supplied a ## [param selected_piece], the floor will indicating
+## Re-calculates all the tiles. If supplied a [param selected_piece], the floor will indicate
 ##valid movement options for that piece.
-func recolor(selected_piece: Piece, pieces: BoardPieces) -> void:
+func recolor(selected_piece: Piece) -> void:
 	# Load Squares
 	for col in range(0, 16):
 		for row in range(0, 16):
 			var map_cell = Vector2i(row - 8, col - 8)
 			if has_floor_at(map_cell):
-				var tiles = calculate_square_tile_at(map_cell, selected_piece, pieces)
+				var tiles = calculate_square_tile_at(map_cell, selected_piece)
 				set_cell(map_cell, TILESET_ID, tiles.light if (row + col) % 2 == 0 else tiles.dark)
 			elif get_cell_tile_data(map_cell):
 				erase_cell(map_cell)
@@ -66,10 +73,8 @@ func recolor(selected_piece: Piece, pieces: BoardPieces) -> void:
 ## Returns what tiles should be used for a given [param map_cell], indicating valid movement options
 ## for an optional [param selected_piece]. Output format is a dictionary of the form
 ## [code]{"light": LIGHT_TILE, "dark": DARK_TILE}[/code]
-func calculate_square_tile_at(
-	map_cell: Vector2i, selected_piece: Piece, pieces: BoardPieces
-) -> Dictionary:
-	var piece_at_cell = pieces.at(map_cell)
+func calculate_square_tile_at(map_cell: Vector2i, selected_piece: Piece) -> Dictionary:
+	var piece_at_cell = board.pieces.at(map_cell)
 	if piece_at_cell is King:
 		if piece_at_cell.in_check():
 			return {"light": ORANGE_TILE, "dark": DARK_ORANGE_TILE}
@@ -89,15 +94,16 @@ func calculate_square_tile_at(
 	return {"light": WHITE_TILE, "dark": BLACK_TILE}
 
 
-func set_highlight(pos):
-# Reset previous tile
+## Set the last_tile_highlighted to its default colour and color [param pos] blue
+func set_highlight(pos) -> void:
+	# Reset previous tile
 	if pos != last_tile_highlighted and last_tile_highlighted != null:
 		if get_cell_atlas_coords(last_tile_highlighted) == CYAN_TILE:
 			set_cell(last_tile_highlighted, TILESET_ID, WHITE_TILE)
 		elif get_cell_atlas_coords(last_tile_highlighted) == DARK_CYAN_TILE:
 			set_cell(last_tile_highlighted, TILESET_ID, BLACK_TILE)
 
-# Set current tile
+	# Set current tile
 	if get_cell_atlas_coords(pos) == WHITE_TILE:
 		set_cell(pos, TILESET_ID, CYAN_TILE)
 		last_tile_highlighted = pos

@@ -2,6 +2,7 @@ class_name MainMenu
 extends Control
 
 const BOARD_SCENE := preload("res://scenes/board/board.tscn")
+const BOARD_PIECES_SCRIPT := preload("res://scenes/board/board_pieces.gd")
 const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 # Load all piece classes to prevent null pointers
@@ -16,7 +17,7 @@ const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 @export var option_button: Button
 @export var exit_button: Button
 
-var default_squares = [
+var default_squares := [
 	0b0000000000000000,
 	0b0000000000000000,
 	0b0000000000000000,
@@ -35,7 +36,7 @@ var default_squares = [
 	0b0000000000000000
 ]
 
-var default_pieces = [
+var default_pieces_data := [
 	# White Front Row
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-3, -3), "player": 0},
@@ -87,8 +88,10 @@ func _ready():
 func on_start_pressed() -> void:
 	MusicManager.stop_music()
 	await get_tree().create_timer(.5).timeout
+
 	var new_board = BOARD_SCENE.instantiate()
-	new_board.setup(default_squares, default_pieces)
+	var new_pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(default_pieces_data)
+	new_board.setup(default_squares, new_pieces)
 	get_tree().root.add_child(new_board)
 	queue_free()
 

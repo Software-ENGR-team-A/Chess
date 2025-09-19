@@ -17,17 +17,21 @@ var debug_timelines := []
 var debug_timelines_half_move := half_moves
 
 
-func setup(bitmaps, pieces_data) -> void:
-	queued_bitmaps = bitmaps
-	queued_pieces = pieces_data
+func setup(bitmaps: Array, pieces_array: Array) -> void:
+	if ready:
+		load_queued_state(bitmaps, pieces_array)
+	else:
+		queued_bitmaps = bitmaps
+		queued_pieces = pieces_array
 
 
 func _ready() -> void:
-	if is_og():
+	if queued_bitmaps.size() > 0 and queued_pieces.size() > 0:
 		load_queued_state(queued_bitmaps, queued_pieces)
 		queued_bitmaps = []
 		queued_pieces = []
 
+	if is_og():
 		MusicManager.play_random_song()
 
 
@@ -62,7 +66,7 @@ func _input(event) -> void:
 				pieces.move_child(pieces.held_piece, pieces.get_child_count() - 1)
 
 				# Highlight places where it can be moved
-				squares.recolor(pieces.held_piece, pieces)
+				squares.recolor(pieces.held_piece)
 
 		else:
 			# Try to put down piece
@@ -95,7 +99,7 @@ func _input(event) -> void:
 
 			pieces.held_piece.show_shadow(false)
 			pieces.held_piece = null
-			squares.recolor(null, pieces)
+			squares.recolor(null)
 
 
 ## Returns if the board is the actual "main" game instance being played. Used to distinguish from
@@ -109,27 +113,22 @@ func is_og() -> bool:
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
 ## colours and loading [Piece] nodes as needed
 func load_queued_state(squares_data, new_pieces) -> void:
-	squares.floor_data = squares_data
-	squares.recolor(null, pieces)
+	squares.setup(self, squares_data)
 	pieces.setup(self, new_pieces)
 
 
 ## Creates and returns a copy of the current [Board]
 func branch() -> Board:
 	var new_timeline := BOARD_SCENE.instantiate()
-	# TODO fix []
-	new_timeline.setup(squares.floor_data, [])
-
-	# Fix vars
-	new_timeline.squares.floor_data = squares.floor_data.duplicate(true)
+	new_timeline.setup(squares.floor_data.duplicate(true), pieces.branch_pieces())
 
 	for piece in new_timeline.pieces.get_children():
-		new_timeline.piece_map.set(piece.board_pos, piece)
+		new_timeline.pieces.map.set(piece.board_pos, piece)
 		if piece is King:
 			if not piece.player:
-				new_timeline.black_king = piece
+				new_timeline.pieces.black_king = piece
 			else:
-				new_timeline.white_king = piece
+				new_timeline.pieces.white_king = piece
 		piece.board = new_timeline
 
 	return new_timeline
@@ -164,8 +163,7 @@ func show_debug_timeline(board: Board) -> void:
 	var new_window = Window.new()
 	new_window.size = Vector2(600, 600)  # Set desired window size
 	new_window.position = Vector2i(
-		debug_timelines.size() * 20 + 20,
-		debug_timelines.size() * 20 + 20
+		debug_timelines.size() * 20 + 20, debug_timelines.size() * 20 + 20
 	)
 	get_tree().root.add_child(new_window)
 	new_window.add_child(board)

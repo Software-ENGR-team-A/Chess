@@ -22,11 +22,6 @@ var checked_cells_half_move: int
 var last_moved_half_move := 0
 
 
-func _ready() -> void:
-	self.set_sprite(sprite_index)
-	set_sprite(sprite_index)
-
-
 ## Sets all the root information for a piece.
 ## [param board]: The [Board] that owns the piece
 ## [param pos]: Starting position of the piece
@@ -37,6 +32,16 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	original_pos = board_pos
 	self.player = player
 	forward_direction = -1 if player else 1
+
+
+func _ready() -> void:
+	self.set_sprite(sprite_index)
+	set_sprite(sprite_index)
+
+
+func branch() -> Piece:
+	var new_piece = duplicate()
+	return new_piece
 
 
 ## Sets the sprite of the piece based on the owning player. White pieces get the n'th [param sprite]
@@ -79,7 +84,7 @@ func set_board_pos(pos: Vector2i) -> void:
 ## Removes the piece from its parent [Board] and removes self from memory
 func capture() -> void:
 	if board.pieces.at(board_pos) == self:
-		board.piece_map.set(board_pos, null)
+		board.pieces.map.set(board_pos, null)
 		board.pieces.remove_child(self)
 
 		if board.is_og():
@@ -170,7 +175,7 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 				elif move_outcome == MovementOutcome.CAPTURE:
 					move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
 
-			new_timeline.color_board_squares(check_piece)
+			new_timeline.squares.recolor(check_piece)
 
 		# Debugging
 		if show_debug_window:

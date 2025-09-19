@@ -4,22 +4,25 @@ extends Node2D
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
 # Nodes
+var board: Board
 var map: Dictionary = {}
 var held_piece: Node
 var white_king: King
 var black_king: King
 
 
-func setup(board, pieces_data):
+func setup(board: Board, pieces: Array) -> void:
+	self.board = board
+	white_king = null
+	black_king = null
 	for child in get_children():
 		child.queue_free()
 
 	# Load Pieces
-	for piece_data in pieces_data:
-		# Iterate through the board, creating instances of each piece
-		var piece = spawn_piece(board, piece_data.script, piece_data.pos, piece_data.player)
+	for piece in pieces:
+		add(piece)
 		if piece is King:
-			if not piece_data.player:
+			if not piece.player:
 				if white_king:
 					push_error("Multiple white kings defined")
 				white_king = piece
@@ -35,6 +38,21 @@ func setup(board, pieces_data):
 		push_error("No black king defined")
 
 
+## Returns an array of copies of all its Pieces
+func branch_pieces() -> Array:
+	var output = []
+	for piece in get_children():
+		output.push_back(piece.branch())
+	return output
+
+
+## Adds a piece, loads it into the map, and sets its board.
+func add(new_piece: Piece) -> void:
+	map[new_piece.board_pos] = new_piece
+	new_piece.board = board
+	add_child(new_piece)
+
+
 ## Returns the [Piece] in the board's [member map] at [param pos], or
 ## [code]null[/code] if absent.
 func at(pos: Vector2i) -> Piece:
@@ -45,11 +63,19 @@ func at(pos: Vector2i) -> Piece:
 ##[param piece_script]: The proloaded script for the piece
 ##[param pos]: The Vector2i for the board location
 ##[param player]: The player that controls the piece
-func spawn_piece(board, piece_script: Script, pos: Vector2i, player: int) -> Piece:
+static func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Piece:
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
-	new_piece.setup(board, pos, player)
-	map[pos] = new_piece
-	add_child(new_piece)
+	new_piece.setup(null, pos, player)
 	new_piece.name = ("White" if player else "Black") + piece_script.get_global_name()
 	return new_piece
+
+
+## Returns an array of [Piece] based on an array of dictionaries in the format:
+## [code]{ script: Script extends Piece, pos: Vector2i, player: bool }[/code]
+static func generate_pieces_from_data(pieces_data: Array) -> Array:
+	var output = []
+	for piece_data in pieces_data:
+		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
+		output.push_back(piece)
+	return output
