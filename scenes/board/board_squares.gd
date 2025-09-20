@@ -3,7 +3,6 @@ extends TileMapLayer
 
 # Sprite Indices
 const TILESET_ID := 0
-
 const WHITE_TILE := Vector2i(0, 3)
 const BLACK_TILE := Vector2i(0, 7)
 const CYAN_TILE := Vector2i(1, 3)
@@ -17,16 +16,25 @@ const DARK_ORANGE_TILE := Vector2i(4, 7)
 const RED_TILE := Vector2i(5, 3)
 const DARK_RED_TILE := Vector2i(5, 7)
 
-# State
+## The [Board] the squares are associated with
 var board: Board
+
+## An array of length 16 comprised of 16 bit uints, representing the
+## presence or absence of a floor tile in a grid
 var floor_data := []
+
+## The previous known location the cursor was hovering, to allow for easy resetting to normal
 var last_tile_highlighted: Vector2i
 
 
+## Sets all the root information for board squares
+## [param board]: Value to set [member board] to
+## [param floor_data]: Value to set [member floor_data] to
 func setup(board, floor_data) -> void:
 	self.board = board
 	self.floor_data = floor_data
-	self.recolor(null)
+	if board.is_primary:
+		self.recolor(null)
 
 
 ## Returns [code]true[/true] if the [param pos] is a valid square that pieces can be on,

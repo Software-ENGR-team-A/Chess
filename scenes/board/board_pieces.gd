@@ -3,11 +3,19 @@ extends Node2D
 
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
-# Nodes
+## The [Board] the squares are associated with
 var board: Board
+
+## A map with keys of Vector2i and values of Piece, describing the current location of pieces
 var map: Dictionary = {}
-var held_piece: Node
+
+## The current piece being manipulated
+var held_piece: Piece
+
+## Player 0's king
 var white_king: King
+
+## Player 1's king
 var black_king: King
 
 
@@ -67,7 +75,7 @@ static func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Pie
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
 	new_piece.setup(null, pos, player)
-	new_piece.name = ("White" if player else "Black") + piece_script.get_global_name()
+	new_piece.name = ("Black" if player else "White") + piece_script.get_global_name() + " "+ str(pos)
 	return new_piece
 
 

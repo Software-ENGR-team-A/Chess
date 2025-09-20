@@ -91,7 +91,7 @@ func on_start_pressed() -> void:
 
 	var new_board = BOARD_SCENE.instantiate()
 	var new_pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(default_pieces_data)
-	new_board.setup(default_squares, new_pieces)
+	new_board.setup(true, default_squares, new_pieces)
 	get_tree().root.add_child(new_board)
 	queue_free()
 

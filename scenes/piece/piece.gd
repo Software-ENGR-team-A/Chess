@@ -4,21 +4,28 @@ extends Node2D
 enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE, AVAILABLE_BAD_FOR_KING, CAPTURE_BAD_FOR_KING }
 enum DebugTimelineModes { NONE, LOSSES, ALL }
 
-const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
+const DEBUG_TIMELINE_MODE := DebugTimelineModes.ALL
+
+# @xport is used for properties that need to persist after running [method branch].
 
 @export var player := 0  # Black vs White
 @export var board_pos: Vector2i
 @export var original_pos: Vector2i
 @export var sprite_index := 0  # Where in the sprite sheet it exists
 @export var previous_position: Vector2i
-@export var forward_direction: int
 @export var point_value := 0  # The point value for the engine
 
-var board: Board  # Parent board node
+## The [Board] the squares are associated with
+var board: Board
 
+## Dictionary of the pattern [code]{ Vector2i: MovementOutcome }[\code], storing the output of
+## [method movement_outcome_at] valid for the current [member checked_cells_half_move]
 var checked_cells: Dictionary
+
+## The [member Board.half_move] that the [member checked_cells] dictionary is valid for
 var checked_cells_half_move: int
 
+## Last time piece moved, measured by [member Board.half_moves]
 var last_moved_half_move := 0
 
 
@@ -31,7 +38,6 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 	set_board_pos(pos)
 	original_pos = board_pos
 	self.player = player
-	forward_direction = -1 if player else 1
 
 
 func _ready() -> void:
@@ -39,6 +45,7 @@ func _ready() -> void:
 	set_sprite(sprite_index)
 
 
+## Returns a duplicate of the piece
 func branch() -> Piece:
 	var new_piece = duplicate()
 	return new_piece
@@ -49,8 +56,7 @@ func branch() -> Piece:
 func set_sprite(sprite: int) -> void:
 	sprite_index = sprite
 	$Sprite.frame = sprite_index + player * 32
-	if has_node("Shadow"):
-		$Shadow.frame = sprite_index + player * 32
+	$Shadow.frame = sprite_index + player * 32
 
 
 ## Moves the piece to the specified [param pos]. Movements must be checked for validity *before*
@@ -87,7 +93,7 @@ func capture() -> void:
 		board.pieces.map.set(board_pos, null)
 		board.pieces.remove_child(self)
 
-		if board.is_og():
+		if board.is_primary:
 			AudioManager.play_sound(AudioManager.movement.capture)
 
 	queue_free()
@@ -152,28 +158,26 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 	var move_outcome = _movement(pos)
 
 	# If still valid, check the future to see if the move puts the player into check
-	if move_outcome != MovementOutcome.BLOCKED and board.is_og():
+	if move_outcome != MovementOutcome.BLOCKED and board.is_primary:
 		var new_timeline: Board = board.branch()
 		var show_debug_window = DEBUG_TIMELINE_MODE == DebugTimelineModes.ALL
 
 		var timeline_piece: Piece = new_timeline.pieces.at(board_pos)
-		if timeline_piece:  # TODO shouldnt be needed
-			timeline_piece.move_to(pos)
+		timeline_piece.move_to(pos)
 		new_timeline.half_moves += 1
 
 		var king_to_consider: King = (
 			new_timeline.pieces.white_king if player else new_timeline.pieces.black_king
 		)
-		if king_to_consider:  # TODO shouldnt be needed
-			var check_piece = king_to_consider.in_check()
-			if check_piece:
-				if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
-					show_debug_window = true
+		var check_piece = king_to_consider.in_check()
+		if check_piece:
+			if DEBUG_TIMELINE_MODE == DebugTimelineModes.LOSSES:
+				show_debug_window = true
 
-				if move_outcome == MovementOutcome.AVAILABLE:
-					move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
-				elif move_outcome == MovementOutcome.CAPTURE:
-					move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
+			if move_outcome == MovementOutcome.AVAILABLE:
+				move_outcome = MovementOutcome.AVAILABLE_BAD_FOR_KING
+			elif move_outcome == MovementOutcome.CAPTURE:
+				move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
 
 			new_timeline.squares.recolor(check_piece)
 

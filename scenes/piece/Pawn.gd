@@ -1,10 +1,14 @@
 class_name Pawn
 extends Piece
 
+@export var forward_direction: int
 
 func setup(board: Board, pos: Vector2i, player: int) -> void:
 	self.point_value = 1
 	self.sprite_index = 0
+
+	forward_direction = -1 if player else 1
+
 	super.setup(board, pos, player)
 
 

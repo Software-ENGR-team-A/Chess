@@ -7,21 +7,30 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var squares: BoardSquares
 @export var pieces: Node
 
+## Current amount of moves taken. If even, white to play.
+var half_moves := 0
+
+## Tracks if the board is the root board. Changes /
+var is_primary: bool
+
 var queued_bitmaps: Array
 var queued_pieces: Array
-
-var half_moves := 0
 
 # Debug
 var debug_timelines := []
 var debug_timelines_half_move := half_moves
 
 
-func setup(bitmaps: Array, pieces_array: Array) -> void:
+## Sets all the root information for a board.
+## [param floor_map]: Initial floor_map for the board's [member squares]
+## [param pieces_array]: Array of [Piece]s to put on the board
+func setup(is_primary, floor_map: Array, pieces_array: Array) -> void:
+	self.is_primary = is_primary
+
 	if ready:
-		load_queued_state(bitmaps, pieces_array)
+		load_queued_state(floor_map, pieces_array)
 	else:
-		queued_bitmaps = bitmaps
+		queued_bitmaps = floor_map
 		queued_pieces = pieces_array
 
 
@@ -31,11 +40,14 @@ func _ready() -> void:
 		queued_bitmaps = []
 		queued_pieces = []
 
-	if is_og():
+	if is_primary:
 		MusicManager.play_random_song()
 
 
 func _input(event) -> void:
+	if not is_primary:
+		return
+
 	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
 
 	if pieces.held_piece != null:
@@ -84,7 +96,7 @@ func _input(event) -> void:
 				var king_to_consider = (
 					pieces.white_king if half_moves % 2 == 0 else pieces.black_king
 				)
-				if is_og() and king_to_consider.in_checkmate():
+				if is_primary and king_to_consider.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 					print(
 						("Black" if king_to_consider == pieces.white_king else "White") + " wins!"
@@ -102,14 +114,6 @@ func _input(event) -> void:
 			squares.recolor(null)
 
 
-## Returns if the board is the actual "main" game instance being played. Used to distinguish from
-## "fake" boards used for determining the outcomes of future moves, for instance.
-func is_og() -> bool:
-	if not is_inside_tree():
-		return false
-	return get_tree().get("root") == get_parent()
-
-
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square
 ## colours and loading [Piece] nodes as needed
 func load_queued_state(squares_data, new_pieces) -> void:
@@ -120,7 +124,7 @@ func load_queued_state(squares_data, new_pieces) -> void:
 ## Creates and returns a copy of the current [Board]
 func branch() -> Board:
 	var new_timeline := BOARD_SCENE.instantiate()
-	new_timeline.setup(squares.floor_data.duplicate(true), pieces.branch_pieces())
+	new_timeline.setup(false, squares.floor_data.duplicate(true), pieces.branch_pieces())
 
 	for piece in new_timeline.pieces.get_children():
 		new_timeline.pieces.map.set(piece.board_pos, piece)
