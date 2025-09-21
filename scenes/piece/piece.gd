@@ -4,7 +4,7 @@ extends Node2D
 enum MovementOutcome { BLOCKED, AVAILABLE, CAPTURE, AVAILABLE_BAD_FOR_KING, CAPTURE_BAD_FOR_KING }
 enum DebugTimelineModes { NONE, LOSSES, ALL }
 
-const DEBUG_TIMELINE_MODE := DebugTimelineModes.ALL
+const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 
 # @xport is used for properties that need to persist after running [method branch].
 
@@ -179,11 +179,13 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 			elif move_outcome == MovementOutcome.CAPTURE:
 				move_outcome = MovementOutcome.CAPTURE_BAD_FOR_KING
 
-			new_timeline.squares.recolor(check_piece)
-
 		# Debugging
 		if show_debug_window:
 			board.show_debug_timeline(new_timeline)
+			if check_piece:
+				new_timeline.squares.recolor(check_piece)
+			else:
+				new_timeline.squares.recolor(null)
 		else:
 			new_timeline.queue_free()
 

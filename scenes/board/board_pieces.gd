@@ -75,7 +75,9 @@ static func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Pie
 	var new_piece = PIECE_SCENE.instantiate()
 	new_piece.set_script(piece_script)
 	new_piece.setup(null, pos, player)
-	new_piece.name = ("Black" if player else "White") + piece_script.get_global_name() + " "+ str(pos)
+	new_piece.name = (
+		("Black" if player else "White") + piece_script.get_global_name() + " " + str(pos)
+	)
 	return new_piece
 
 

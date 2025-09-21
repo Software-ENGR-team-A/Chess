@@ -3,6 +3,7 @@ extends Piece
 
 @export var forward_direction: int
 
+
 func setup(board: Board, pos: Vector2i, player: int) -> void:
 	self.point_value = 1
 	self.sprite_index = 0
