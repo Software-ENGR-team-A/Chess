@@ -5,7 +5,7 @@ const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
 # Constants for held piece tilt effect
 const ROT_MAX_OMEGA := 90.0
-const ROT_GAIN := 0.008
+const ROT_GAIN := 0.01
 const ROT_DAMPING := 15.0
 
 ## The [Board] the squares are associated with
