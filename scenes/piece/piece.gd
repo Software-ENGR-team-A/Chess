@@ -223,7 +223,7 @@ func movement_actions(_pos: Vector2i) -> void:
 
 ## Sets the visibility of the piece's shadow
 ##[param on]: Should the shadow be turned on or off? Default on.
-func show_shadow(on: bool = true) -> void:
+func picked_up(on: bool = true) -> void:
 	$Shadow.visible = on
 	if on:
 		$Sprite.play()
