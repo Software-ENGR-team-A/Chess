@@ -93,14 +93,10 @@ func _input(event) -> void:
 				half_moves += 1
 
 				# Verify checkmate state for opposite player
-				var king_to_consider = (
-					pieces.white_king if half_moves % 2 == 0 else pieces.black_king
-				)
-				if is_primary and king_to_consider.in_checkmate():
+				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
+				if is_primary and enemy_king.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-					print(
-						("Black" if king_to_consider == pieces.white_king else "White") + " wins!"
-					)
+					print( ("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
 				AudioManager.play_sound(AudioManager.movement.place)
 
