@@ -63,7 +63,7 @@ func _input(event) -> void:
 		)
 
 		# Move piece under cursor
-		pieces.held_piece.position = round(world_pos)
+		pieces.held_piece.position = world_pos + Vector2(0, -12)
 
 	else:
 		squares.set_highlight(hovered_square)
@@ -76,14 +76,8 @@ func _input(event) -> void:
 
 			var piece_at_cell = pieces.at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
+				pieces.pick_up(piece_at_cell)
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-				pieces.held_piece = piece_at_cell
-				pieces.held_piece.picked_up()
-				# Bring to front
-				pieces.move_child(pieces.held_piece, pieces.get_child_count() - 1)
-
-				# Highlight places where it can be moved
-				squares.recolor(pieces.held_piece)
 
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -115,9 +109,7 @@ func _input(event) -> void:
 				pieces.held_piece.set_board_pos(pieces.held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
-			pieces.held_piece.picked_up(false)
-			pieces.held_piece = null
-			squares.recolor(null)
+			pieces.pick_up(null)
 
 
 func _notification(event):
