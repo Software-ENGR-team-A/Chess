@@ -106,6 +106,7 @@ static func spawn_piece(piece_script: Script, pos: Vector2i, player: int) -> Pie
 	return new_piece
 
 
+## Prepares held [param piece], if any. Resets information from pevious held piece
 func pick_up(piece: Piece) -> void:
 	# Reset rotation of last held piece
 	if held_piece:
