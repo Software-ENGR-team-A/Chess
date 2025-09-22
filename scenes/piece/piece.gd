@@ -15,6 +15,11 @@ const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 @export var previous_position: Vector2i
 @export var point_value := 0  # The point value for the engine
 
+@onready var sprite_rot = $SpriteRot
+@onready var shadow_rot = $ShadowRot
+@onready var sprite = %Sprite
+@onready var shadow = %Shadow
+
 ## The [Board] the squares are associated with
 var board: Board
 
@@ -41,8 +46,8 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _ready() -> void:
-	$Sprite.animation = anim_name
-	$Shadow.animation = anim_name
+	%Sprite.animation = anim_name
+	%Shadow.animation = anim_name
 
 
 func get_player_name() -> String:
@@ -80,7 +85,7 @@ func move_to(pos: Vector2i) -> void:
 ## Changes the visual and saved [member board_pos] to [param pos]
 func set_board_pos(pos: Vector2i) -> void:
 	board_pos = pos
-	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
+	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 - 4))
 
 
 ## Removes the piece from its parent [Board] and removes self from memory
@@ -224,13 +229,13 @@ func movement_actions(_pos: Vector2i) -> void:
 ## Sets the visibility of the piece's shadow
 ##[param on]: Should the shadow be turned on or off? Default on.
 func picked_up(on: bool = true) -> void:
-	$Shadow.visible = on
+	%Shadow.visible = on
 	if on:
-		$Sprite.play()
-		$Shadow.play()
+		%Sprite.play()
+		%Shadow.play()
 	else:
-		$Sprite.stop()
-		$Shadow.stop()
+		%Sprite.stop()
+		%Shadow.stop()
 
 
 ## Checks if [param outcome] does not put the king in danger
