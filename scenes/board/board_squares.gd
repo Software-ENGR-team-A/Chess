@@ -3,18 +3,18 @@ extends TileMapLayer
 
 # Sprite Indices
 const TILESET_ID := 0
-const WHITE_TILE := Vector2i(0, 3)
-const BLACK_TILE := Vector2i(0, 7)
-const CYAN_TILE := Vector2i(1, 3)
-const DARK_CYAN_TILE := Vector2i(1, 7)
-const GREEN_TILE := Vector2i(2, 3)
-const DARK_GREEN_TILE := Vector2i(2, 7)
-const PURPLE_TILE := Vector2i(3, 3)
-const DARK_PURPLE_TILE := Vector2i(3, 7)
-const ORANGE_TILE := Vector2i(4, 3)
-const DARK_ORANGE_TILE := Vector2i(4, 7)
-const RED_TILE := Vector2i(5, 3)
-const DARK_RED_TILE := Vector2i(5, 7)
+const WHITE_TILE := Vector2i(0, 0)
+const BLACK_TILE := Vector2i(0, 1)
+const CYAN_TILE := Vector2i(1, 0)
+const DARK_CYAN_TILE := Vector2i(1, 1)
+const GREEN_TILE := Vector2i(2, 0)
+const DARK_GREEN_TILE := Vector2i(2, 1)
+const PURPLE_TILE := Vector2i(3, 0)
+const DARK_PURPLE_TILE := Vector2i(3, 1)
+const ORANGE_TILE := Vector2i(4, 0)
+const DARK_ORANGE_TILE := Vector2i(4, 1)
+const RED_TILE := Vector2i(5, 0)
+const DARK_RED_TILE := Vector2i(5, 1)
 
 ## The [Board] the squares are associated with
 var board: Board

@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://c0bs6sbbrybcl"]
 
 [ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
-[ext_resource type="TileSet" uid="uid://csjjpcar6usnu" path="res://assets/spritesheet.tres" id="2_kymhv"]
-[ext_resource type="Script" uid="uid://b0pypjutr31ci" path="res://scenes/board/board_squares.gd" id="3_knosr"]
-[ext_resource type="Script" uid="uid://buabp8ji67ups" path="res://scenes/board/board_pieces.gd" id="4_q07he"]
+[ext_resource type="TileSet" uid="uid://csu6oc8c7768i" path="res://scenes/board/spritesheet_tileset.tres" id="2_q07he"]
+[ext_resource type="Script" path="res://scenes/board/board_squares.gd" id="3_knosr"]
+[ext_resource type="Script" path="res://scenes/board/board_pieces.gd" id="4_q07he"]
 
 [node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces")]
 script = ExtResource("1_q07he")
@@ -16,7 +16,7 @@ zoom = Vector2(8, 8)
 [node name="Squares" type="TileMapLayer" parent="."]
 z_index = -1
 rotation = -4.80598e-05
-tile_set = ExtResource("2_kymhv")
+tile_set = ExtResource("2_q07he")
 script = ExtResource("3_knosr")
 
 [node name="Pieces" type="Node2D" parent="."]
