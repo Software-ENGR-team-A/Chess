@@ -67,6 +67,9 @@ func in_check_at(pos: Vector2i) -> Piece:
 		if piece.movement_outcome_at(pos):
 			return piece
 
+		# TODO: RECOGNISE WHEN [method Piece.captures_when_moved_to] WILL CAPTURE KING EVEN
+		# IF THEY AREN'T MOVES ONTO THE KING'S SPACE
+
 	return null
 
 
