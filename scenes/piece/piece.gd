@@ -15,12 +15,6 @@ const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 @export var previous_position: Vector2i
 @export var point_value := 0  # The point value for the engine
 
-@onready var internal_offset = %InternalOffset
-@onready var sprite_rot = %SpriteRot
-@onready var shadow_rot = %ShadowRot
-@onready var sprite = %Sprite
-@onready var shadow = %Shadow
-
 ## The [Board] the squares are associated with
 var board: Board
 
@@ -33,6 +27,12 @@ var checked_cells_half_move: int
 
 ## Last time piece moved, measured by [member Board.half_moves]
 var last_moved_half_move := 0
+
+@onready var internal_offset = %InternalOffset
+@onready var sprite_rot = %SpriteRot
+@onready var shadow_rot = %ShadowRot
+@onready var sprite = %Sprite
+@onready var shadow = %Shadow
 
 
 ## Sets all the root information for a piece.
@@ -62,16 +62,15 @@ func branch() -> Piece:
 
 
 ## Moves the piece to the specified [param pos]. Movements must be checked for validity *before*
-## calling this. If [param pos] contains a piece before moving, it is automatically captured.
-## Additional movement actions will be triggered automatically.
+## calling this. Captures from member [method captures_when_moved_to] and additional movement
+## actions will be triggered automatically.
 func move_to(pos: Vector2i) -> void:
 	# Pick up original piece
 	board.pieces.map.set(board_pos, null)
 
-	# Capture
-	var replaced_piece = board.pieces.at(pos)
-	if replaced_piece:
-		replaced_piece.capture()
+	# Captures
+	for piece in captures_when_moved_to(pos):
+		piece.capture()
 
 	# Perform extra actions
 	movement_actions(pos)
@@ -218,6 +217,17 @@ func has_line_of_movement_to(pos: Vector2i) -> bool:
 ##[param _pos]: Position to check for a movement outcome
 func _movement(_pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
+
+
+func captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
+	var output: Array[Piece] = []
+
+	if movement_outcome_at(pos) == MovementOutcome.CAPTURE:
+		var piece_to_crush = board.pieces.at(pos)
+		if piece_to_crush:
+			output.push_back(piece_to_crush)
+
+	return output
 
 
 ## Additional actions to perform when moving to [param _pos]. Note that capture of an existing piece

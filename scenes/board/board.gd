@@ -65,10 +65,7 @@ func _input(event) -> void:
 		# Move piece under cursor
 		pieces.held_piece.position = world_pos + Vector2(0, -12)
 
-		if pieces.held_piece.movement_outcome_at(hovered_square) == Piece.MovementOutcome.CAPTURE:
-			pieces.set_scared(pieces.at(hovered_square))
-		else:
-			pieces.set_scared(null)
+		pieces.set_scared_pieces_when_moved_to(hovered_square)
 
 	else:
 		squares.set_highlight(hovered_square)
@@ -101,7 +98,7 @@ func _input(event) -> void:
 				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
 				if is_primary and enemy_king.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-					print( ("Black" if enemy_king == pieces.white_king else "White") + " wins!")
+					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
 				AudioManager.play_sound(AudioManager.movement.place)
 

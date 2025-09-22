@@ -23,10 +23,13 @@ var held_piece: Piece
 ## Accumulated rotation of held piece
 var held_rot := 0.0
 
-## Currently threatened piece
-var scared_piece: Piece
+# Position the hovered piece is currently hovering over
+var hovered_pos: Vector2i
 
-## How long the [member scared_piece] has been scared
+# Array of [Piece] currently threatened by hovered move
+var scared_pieces: Array[Piece]
+
+# How long the pieces have been scared for
 var scared_time := 0.0
 
 ## Player 0's king
@@ -75,15 +78,19 @@ func _process(delta: float) -> void:
 
 		held_piece.shadow_rot.rotation = held_rot
 		held_piece.sprite_rot.rotation = held_rot
-	
-	if scared_piece:
-		scared_time += delta
-		scared_piece.sprite_rot.rotation = sin(scared_time * 60) * 0.05
-		scared_piece.sprite.frame = round(sin(scared_time * 15) + 1)
 
-		if held_piece:
-			var offset = scared_piece.position - held_piece.position
-			scared_piece.internal_offset.position = offset / 3
+	if scared_pieces:
+		scared_time += delta
+
+		for piece in scared_pieces:
+			if piece:
+				piece.sprite_rot.rotation = sin(scared_time * 60) * 0.05
+				piece.sprite.frame = round(sin(scared_time * 15) + 1)
+
+				if held_piece:
+					var offset = (piece.position - held_piece.position).clampf(-1, 1)
+					piece.internal_offset.position = offset / 3
+
 
 ## Returns an array of copies of all its Pieces
 func branch_pieces() -> Array:
@@ -139,18 +146,42 @@ func pick_up(piece: Piece) -> void:
 
 		piece.picked_up()
 		AudioManager.play_sound(AudioManager.movement.pickup)
-		
+	else:
+		clear_scared_pieces()
+
 		# Bring to front
 		move_child(piece, get_child_count() - 1)
 
 
-func set_scared(piece: Piece) -> void:
-	if scared_piece:
-		scared_piece.sprite_rot.rotation = 0
-		scared_piece.sprite.frame = 0
-		scared_piece.internal_offset.position = Vector2.ZERO
-	
-	scared_piece = piece
+func set_scared_pieces_when_moved_to(pos: Vector2i) -> void:
+	if pos != hovered_pos:
+		hovered_pos = pos
+		scared_time = 0
+
+	if not held_piece:
+		return
+
+	if held_piece.movement_outcome_at(pos) != Piece.MovementOutcome.CAPTURE:
+		clear_scared_pieces()
+		return
+
+	for piece in scared_pieces:
+		if piece:
+			piece.sprite_rot.rotation = 0
+			piece.sprite.frame = 0
+			piece.internal_offset.position = Vector2.ZERO
+
+	scared_pieces = held_piece.captures_when_moved_to(pos)
+
+
+func clear_scared_pieces() -> void:
+	for piece in scared_pieces:
+		if piece:
+			piece.sprite_rot.rotation = 0
+			piece.sprite.frame = 0
+			piece.internal_offset.position = Vector2.ZERO
+
+	scared_pieces = []
 
 
 ## Returns an array of [Piece] based on an array of dictionaries in the format:

@@ -15,6 +15,6 @@ func lerp_to_board_pos(pos: Vector2i) -> void:
 	lerp_target = pos * 16
 
 	var tween = create_tween()
-	tween.tween_property(self, "position", lerp_target, 0.2)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", lerp_target, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(
+		Tween.EASE_OUT
+	)
