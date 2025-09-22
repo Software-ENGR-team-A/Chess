@@ -11,7 +11,7 @@ const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 @export var player := 0  # Black vs White
 @export var board_pos: Vector2i
 @export var original_pos: Vector2i
-@export var sprite_index := 0  # Where in the sprite sheet it exists
+@export var anim_name := ""
 @export var previous_position: Vector2i
 @export var point_value := 0  # The point value for the engine
 
@@ -41,22 +41,18 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _ready() -> void:
-	self.set_sprite(sprite_index)
-	set_sprite(sprite_index)
+	$Sprite.animation = anim_name
+	$Shadow.animation = anim_name
+
+
+func get_player_name() -> String:
+	return "Black" if player else "White"
 
 
 ## Returns a duplicate of the piece
 func branch() -> Piece:
 	var new_piece = duplicate()
 	return new_piece
-
-
-## Sets the sprite of the piece based on the owning player. White pieces get the n'th [param sprite]
-## within the top half of the spritesheet, while black sprites get them from the lower half.
-func set_sprite(sprite: int) -> void:
-	sprite_index = sprite
-	$Sprite.frame = sprite_index + player * 32
-	$Shadow.frame = sprite_index + player * 32
 
 
 ## Moves the piece to the specified [param pos]. Movements must be checked for validity *before*
@@ -228,15 +224,13 @@ func movement_actions(_pos: Vector2i) -> void:
 ## Sets the visibility of the piece's shadow
 ##[param on]: Should the shadow be turned on or off? Default on.
 func show_shadow(on: bool = true) -> void:
-	if has_node("Shadow"):
-		if on:
-			var shadow = $Shadow
-			shadow.visible = true
-			shadow.texture = $Sprite.texture
-			shadow.region_enabled = $Sprite.region_enabled
-			shadow.region_rect = $Sprite.region_rect
-		else:
-			$Shadow.visible = false
+	$Shadow.visible = on
+	if on:
+		$Sprite.play()
+		$Shadow.play()
+	else:
+		$Sprite.stop()
+		$Shadow.stop()
 
 
 ## Checks if [param outcome] does not put the king in danger

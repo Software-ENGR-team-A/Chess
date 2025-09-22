@@ -3,9 +3,9 @@ extends Piece
 
 
 func setup(board: Board, pos: Vector2i, player: int) -> void:
-	self.point_value = 3
-	self.sprite_index = 1
 	super.setup(board, pos, player)
+	self.point_value = 3
+	self.anim_name = get_player_name() + "Knight"
 
 
 func check_knight_shape(pos: Vector2i) -> bool:

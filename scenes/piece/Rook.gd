@@ -3,9 +3,9 @@ extends Piece
 
 
 func setup(board: Board, pos: Vector2i, player: int) -> void:
-	self.point_value = 5
-	self.sprite_index = 3
 	super.setup(board, pos, player)
+	self.point_value = 5
+	self.anim_name = get_player_name() + "Rook"
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

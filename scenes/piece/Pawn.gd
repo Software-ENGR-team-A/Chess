@@ -5,12 +5,10 @@ extends Piece
 
 
 func setup(board: Board, pos: Vector2i, player: int) -> void:
-	self.point_value = 1
-	self.sprite_index = 0
-
-	forward_direction = -1 if player else 1
-
 	super.setup(board, pos, player)
+	self.point_value = 1
+	self.anim_name = get_player_name() + "Pawn"
+	forward_direction = -1 if player else 1
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

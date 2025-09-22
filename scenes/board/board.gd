@@ -6,6 +6,7 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 @export var squares: BoardSquares
 @export var pieces: Node
+@export var box_cursor: BoxCursor
 
 ## Current amount of moves taken. If even, white to play.
 var half_moves := 0
@@ -49,6 +50,7 @@ func _input(event) -> void:
 		return
 
 	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
+	box_cursor.lerp_to_board_pos(hovered_square)
 
 	if pieces.held_piece != null:
 		# Fetch world position from cursor in viewport
@@ -68,10 +70,12 @@ func _input(event) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if pieces.held_piece == null:
 			# Pick up piece
+			box_cursor.set_board_pos(hovered_square)
 			AudioManager.play_sound(AudioManager.movement.pickup)
 
 			var piece_at_cell = pieces.at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 				pieces.held_piece = piece_at_cell
 				pieces.held_piece.show_shadow()
 				# Bring to front
@@ -81,6 +85,7 @@ func _input(event) -> void:
 				squares.recolor(pieces.held_piece)
 
 		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			# Try to put down piece
 			if (
 				squares.has_floor_at(hovered_square)
@@ -112,6 +117,11 @@ func _input(event) -> void:
 			pieces.held_piece.show_shadow(false)
 			pieces.held_piece = null
 			squares.recolor(null)
+
+
+func _notification(event):
+	if event == NOTIFICATION_WM_CLOSE_REQUEST:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 ## Turns the data in a supplied [param new_state] into a setup for gameplay by setting board square

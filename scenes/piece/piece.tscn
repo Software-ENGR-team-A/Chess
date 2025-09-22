@@ -1,22 +1,20 @@
 [gd_scene load_steps=3 format=3 uid="uid://c7k57d4hiqhd1"]
 
 [ext_resource type="Script" uid="uid://dbfahhjcplmb6" path="res://scenes/piece/piece.gd" id="1_huli3"]
-[ext_resource type="Texture2D" uid="uid://p0vmoyd3s210" path="res://assets/spritesheet.png" id="2_huli3"]
+[ext_resource type="SpriteFrames" uid="uid://djyaadn235qky" path="res://scenes/piece/PieceAnims.tres" id="2_huli3"]
 
 [node name="Piece" type="Node2D"]
 script = ExtResource("1_huli3")
 metadata/sprite = 0
 
-[node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_huli3")
-hframes = 8
-vframes = 8
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_huli3")
+animation = &"WhiteKing"
 
-[node name="Shadow" type="Sprite2D" parent="."]
+[node name="Shadow" type="AnimatedSprite2D" parent="."]
 visible = false
-modulate = Color(0, 0, 0, 0.243137)
+modulate = Color(0, 0, 0, 0.2509804)
 z_index = -1
 position = Vector2(4, 4)
-texture = ExtResource("2_huli3")
-hframes = 8
-vframes = 8
+sprite_frames = ExtResource("2_huli3")
+animation = &"WhiteKing"
