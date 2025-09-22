@@ -4,9 +4,9 @@ extends Node2D
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
 # Constants for held piece tilt effect
-const ROT_MAX_OMEGA := 90.0
-const ROT_GAIN := 0.01
-const ROT_DAMPING := 15.0
+const HELD_TILT_MAX := 90.0
+const HELD_ROT_GAIN := 0.01
+const HELD_ROT_DAMPING := 15.0
 
 ## The [Board] the squares are associated with
 var board: Board
@@ -14,13 +14,20 @@ var board: Board
 ## A map with keys of Vector2i and values of Piece, describing the current location of pieces
 var map: Dictionary = {}
 
+## Smoothed-out velocity of the mouse cursor, for held piece tilt
+var shooth_vx := 0.0
+
 ## The current piece being manipulated
 var held_piece: Piece
 
-# Smoothed-out velocity of the mouse cursor, for held piece tilt
-var rot_smooth_vx := 0.0
+## Accumulated rotation of held piece
+var held_rot := 0.0
 
-var rot := 0.0
+## Currently threatened piece
+var scared_piece: Piece
+
+## How long the [member scared_piece] has been scared
+var scared_time := 0.0
 
 ## Player 0's king
 var white_king: King
@@ -57,19 +64,26 @@ func setup(board: Board, pieces: Array) -> void:
 
 
 func _process(delta: float) -> void:
-	if not held_piece:
-		return
+	if held_piece:
+		var vx := Input.get_last_mouse_velocity().x
+		var alpha := 1.0 - exp(-5.0 * delta)
+		shooth_vx = lerp(shooth_vx, vx, alpha)
 
-	var vx := Input.get_last_mouse_velocity().x
-	var alpha := 1.0 - exp(-5.0 * delta)
-	rot_smooth_vx = lerp(rot_smooth_vx, vx, alpha)
+		held_rot += HELD_ROT_GAIN * shooth_vx
+		held_rot *= exp(-HELD_ROT_DAMPING * delta)
+		held_rot = clamp(held_rot, -HELD_TILT_MAX, HELD_TILT_MAX) * delta
 
-	rot += ROT_GAIN * rot_smooth_vx
-	rot *= exp(-ROT_DAMPING * delta)
-	rot = clamp(rot, -ROT_MAX_OMEGA, ROT_MAX_OMEGA) * delta
+		held_piece.shadow_rot.rotation = held_rot
+		held_piece.sprite_rot.rotation = held_rot
+	
+	if scared_piece:
+		scared_time += delta
+		scared_piece.sprite_rot.rotation = sin(scared_time * 60) * 0.05
+		scared_piece.sprite.frame = round(sin(scared_time * 15) + 1)
 
-	held_piece.shadow_rot.rotation = rot
-	held_piece.sprite_rot.rotation = rot
+		if held_piece:
+			var offset = scared_piece.position - held_piece.position
+			scared_piece.internal_offset.position = offset / 3
 
 ## Returns an array of copies of all its Pieces
 func branch_pieces() -> Array:
@@ -127,7 +141,16 @@ func pick_up(piece: Piece) -> void:
 		AudioManager.play_sound(AudioManager.movement.pickup)
 		
 		# Bring to front
-		board.pieces.move_child(piece, get_child_count() - 1)
+		move_child(piece, get_child_count() - 1)
+
+
+func set_scared(piece: Piece) -> void:
+	if scared_piece:
+		scared_piece.sprite_rot.rotation = 0
+		scared_piece.sprite.frame = 0
+		scared_piece.internal_offset.position = Vector2.ZERO
+	
+	scared_piece = piece
 
 
 ## Returns an array of [Piece] based on an array of dictionaries in the format:

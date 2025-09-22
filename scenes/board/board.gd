@@ -50,7 +50,7 @@ func _input(event) -> void:
 		return
 
 	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
-	var hovered_piece = pieces.at(hovered_square)
+
 	box_cursor.lerp_to_board_pos(hovered_square)
 
 	if pieces.held_piece != null:
@@ -64,6 +64,11 @@ func _input(event) -> void:
 
 		# Move piece under cursor
 		pieces.held_piece.position = world_pos + Vector2(0, -12)
+
+		if pieces.held_piece.movement_outcome_at(hovered_square) == Piece.MovementOutcome.CAPTURE:
+			pieces.set_scared(pieces.at(hovered_square))
+		else:
+			pieces.set_scared(null)
 
 	else:
 		squares.set_highlight(hovered_square)
