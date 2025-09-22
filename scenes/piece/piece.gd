@@ -15,8 +15,9 @@ const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 @export var previous_position: Vector2i
 @export var point_value := 0  # The point value for the engine
 
-@onready var sprite_rot = $SpriteRot
-@onready var shadow_rot = $ShadowRot
+@onready var internal_offset = %InternalOffset
+@onready var sprite_rot = %SpriteRot
+@onready var shadow_rot = %ShadowRot
 @onready var sprite = %Sprite
 @onready var shadow = %Shadow
 
