@@ -50,6 +50,7 @@ func _input(event) -> void:
 		return
 
 	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
+	var hovered_piece = pieces.at(hovered_square)
 	box_cursor.lerp_to_board_pos(hovered_square)
 
 	if pieces.held_piece != null:
@@ -77,7 +78,7 @@ func _input(event) -> void:
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 				pieces.held_piece = piece_at_cell
-				pieces.held_piece.show_shadow()
+				pieces.held_piece.picked_up()
 				# Bring to front
 				pieces.move_child(pieces.held_piece, pieces.get_child_count() - 1)
 
@@ -114,7 +115,7 @@ func _input(event) -> void:
 				pieces.held_piece.set_board_pos(pieces.held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
-			pieces.held_piece.show_shadow(false)
+			pieces.held_piece.picked_up(false)
 			pieces.held_piece = null
 			squares.recolor(null)
 
@@ -167,6 +168,9 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 ## Creates a window to show the supplied [param board]. When [member half_moves] changes,
 ## all previous windows are deleted to reduce clutter.
 func show_debug_timeline(board: Board) -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	board.box_cursor.visible = false
+
 	if half_moves != debug_timelines_half_move:
 		for window in debug_timelines:
 			window.visible = false
@@ -179,6 +183,7 @@ func show_debug_timeline(board: Board) -> void:
 	new_window.position = Vector2i(
 		debug_timelines.size() * 20 + 20, debug_timelines.size() * 20 + 20
 	)
+	new_window.close_requested.connect(new_window.hide)
 	get_tree().root.add_child(new_window)
 	new_window.add_child(board)
 	new_window.show()
