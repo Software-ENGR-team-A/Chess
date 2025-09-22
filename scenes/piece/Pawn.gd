@@ -1,15 +1,20 @@
 class_name Pawn
 extends Piece
 
+@export var forward_direction: int
+
 
 func setup(board: Board, pos: Vector2i, player: int) -> void:
 	self.point_value = 1
 	self.sprite_index = 0
+
+	forward_direction = -1 if player else 1
+
 	super.setup(board, pos, player)
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
-	var piece_to_capture = board.get_piece_at(pos)
+	var piece_to_capture = board.pieces.at(pos)
 
 	# Can't capture own piece
 	if is_friendly(piece_to_capture):
@@ -42,7 +47,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 
 
 func get_en_passant_target(pos: Vector2i) -> Pawn:
-	var target = board.get_piece_at(pos + Vector2i(0, -self.forward_direction))
+	var target = board.pieces.at(pos + Vector2i(0, -self.forward_direction))
 
 	# Target must:
 	if not target:
