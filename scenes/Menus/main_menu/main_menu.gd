@@ -13,6 +13,8 @@ const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
 const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/King.gd")
 
+const RIFLEMAN_SCRIPT := preload("res://scenes/piece/Rifleman.gd")
+
 @export var start_button: Button
 @export var option_button: Button
 @export var exit_button: Button
@@ -54,7 +56,7 @@ var default_pieces_data := [
 	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
 	{"script": BISHOP_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
-	{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
+	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
 	# Black Front Row
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, 2), "player": 1},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-3, 2), "player": 1},
@@ -65,7 +67,7 @@ var default_pieces_data := [
 	{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
 	# Black Back Row
-	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
+	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
 	{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
 	{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
