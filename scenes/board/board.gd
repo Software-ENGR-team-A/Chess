@@ -50,6 +50,7 @@ func _input(event) -> void:
 		return
 
 	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
+
 	box_cursor.lerp_to_board_pos(hovered_square)
 
 	if pieces.held_piece != null:
@@ -62,7 +63,9 @@ func _input(event) -> void:
 		)
 
 		# Move piece under cursor
-		pieces.held_piece.position = round(world_pos)
+		pieces.held_piece.position = world_pos + Vector2(0, -12)
+
+		pieces.set_scared_pieces_when_moved_to(hovered_square)
 
 	else:
 		squares.set_highlight(hovered_square)
@@ -75,14 +78,8 @@ func _input(event) -> void:
 
 			var piece_at_cell = pieces.at(hovered_square)
 			if piece_at_cell and piece_at_cell.player == half_moves % 2:
+				pieces.pick_up(piece_at_cell)
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-				pieces.held_piece = piece_at_cell
-				pieces.held_piece.show_shadow()
-				# Bring to front
-				pieces.move_child(pieces.held_piece, pieces.get_child_count() - 1)
-
-				# Highlight places where it can be moved
-				squares.recolor(pieces.held_piece)
 
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -98,14 +95,10 @@ func _input(event) -> void:
 				half_moves += 1
 
 				# Verify checkmate state for opposite player
-				var king_to_consider = (
-					pieces.white_king if half_moves % 2 == 0 else pieces.black_king
-				)
-				if is_primary and king_to_consider.in_checkmate():
+				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
+				if is_primary and enemy_king.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-					print(
-						("Black" if king_to_consider == pieces.white_king else "White") + " wins!"
-					)
+					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
 				AudioManager.play_sound(AudioManager.movement.place)
 
@@ -114,9 +107,7 @@ func _input(event) -> void:
 				pieces.held_piece.set_board_pos(pieces.held_piece.board_pos)
 				AudioManager.play_sound(AudioManager.movement.invalid)
 
-			pieces.held_piece.show_shadow(false)
-			pieces.held_piece = null
-			squares.recolor(null)
+			pieces.pick_up(null)
 
 
 func _notification(event):
@@ -167,6 +158,9 @@ func look_in_direction(base: Vector2i, dir: Vector2i, repeat: int) -> Piece:
 ## Creates a window to show the supplied [param board]. When [member half_moves] changes,
 ## all previous windows are deleted to reduce clutter.
 func show_debug_timeline(board: Board) -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	board.box_cursor.visible = false
+
 	if half_moves != debug_timelines_half_move:
 		for window in debug_timelines:
 			window.visible = false
@@ -179,6 +173,7 @@ func show_debug_timeline(board: Board) -> void:
 	new_window.position = Vector2i(
 		debug_timelines.size() * 20 + 20, debug_timelines.size() * 20 + 20
 	)
+	new_window.close_requested.connect(new_window.hide)
 	get_tree().root.add_child(new_window)
 	new_window.add_child(board)
 	new_window.show()

@@ -28,6 +28,12 @@ var checked_cells_half_move: int
 ## Last time piece moved, measured by [member Board.half_moves]
 var last_moved_half_move := 0
 
+@onready var internal_offset = %InternalOffset
+@onready var sprite_rot = %SpriteRot
+@onready var shadow_rot = %ShadowRot
+@onready var sprite = %Sprite
+@onready var shadow = %Shadow
+
 
 ## Sets all the root information for a piece.
 ## [param board]: The [Board] that owns the piece
@@ -41,8 +47,8 @@ func setup(board: Board, pos: Vector2i, player: int) -> void:
 
 
 func _ready() -> void:
-	$Sprite.animation = anim_name
-	$Shadow.animation = anim_name
+	%Sprite.animation = anim_name
+	%Shadow.animation = anim_name
 
 
 func get_player_name() -> String:
@@ -56,16 +62,15 @@ func branch() -> Piece:
 
 
 ## Moves the piece to the specified [param pos]. Movements must be checked for validity *before*
-## calling this. If [param pos] contains a piece before moving, it is automatically captured.
-## Additional movement actions will be triggered automatically.
+## calling this. Captures from member [method captures_when_moved_to] and additional movement
+## actions will be triggered automatically.
 func move_to(pos: Vector2i) -> void:
 	# Pick up original piece
 	board.pieces.map.set(board_pos, null)
 
-	# Capture
-	var replaced_piece = board.pieces.at(pos)
-	if replaced_piece:
-		replaced_piece.capture()
+	# Captures
+	for piece in captures_when_moved_to(pos):
+		piece.capture()
 
 	# Perform extra actions
 	movement_actions(pos)
@@ -80,7 +85,7 @@ func move_to(pos: Vector2i) -> void:
 ## Changes the visual and saved [member board_pos] to [param pos]
 func set_board_pos(pos: Vector2i) -> void:
 	board_pos = pos
-	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 + 4))
+	set_position(Vector2((pos.x + 1) * 16 - 8, (pos.y) * 16 - 4))
 
 
 ## Removes the piece from its parent [Board] and removes self from memory
@@ -214,6 +219,17 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
 
 
+## Returns the pieces to be captured when moved to [param pos].
+func captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
+	var output: Array[Piece] = []
+
+	var piece_to_crush = board.pieces.at(pos)
+	if piece_to_crush:
+		output.push_back(piece_to_crush)
+
+	return output
+
+
 ## Additional actions to perform when moving to [param _pos]. Note that capture of an existing piece
 ## at [param _pos] is implied and performed automatically on movement, as directed in
 ## [method move_to]
@@ -223,14 +239,14 @@ func movement_actions(_pos: Vector2i) -> void:
 
 ## Sets the visibility of the piece's shadow
 ##[param on]: Should the shadow be turned on or off? Default on.
-func show_shadow(on: bool = true) -> void:
-	$Shadow.visible = on
+func picked_up(on: bool = true) -> void:
+	%Shadow.visible = on
 	if on:
-		$Sprite.play()
-		$Shadow.play()
+		%Sprite.play()
+		%Shadow.play()
 	else:
-		$Sprite.stop()
-		$Shadow.stop()
+		%Sprite.stop()
+		%Shadow.stop()
 
 
 ## Checks if [param outcome] does not put the king in danger
