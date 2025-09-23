@@ -39,8 +39,8 @@ var white_king: King
 var black_king: King
 
 
-func setup(board: Board, pieces: Array) -> void:
-	self.board = board
+func setup(_board: Board, pieces: Array) -> void:
+	board = _board
 	white_king = null
 	black_king = null
 	for child in get_children():

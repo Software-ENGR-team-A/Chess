@@ -4,10 +4,10 @@ extends Piece
 @export var forward_direction: int
 
 
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	super.setup(board, pos, player)
-	self.point_value = 1
-	self.anim_name = get_player_name() + "Pawn"
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	super.setup(_board, _pos, _player)
+	point_value = 1
+	anim_name = get_player_name() + "Pawn"
 	forward_direction = -1 if player else 1
 
 
