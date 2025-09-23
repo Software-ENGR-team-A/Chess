@@ -88,7 +88,9 @@ func _process(delta: float) -> void:
 				piece.sprite.frame = round(sin(scared_time * 15) + 1)
 
 				if held_piece:
-					var offset = (piece.position - held_piece.position).clampf(-5, 5)
+					var offset = piece.position - held_piece.position
+					if offset.length() > 5:
+						offset = offset.normalized() * 5
 					piece.internal_offset.position = offset / 3
 
 
