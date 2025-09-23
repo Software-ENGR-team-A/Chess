@@ -2,9 +2,9 @@ name: Formatting Checks
 
 on:
   push:
-    branches: "*"
+    branches: "main"
   pull_request:
-    branches: "*"
+    branches: "main"
 
 jobs:
   static-checks:
