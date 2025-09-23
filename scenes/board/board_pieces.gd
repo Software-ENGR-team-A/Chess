@@ -79,7 +79,7 @@ func _process(delta: float) -> void:
 		held_piece.shadow_rot.rotation = held_rot
 		held_piece.sprite_rot.rotation = held_rot
 
-	if scared_pieces:
+	if scared_pieces and held_piece:
 		scared_time += delta
 
 		for piece in scared_pieces:
@@ -87,11 +87,26 @@ func _process(delta: float) -> void:
 				piece.sprite_rot.rotation = sin(scared_time * 60) * 0.05
 				piece.sprite.frame = round(sin(scared_time * 15) + 1)
 
-				if held_piece:
-					var offset = piece.position - held_piece.position
-					if offset.length() > 5:
-						offset = offset.normalized() * 5
-					piece.internal_offset.position = offset / 3
+				var delt = piece.position - held_piece.position
+				var d = delt.length()
+				var dir = delt / d if d > 0.0001 else Vector2.ZERO
+
+				var max_dist := 7.5
+				var max_offset := 2.5
+
+				var t = clamp(d / max_dist, 0.0, 1.0)
+				t = t * t
+				t = smoothstep(1.0, 0.0, t)
+				t = ease(t, -1.5)
+
+				var offset = dir * (max_offset * t)
+
+				if hovered_pos == piece.board_pos:
+					piece.internal_offset.position = offset * 1.5
+					piece.sprite_rot.rotation += dir.x * 0.5
+					held_piece.sprite_rot.rotation = offset.x * -0.05
+				else:
+					piece.internal_offset.position = dir * 2
 
 
 ## Returns an array of copies of all its Pieces
@@ -183,6 +198,7 @@ func clear_scared_pieces() -> void:
 			piece.sprite_rot.rotation = 0
 			piece.sprite.frame = 0
 			piece.internal_offset.position = Vector2.ZERO
+			piece.internal_offset.rotation = 0
 
 	scared_pieces = []
 
