@@ -144,13 +144,14 @@ func pick_up(piece: Piece) -> void:
 		if piece.board != board:
 			return
 
+		# Bring to front
+		move_child(piece, get_child_count() - 1)
+
 		piece.picked_up()
 		AudioManager.play_sound(AudioManager.movement.pickup)
 	else:
-		clear_scared_pieces()
 
-		# Bring to front
-		move_child(piece, get_child_count() - 1)
+		clear_scared_pieces()
 
 
 func set_scared_pieces_when_moved_to(pos: Vector2i) -> void:
