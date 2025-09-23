@@ -2,10 +2,10 @@ class_name King
 extends Piece
 
 
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	super.setup(board, pos, player)
-	self.point_value = 99999  # Insanely high value that should be tuned with the engine
-	self.anim_name = get_player_name() + "King"
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	super.setup(_board, _pos, _player)
+	point_value = 99999  # Insanely high value that should be tuned with the engine
+	anim_name = get_player_name() + "King"
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

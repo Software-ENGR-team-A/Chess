@@ -30,9 +30,9 @@ var last_tile_highlighted: Vector2i
 ## Sets all the root information for board squares
 ## [param board]: Value to set [member board] to
 ## [param floor_data]: Value to set [member floor_data] to
-func setup(board, floor_data) -> void:
-	self.board = board
-	self.floor_data = floor_data
+func setup(_board, _floor_data) -> void:
+	board = _board
+	floor_data = _floor_data
 	if board.is_primary:
 		self.recolor(null)
 

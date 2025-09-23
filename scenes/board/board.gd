@@ -25,8 +25,8 @@ var debug_timelines_half_move := half_moves
 ## Sets all the root information for a board.
 ## [param floor_map]: Initial floor_map for the board's [member squares]
 ## [param pieces_array]: Array of [Piece]s to put on the board
-func setup(is_primary, floor_map: Array, pieces_array: Array) -> void:
-	self.is_primary = is_primary
+func setup(_is_primary, floor_map: Array, pieces_array: Array) -> void:
+	is_primary = _is_primary
 
 	if ready:
 		load_queued_state(floor_map, pieces_array)

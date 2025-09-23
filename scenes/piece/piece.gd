@@ -39,11 +39,11 @@ var last_moved_half_move := 0
 ## [param board]: The [Board] that owns the piece
 ## [param pos]: Starting position of the piece
 ## [param player]: Owner of the piece
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	self.board = board
-	set_board_pos(pos)
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	board = _board
+	set_board_pos(_pos)
 	original_pos = board_pos
-	self.player = player
+	player = player
 
 
 func _ready() -> void:

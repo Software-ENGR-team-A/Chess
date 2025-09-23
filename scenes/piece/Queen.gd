@@ -2,10 +2,10 @@ class_name Queen
 extends Piece
 
 
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	super.setup(board, pos, player)
-	self.point_value = 9
-	self.anim_name = get_player_name() + "Queen"
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	super.setup(_board, _pos, _player)
+	point_value = 9
+	anim_name = get_player_name() + "Queen"
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

@@ -2,10 +2,10 @@ class_name Rook
 extends Piece
 
 
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	super.setup(board, pos, player)
-	self.point_value = 5
-	self.anim_name = get_player_name() + "Rook"
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	super.setup(_board, _pos, _player)
+	point_value = 5
+	anim_name = get_player_name() + "Rook"
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
