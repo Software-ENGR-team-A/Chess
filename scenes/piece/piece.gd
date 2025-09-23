@@ -43,7 +43,7 @@ func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	board = _board
 	set_board_pos(_pos)
 	original_pos = board_pos
-	player = player
+	player = _player
 
 
 func _ready() -> void:
