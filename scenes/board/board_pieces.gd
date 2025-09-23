@@ -155,11 +155,11 @@ func pick_up(piece: Piece) -> void:
 		clear_scared_pieces()
 
 
+## Loads pieces into [member scared_pieces] based on if the [member held_piece] will capture
+## said pieces when moved to [param pos]
 func set_scared_pieces_when_moved_to(pos: Vector2i) -> void:
 	if pos != hovered_pos:
 		hovered_pos = pos
-		scared_time = 0
-
 	if not held_piece:
 		return
 
@@ -176,6 +176,7 @@ func set_scared_pieces_when_moved_to(pos: Vector2i) -> void:
 	scared_pieces = held_piece.captures_when_moved_to(pos)
 
 
+## Clears out [member scared_pieces] and resets the pieces that were in it
 func clear_scared_pieces() -> void:
 	for piece in scared_pieces:
 		if piece:

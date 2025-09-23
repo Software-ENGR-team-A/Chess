@@ -219,13 +219,13 @@ func _movement(_pos: Vector2i) -> MovementOutcome:
 	return MovementOutcome.BLOCKED
 
 
+## Returns the pieces to be captured when moved to [param pos].
 func captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
 	var output: Array[Piece] = []
 
-	if movement_outcome_at(pos) == MovementOutcome.CAPTURE:
-		var piece_to_crush = board.pieces.at(pos)
-		if piece_to_crush:
-			output.push_back(piece_to_crush)
+	var piece_to_crush = board.pieces.at(pos)
+	if piece_to_crush:
+		output.push_back(piece_to_crush)
 
 	return output
 
