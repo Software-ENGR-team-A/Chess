@@ -88,7 +88,7 @@ func _process(delta: float) -> void:
 				piece.sprite.frame = round(sin(scared_time * 15) + 1)
 
 				if held_piece:
-					var offset = (piece.position - held_piece.position).clampf(-1, 1)
+					var offset = (piece.position - held_piece.position).clampf(-5, 5)
 					piece.internal_offset.position = offset / 3
 
 
@@ -150,7 +150,6 @@ func pick_up(piece: Piece) -> void:
 		piece.picked_up()
 		AudioManager.play_sound(AudioManager.movement.pickup)
 	else:
-
 		clear_scared_pieces()
 
 
