@@ -4,8 +4,8 @@ extends Node2D
 const PIECE_SCENE := preload("res://scenes/piece/piece.tscn")
 
 # Constants for held piece tilt effect
-const HELD_TILT_MAX := 90.0
-const HELD_ROT_GAIN := 0.01
+const HELD_TILT_MAX := 45.0
+const HELD_ROT_GAIN := 0.015
 const HELD_ROT_DAMPING := 15.0
 
 ## The [Board] the squares are associated with
