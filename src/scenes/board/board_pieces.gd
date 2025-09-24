@@ -175,6 +175,7 @@ func pick_up(piece: Piece) -> void:
 func set_scared_pieces_when_moved_to(pos: Vector2i) -> void:
 	if pos != hovered_pos:
 		hovered_pos = pos
+
 	if not held_piece:
 		return
 
@@ -198,7 +199,6 @@ func clear_scared_pieces() -> void:
 			piece.sprite_rot.rotation = 0
 			piece.sprite.frame = 0
 			piece.internal_offset.position = Vector2.ZERO
-			piece.internal_offset.rotation = 0
 
 	scared_pieces = []
 
