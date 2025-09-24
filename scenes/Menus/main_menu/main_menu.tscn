@@ -1,22 +1,13 @@
 [gd_scene load_steps=13 format=3 uid="uid://dxqgoubxk84a6"]
 
-[ext_resource type="Script" uid="uid://bb5qfo26fkduu" path="res://scenes/Menus/main_menu/main_menu.gd" id="1_0ebjn"]
-[ext_resource type="Texture2D" uid="uid://3kyydh464o4p" path="res://assets/Backgrounds/lightblue.png" id="1_fsom3"]
+[ext_resource type="Script" uid="uid://dy42uhk668n0y" path="res://scenes/menus/main_menu/main_menu.gd" id="1_0ebjn"]
+[ext_resource type="Texture2D" uid="uid://j2qrqfsy6mpo" path="res://assets/backgrounds/light_blue.png" id="1_fsom3"]
 
 [sub_resource type="SystemFont" id="SystemFont_0ebjn"]
 font_names = PackedStringArray("Impact")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ob46e"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uqeha"]
-bg_color = Color(0.843184, 0.843184, 0.843184, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebjn"]
-bg_color = Color(0.678944, 0.678944, 0.678944, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsom3"]
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 64
 corner_radius_top_right = 64
 corner_radius_bottom_right = 64
@@ -29,12 +20,21 @@ corner_radius_top_right = 64
 corner_radius_bottom_right = 64
 corner_radius_bottom_left = 64
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsom3"]
-bg_color = Color(1, 1, 1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebjn"]
+bg_color = Color(0.678944, 0.678944, 0.678944, 1)
 corner_radius_top_left = 64
 corner_radius_top_right = 64
 corner_radius_bottom_right = 64
 corner_radius_bottom_left = 64
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uqeha"]
+bg_color = Color(0.843184, 0.843184, 0.843184, 1)
+corner_radius_top_left = 64
+corner_radius_top_right = 64
+corner_radius_bottom_right = 64
+corner_radius_bottom_left = 64
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ob46e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ob46e"]
 corner_radius_top_left = 64
@@ -42,13 +42,13 @@ corner_radius_top_right = 64
 corner_radius_bottom_right = 64
 corner_radius_bottom_left = 64
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ebjn"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ovsr"]
 corner_radius_top_left = 64
 corner_radius_top_right = 64
 corner_radius_bottom_right = 64
 corner_radius_bottom_left = 64
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ebjn"]
 
 [sub_resource type="SystemFont" id="SystemFont_uqeha"]
 font_names = PackedStringArray("Impact")
@@ -92,52 +92,52 @@ theme_override_constants/separation = 20
 
 [node name="Start_Button" type="Button" parent="TextureRect/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_0ebjn")
 theme_override_font_sizes/font_size = 110
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ob46e")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_uqeha")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
 theme_override_styles/normal = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_uqeha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ob46e")
 text = "Start Game"
 
 [node name="Option_Button" type="Button" parent="TextureRect/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_0ebjn")
 theme_override_font_sizes/font_size = 110
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ob46e")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_uqeha")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ob46e")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
 theme_override_styles/normal = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ob46e")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_uqeha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ob46e")
 text = "Options"
 
 [node name="Exit_Button" type="Button" parent="TextureRect/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_0ebjn")
 theme_override_font_sizes/font_size = 110
-theme_override_styles/focus = SubResource("StyleBoxEmpty_0ebjn")
-theme_override_styles/hover = SubResource("StyleBoxFlat_3ovsr")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
 theme_override_styles/normal = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wem23")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ovsr")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0ebjn")
 text = "Exit"
 
 [node name="Label" type="Label" parent="TextureRect"]

@@ -2,13 +2,13 @@
 
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
-uid="uid://u7qvlu6xv6i7"
-path="res://.godot/imported/lofi1.ogg-798717d86894bb75518a148c1a32c8b5.oggvorbisstr"
+uid="uid://d4calvgcvth2b"
+path="res://.godot/imported/lofi1.ogg-717d04db317e5afd750659f84b8b1ae4.oggvorbisstr"
 
 [deps]
 
-source_file="res://assets/Audio/Music/lofi1.ogg"
-dest_files=["res://.godot/imported/lofi1.ogg-798717d86894bb75518a148c1a32c8b5.oggvorbisstr"]
+source_file="res://assets/audio/music/lofi1.ogg"
+dest_files=["res://.godot/imported/lofi1.ogg-717d04db317e5afd750659f84b8b1ae4.oggvorbisstr"]
 
 [params]
 

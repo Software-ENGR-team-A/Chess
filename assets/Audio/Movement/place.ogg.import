@@ -2,13 +2,13 @@
 
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
-uid="uid://b53vtwpfonyqr"
-path="res://.godot/imported/place.ogg-98e6cf25630f2e3d834a0d6e3ecb5c42.oggvorbisstr"
+uid="uid://hp4i7wwekb38"
+path="res://.godot/imported/place.ogg-2e13a681dfef5545738cc2b606525898.oggvorbisstr"
 
 [deps]
 
-source_file="res://assets/Audio/Movement/place.ogg"
-dest_files=["res://.godot/imported/place.ogg-98e6cf25630f2e3d834a0d6e3ecb5c42.oggvorbisstr"]
+source_file="res://assets/audio/movement/place.ogg"
+dest_files=["res://.godot/imported/place.ogg-2e13a681dfef5545738cc2b606525898.oggvorbisstr"]
 
 [params]
 

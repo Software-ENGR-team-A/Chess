@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://cf61el76vl4tq"]
 
 [ext_resource type="Script" uid="uid://c45ctc3qhh6uj" path="res://scenes/sound_system/music_manager.gd" id="1_1wwso"]
-[ext_resource type="AudioStream" uid="uid://xofqpdy6pen2" path="res://assets/Audio/Music/Elevator Music (Kevin MacLeod) - Background Music (HD) [TubeRipper.cc].ogg" id="2_v8i07"]
-[ext_resource type="AudioStream" uid="uid://d4f8wngp0nj0p" path="res://assets/Audio/Music/Bensound The Elevator Bossa Nova [TubeRipper.cc].ogg" id="3_mtasi"]
-[ext_resource type="AudioStream" uid="uid://u7qvlu6xv6i7" path="res://assets/Audio/Music/lofi1.ogg" id="4_hijaf"]
-[ext_resource type="AudioStream" uid="uid://cr4477bv6ukp2" path="res://assets/Audio/Music/lofi2.ogg" id="5_7ph2o"]
-[ext_resource type="AudioStream" uid="uid://cx62ycme0u7l8" path="res://assets/Audio/Music/lofi3.ogg" id="6_amhjc"]
-[ext_resource type="Script" uid="uid://d0ojdri2wc8u7" path="res://scenes/sound_system/sound_groups/MusicLibrary.gd" id="7_7ph2o"]
+[ext_resource type="AudioStream" uid="uid://gxgft2swshyi" path="res://assets/audio/music/elevator_music_kevin_macleod.ogg" id="2_v8i07"]
+[ext_resource type="AudioStream" uid="uid://comq52heu4p40" path="res://assets/audio/music/bensound_the_elevator_bossa_nova.ogg" id="3_mtasi"]
+[ext_resource type="AudioStream" uid="uid://d4calvgcvth2b" path="res://assets/audio/music/lofi1.ogg" id="4_hijaf"]
+[ext_resource type="AudioStream" uid="uid://cjnmbp2h63roe" path="res://assets/audio/music/lofi2.ogg" id="5_7ph2o"]
+[ext_resource type="AudioStream" uid="uid://bcwyo6c2hx64y" path="res://assets/audio/music/lofi3.ogg" id="6_amhjc"]
+[ext_resource type="Script" uid="uid://d0ojdri2wc8u7" path="res://scenes/sound_system/sound_groups/music_library.gd" id="7_7ph2o"]
 
 [sub_resource type="Resource" id="Resource_amhjc"]
 script = ExtResource("7_7ph2o")

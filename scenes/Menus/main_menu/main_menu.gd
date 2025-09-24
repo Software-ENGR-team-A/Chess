@@ -6,12 +6,12 @@ const BOARD_PIECES_SCRIPT := preload("res://scenes/board/board_pieces.gd")
 const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 # Load all piece classes to prevent null pointers
-const PAWN_SCRIPT := preload("res://scenes/piece/Pawn.gd")
-const ROOK_SCRIPT := preload("res://scenes/piece/Rook.gd")
-const KNIGHT_SCRIPT := preload("res://scenes/piece/Knight.gd")
-const BISHOP_SCRIPT := preload("res://scenes/piece/Bishop.gd")
-const QUEEN_SCRIPT := preload("res://scenes/piece/Queen.gd")
-const KING_SCRIPT := preload("res://scenes/piece/King.gd")
+const PAWN_SCRIPT := preload("res://scenes/piece/pawn.gd")
+const ROOK_SCRIPT := preload("res://scenes/piece/rook.gd")
+const KNIGHT_SCRIPT := preload("res://scenes/piece/knight.gd")
+const BISHOP_SCRIPT := preload("res://scenes/piece/bishop.gd")
+const QUEEN_SCRIPT := preload("res://scenes/piece/queen.gd")
+const KING_SCRIPT := preload("res://scenes/piece/king.gd")
 
 @export var start_button: Button
 @export var option_button: Button
