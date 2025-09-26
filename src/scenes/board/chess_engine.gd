@@ -27,7 +27,7 @@ func recursive_move_check(board: Board, layer: int) -> Move:
 	# recursively find the next best valid move after that, and return the best
 	# overall move based on their combined outcome
 	var best_moves: Array[Move] = []
-	var best_move_points: int = -INF
+	var best_move_points: float = -INF
 
 	var moves := get_possible_moves_for(board)
 
@@ -68,7 +68,7 @@ func get_best_shallow_move_for(board: Board) -> Move:
 		return null
 
 	var best_moves: Array[Move] = []
-	var best_move_points: int = -INF
+	var best_move_points: float = -INF
 
 	for move in moves:
 		var move_points = score_move(move)
