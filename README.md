@@ -1,6 +1,6 @@
 <p align="center">
   <picture>
-    <img alt="Gameplay Screenshot" src="./media/gameplay.png">
+    <img alt="Gameplay Screenshot" src="./media/gameplay.png" width="400">
   </picture>
 </p>
 
