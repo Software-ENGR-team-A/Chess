@@ -21,12 +21,18 @@ var queued_pieces: Array
 var debug_timelines := []
 var debug_timelines_half_move := half_moves
 
+# This NEEDS to be moved to like an overarching game class
+var engine: ChessEngine
+
 
 ## Sets all the root information for a board.
 ## [param floor_map]: Initial floor_map for the board's [member squares]
 ## [param pieces_array]: Array of [Piece]s to put on the board
 func setup(_is_primary, floor_map: Array, pieces_array: Array) -> void:
 	is_primary = _is_primary
+
+	if is_primary:
+		engine = ChessEngine.new(self)
 
 	if ready:
 		load_queued_state(floor_map, pieces_array)
@@ -99,6 +105,8 @@ func _input(event) -> void:
 				if is_primary and enemy_king.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
+
+				engine.make_random_move_for(self)
 
 				AudioManager.play_sound(AudioManager.movement.place)
 
