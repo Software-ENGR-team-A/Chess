@@ -1,7 +1,7 @@
 class_name Pawn
 extends Piece
 
-@export var forward_direction: int
+var forward_direction: int
 
 
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:

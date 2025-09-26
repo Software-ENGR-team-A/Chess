@@ -42,7 +42,7 @@ func setup(_board, _floor_data) -> void:
 func has_floor_at(pos: Vector2i) -> bool:
 	if pos.x < -8 or pos.x > 8:
 		return false
-	return get_bit(floor_data[pos.y - 8], 16 - pos.x - 8 - 1)
+	return (floor_data[pos.y - 8] >> 16 - pos.x - 9) & 1
 
 
 ## Adds or removes floor on the board
@@ -118,8 +118,3 @@ func set_highlight(pos) -> void:
 	elif get_cell_atlas_coords(pos) == BLACK_TILE:
 		set_cell(pos, TILESET_ID, DARK_CYAN_TILE)
 		last_tile_highlighted = pos
-
-
-## General utility method. Gets the bit in the [param pos] position in a [param bitfield]
-static func get_bit(bitfield: int, pos: int) -> int:
-	return (bitfield >> pos) & 1

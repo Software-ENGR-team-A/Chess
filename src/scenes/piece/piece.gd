@@ -60,7 +60,9 @@ func get_player_name() -> String:
 
 ## Returns a duplicate of the piece
 func branch() -> Piece:
-	var new_piece = duplicate()
+	var new_piece = get_script().new()
+	new_piece.setup(board, board_pos, player)
+	new_piece.original_pos = original_pos
 	return new_piece
 
 
@@ -136,8 +138,7 @@ func generate_all_moves() -> void:
 	for row in range(0, 16):
 		for col in range(0, 16):
 			var map_cell = Vector2i(col - 8, row - 8)
-			if board.squares.has_floor_at(map_cell):
-				movement_outcome_at(map_cell)
+			movement_outcome_at(map_cell)
 
 
 ## Returns if any possible moves are available for the piece
@@ -199,7 +200,7 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 			new_timeline.queue_free()
 
 	checked_cells.set(pos, move_outcome)
-	
+
 	if movement_safe_for_king(move_outcome):
 		valid_moves.push_back(pos)
 

@@ -106,7 +106,7 @@ func _input(event) -> void:
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
-				engine.make_random_move_for(self)
+				engine.make_move(self)
 
 				AudioManager.play_sound(AudioManager.movement.place)
 
