@@ -28,7 +28,9 @@ As we are very early in development, there are currently no released builds. To 
 4. Open the project in Godot: *Import > `/path/to/chess-and-balances/project.godot` > Open*
 5. You can begin playing with the Play button in the top right. To build the project instead, go to *Project > Export...* There are no presets defined yet, so configuring your export is up to you. See [Export — Godot Engine](https://docs.godotengine.org/en/stable/tutorials/export/index.html)
 
-Code formatting is enforced with [godot-gdscript-toolkit](https://github.com/Scony/godot-gdscript-toolkit). Before requesting a change, run `gdformat .` and check that `gdlint .` is passing from the project directory. Pull requests failing to meet this will not be merged until this is addressed.
+Our roadmap is detailed on the [Project page](https://github.com/orgs/Software-ENGR-team-A/projects/1). We encourage contributions targeting these first, but are happy to accept other ideas. Please [create an issue](https://github.com/Software-ENGR-team-A/Chess/issues/new/choose) to allow for discussion before dedicating your time to a code change not on the list.
+
+Code formatting is enforced with [godot-gdscript-toolkit](https://github.com/Scony/godot-gdscript-toolkit). Before submitting a change, run `gdformat .` and check that `gdlint .` is passing from the project directory and fix as needed. Pull requests failing to pass these will not be merged until this is addressed.
 
 ## 🛡️ License
 
