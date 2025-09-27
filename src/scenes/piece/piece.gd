@@ -14,6 +14,7 @@ const DEBUG_TIMELINE_MODE := DebugTimelineModes.NONE
 @export var anim_name := ""
 @export var previous_position: Vector2i
 @export var point_value := 0  # The point value for the engine
+@export var center_control_multiplier := 1.0  # The point value for the engine
 
 ## The [Board] the squares are associated with
 var board: Board
@@ -133,17 +134,9 @@ func look_in_direction(offset: Vector2i, repeat: int) -> Piece:
 	return board.look_in_direction(board_pos, offset, repeat)
 
 
-## Generates and stores all movement outcomes for the piece
-func generate_all_moves() -> void:
-	for row in range(0, 16):
-		for col in range(0, 16):
-			var map_cell = Vector2i(col - 8, row - 8)
-			movement_outcome_at(map_cell)
-
-
 ## Returns if any possible moves are available for the piece
 func has_valid_moves() -> bool:
-	generate_all_moves()
+	_generate_all_moves()
 	return valid_moves.size() > 0
 
 
@@ -214,12 +207,20 @@ func movement_outcome_at(pos: Vector2i) -> MovementOutcome:
 ## Note: this distinct from [method look_in_direction]
 func has_line_of_movement_to(pos: Vector2i) -> bool:
 	# Can always move to immediately touching
-	if board_pos.distance_to(pos) < 1.5:
+	if abs(board_pos.x - pos.x) <= 1 and abs(board_pos.y - pos.y) <= 1:
 		return true
 
 	# Check if dependent movement is valid
 	var direction_to_piece = (board_pos - pos).sign()
 	return movement_available(movement_outcome_at(pos + direction_to_piece))
+
+
+## Generates and stores all movement outcomes for the piece
+func _generate_all_moves() -> void:
+	for row in range(0, 16):
+		for col in range(0, 16):
+			var map_cell = Vector2i(col - 8, row - 8)
+			movement_outcome_at(map_cell)
 
 
 ## The internal piece movement method. Should probably only be used in conjunction with

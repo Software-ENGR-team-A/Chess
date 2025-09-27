@@ -97,6 +97,7 @@ func _input(event) -> void:
 				)
 			):
 				# Put down piece
+				engine.score_move(Move.new(pieces.held_piece, hovered_square), true)
 				pieces.held_piece.move_to(hovered_square)
 				half_moves += 1
 

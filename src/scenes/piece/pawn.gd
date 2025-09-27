@@ -7,8 +7,20 @@ var forward_direction: int
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 1
+	center_control_multiplier = 1.5
 	anim_name = get_player_name() + "Pawn"
 	forward_direction = -1 if player else 1
+
+
+## Generates and stores all movement outcomes for the piece
+func _generate_all_moves() -> void:
+	# Forward three squares
+	for col in range(-1, 2):
+		var map_cell = Vector2i(board_pos.x - col, board_pos.y + forward_direction)
+		movement_outcome_at(map_cell)
+
+	# Double promote
+	movement_outcome_at(Vector2i(board_pos.x, board_pos.y + 2*forward_direction))
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

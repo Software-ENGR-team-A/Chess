@@ -5,7 +5,22 @@ extends Piece
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 99999  # Insanely high value that should be tuned with the engine
+	center_control_multiplier = -2.0
 	anim_name = get_player_name() + "King"
+
+
+
+## Generates and stores all movement outcomes for the piece
+func _generate_all_moves() -> void:
+	# Normal square of movement
+	for row in range(-1, 2):
+		for col in range(-1, 2):
+			var map_cell = Vector2i(board_pos.x - col, board_pos.y - row)
+			movement_outcome_at(map_cell)
+
+	# Castle locations
+	movement_outcome_at(Vector2i(board_pos.x - 2, board_pos.y))
+	movement_outcome_at(Vector2i(board_pos.x + 2, board_pos.y))
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
@@ -25,7 +40,7 @@ func _movement(pos: Vector2i) -> MovementOutcome:
 
 
 func get_castle_target_when_moved_to(pos: Vector2i) -> Piece:
-	if original_pos != board_pos:
+	if previous_position != null:
 		return
 
 	var direction: Vector2i

@@ -42,6 +42,9 @@ func setup(_board, _floor_data) -> void:
 func has_floor_at(pos: Vector2i) -> bool:
 	if pos.x < -8 or pos.x > 8:
 		return false
+	if pos.y < -8 or pos.y > 8:
+		return false
+
 	return (floor_data[pos.y - 8] >> 16 - pos.x - 9) & 1
 
 

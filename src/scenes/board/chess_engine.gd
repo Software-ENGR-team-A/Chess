@@ -1,5 +1,8 @@
 class_name ChessEngine
 
+# const VARIABILITY := 1.0
+const VARIABILITY := 0.0
+
 var root_board: Board
 
 var worker_thread: Thread = Thread.new()
@@ -13,8 +16,9 @@ func _init(_root_board: Board) -> void:
 func make_move(board: Board) -> void:
 	# make_best_shallow_move_for(board)
 
-	var decided_outcome = recursive_move_check(board, 2)
+	var decided_outcome = recursive_move_check(board, 3)
 	if decided_outcome:
+		score_move(decided_outcome, true)
 		decided_outcome.perform()
 
 
@@ -49,7 +53,7 @@ func recursive_move_check(board: Board, layer: int) -> Move:
 
 		new_timeline.queue_free()
 
-		if move_points > best_move_points:
+		if move_points > best_move_points + VARIABILITY:
 			best_moves = []
 			best_move_points = move_points
 
@@ -57,7 +61,6 @@ func recursive_move_check(board: Board, layer: int) -> Move:
 			best_moves.push_back(move)
 
 	var random_good_move: Move = best_moves[randi() % best_moves.size()]
-
 	return random_good_move
 
 
@@ -73,7 +76,7 @@ func get_best_shallow_move_for(board: Board) -> Move:
 	for move in moves:
 		var move_points = score_move(move)
 
-		if move_points > best_move_points:
+		if move_points > best_move_points + VARIABILITY:
 			best_moves = []
 			best_move_points = move_points
 
@@ -91,15 +94,32 @@ func get_possible_moves_for(board: Board) -> Array[Move]:
 		if piece == null or board.half_moves % 2 != piece.player:
 			continue
 
-		piece.generate_all_moves()
+		piece._generate_all_moves()
 		for position in piece.valid_moves:
 			moves.push_back(Move.new(piece, position))
 
 	return moves
 
 
-func score_move(move: Move) -> int:
-	var points := 0
+func score_move(move: Move, debug: bool = false) -> float:
+	var points := 0.0
+
+	# Add score for captures
 	for capture in move.piece.captures_when_moved_to(move.board_pos):
-		points += capture.point_value
+		if debug:
+			print("\t" + str(round(capture.point_value * 4)) + " points for capturing " + str(capture))
+
+		points += capture.point_value * 4
+
+	# Remove points for poor centre control
+	# var center_bonus =  8 - Vector2(move.board_pos).distance_to(Vector2(-0.5, -0.5))
+	# center_bonus *= move.piece.center_control_multiplier / 2
+	#
+	# points += center_bonus
+	# if debug:
+	# 	print("\t" + str(round(center_bonus)) + " points for centre bonus")
+	
+	if debug:
+		print(str(round(points)) + " points total")
+
 	return points
