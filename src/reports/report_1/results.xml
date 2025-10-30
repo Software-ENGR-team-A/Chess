@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2025-10-30" name="report_1" tests="4" failures="4" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="curency_display_test" package="test/scenes/shop_and_currency" timestamp="2025-10-30T20:34:35" hostname="localhost" tests="4" failures="4" errors="0" skipped="0" flaky="0" time="0.131">
+		<testcase name="test_add_balance" classname="curency_display_test" time="0.014">
+			<failure message="FAILED: res://test/scenes/shop_and_currency/curency_display_test.gd:12" type="FAILURE">
+<![CDATA[
+Test not implemented!
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_remove_balance" classname="curency_display_test" time="0.013">
+			<failure message="FAILED: res://test/scenes/shop_and_currency/curency_display_test.gd:15" type="FAILURE">
+<![CDATA[
+Test not implemented!
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_get_balance" classname="curency_display_test" time="0.014">
+			<failure message="FAILED: res://test/scenes/shop_and_currency/curency_display_test.gd:18" type="FAILURE">
+<![CDATA[
+Test not implemented!
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_display_balance" classname="curency_display_test" time="0.021">
+			<failure message="FAILED: res://test/scenes/shop_and_currency/curency_display_test.gd:21" type="FAILURE">
+<![CDATA[
+Test not implemented!
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+</testsuites>
