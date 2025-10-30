@@ -7,6 +7,7 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source: String = 'res://scenes/board/board.gd'
 
+#Sometimes tests are weird and have to run indvidually
 
 func test_promote_white_pawn() -> void:
 	var board := Board.new()
