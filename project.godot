@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Chess and Balances"
 run/main_scene="uid://dxqgoubxk84a6"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="uid://m7xduai1gw3g"
 
 [audio]
@@ -35,7 +35,7 @@ project/assembly_name="Chess and Balances"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg")
+enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
 
 [rendering]
 
