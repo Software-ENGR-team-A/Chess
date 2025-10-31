@@ -8,12 +8,13 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var pieces: Node
 @export var box_cursor: BoxCursor
 
+@onready var turn_indicator = $TurnIndicator
+
 ## Current amount of moves taken. If even, white to play.
 var half_moves := 0
 
 ## Tracks if the board is the root board. Changes /
 var is_primary: bool
-
 var queued_bitmaps: Array
 var queued_pieces: Array
 
@@ -34,6 +35,11 @@ func setup(_is_primary, floor_map: Array, pieces_array: Array) -> void:
 		queued_bitmaps = floor_map
 		queued_pieces = pieces_array
 
+func set_turn(turn: int):
+	if turn % 2 == 1:
+		turn_indicator.text = str(turn) + "\nWhite"
+	else:
+		turn_indicator.text = str(turn) + "\nBlack"
 
 func _ready() -> void:
 	if queued_bitmaps.size() > 0 and queued_pieces.size() > 0:
@@ -43,6 +49,8 @@ func _ready() -> void:
 
 	if is_primary:
 		MusicManager.play_random_song()
+	
+	set_turn(1)
 
 
 func _input(event) -> void:
@@ -93,6 +101,7 @@ func _input(event) -> void:
 				# Put down piece
 				pieces.held_piece.move_to(hovered_square)
 				half_moves += 1
+				set_turn(half_moves + 1)
 
 				# Verify checkmate state for opposite player
 				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]

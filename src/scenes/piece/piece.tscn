@@ -27,7 +27,7 @@ position = Vector2(4, 18)
 [node name="Shadow" type="AnimatedSprite2D" parent="InternalOffset/ShadowRot"]
 unique_name_in_owner = true
 visible = false
-modulate = Color(0, 0, 0, 0.2509804)
+modulate = Color(0, 0, 0, 0.25098)
 z_index = -1
 position = Vector2(0, -6)
 sprite_frames = ExtResource("2_huli3")
