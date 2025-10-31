@@ -2,14 +2,15 @@ class_name AudioManagerTest
 extends GdUnitTestSuite
 @warning_ignore("unused_parameter")
 @warning_ignore("return_value_discarded")
-
 const AM_SCRIPT := preload("res://scenes/sound_system/audio_manager.gd")
+
 
 func _new_am(bus_name: String) -> Node:
 	var am: Node = AM_SCRIPT.new()
 	am.bus_name = bus_name
 	am._ready()
 	return am
+
 
 func test_ready_sets_bus_index_on_master() -> void:
 	var am := _new_am("Master")
@@ -18,11 +19,13 @@ func test_ready_sets_bus_index_on_master() -> void:
 	assert_that(am.sfx_bus_idx).is_equal(expected)
 	am.queue_free()
 
+
 func test_get_volume_returns_minus_1000_when_bus_missing() -> void:
 	var am := _new_am("__NO_SUCH_BUS__")
 	var vol: float = am.get_volume()
 	assert_that(vol).is_equal(-1000.0)
 	am.queue_free()
+
 
 func test_set_volume_noop_when_bus_missing() -> void:
 	var am := _new_am("__NO_SUCH_BUS__")
@@ -30,6 +33,7 @@ func test_set_volume_noop_when_bus_missing() -> void:
 	var vol: float = am.get_volume()
 	assert_that(vol).is_equal(-1000.0)
 	am.queue_free()
+
 
 func test_set_volume_updates_master_and_restores_value() -> void:
 	var am := _new_am("Master")
