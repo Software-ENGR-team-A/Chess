@@ -121,7 +121,6 @@ func load_queued_state(squares_data, new_pieces) -> void:
 	squares.setup(self, squares_data)
 	pieces.setup(self, new_pieces)
 
-
 ## Creates and returns a copy of the current [Board]
 func branch() -> Board:
 	var new_timeline := BOARD_SCENE.instantiate()
