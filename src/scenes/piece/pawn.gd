@@ -14,8 +14,7 @@ func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 # Override move_to so we can special-case promotion
 func move_to(pos: Vector2i) -> void:
 	var is_promotion := (
-		(forward_direction == -1 and pos.y == -4) or
-		(forward_direction == 1 and pos.y == 3)
+		(forward_direction == -1 and pos.y == -4) or (forward_direction == 1 and pos.y == 3)
 	)
 
 	if not is_promotion:
