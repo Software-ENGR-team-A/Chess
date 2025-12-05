@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0bs6sbbrybcl"]
+[gd_scene load_steps=8 format=3 uid="uid://c0bs6sbbrybcl"]
 
 [ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
 [ext_resource type="TileSet" uid="uid://csu6oc8c7768i" path="res://scenes/board/spritesheet_tileset.tres" id="2_q07he"]
 [ext_resource type="Script" uid="uid://b0pypjutr31ci" path="res://scenes/board/board_squares.gd" id="3_knosr"]
 [ext_resource type="Texture2D" uid="uid://bm86noysxv6ks" path="res://assets/spritesheet.png" id="4_ci4ar"]
-[ext_resource type="Script" path="res://scenes/board/box_cursor.gd" id="4_kymhv"]
-[ext_resource type="Script" path="res://scenes/board/board_pieces.gd" id="4_q07he"]
+[ext_resource type="Script" uid="uid://cv0lyl3vphqw5" path="res://scenes/board/box_cursor.gd" id="4_kymhv"]
+[ext_resource type="Script" uid="uid://buabp8ji67ups" path="res://scenes/board/board_pieces.gd" id="4_q07he"]
+[ext_resource type="PackedScene" uid="uid://c0o0wn3xnasao" path="res://scenes/menus/pause_menu/pause_menu.tscn" id="7_exf0g"]
 
 [node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces", "box_cursor")]
 script = ExtResource("1_q07he")
@@ -31,3 +32,22 @@ script = ExtResource("4_kymhv")
 
 [node name="Pieces" type="Node2D" parent="."]
 script = ExtResource("4_q07he")
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_exf0g")]
+visible = false
+offset_left = -36.0
+offset_top = -35.0
+offset_right = -36.0
+offset_bottom = -35.0
+metadata/_edit_use_anchors_ = true
+
+[node name="PauseButton" type="Button" parent="."]
+offset_left = -114.0
+offset_top = -63.0
+offset_right = -85.0
+offset_bottom = -32.0
+theme_override_constants/outline_size = 6
+theme_override_constants/line_spacing = 0
+text = "I I"
+
+[connection signal="pressed" from="PauseButton" to="." method="_on_pause_button_pressed"]
