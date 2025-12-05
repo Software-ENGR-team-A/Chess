@@ -10,6 +10,7 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 @onready var pause_menu: Control = $PauseMenu
 @onready var pause_button: Button = $PauseButton
+@onready var turn_indicator: Label = $TurnIndicator
 
 var paused = false
 
@@ -48,6 +49,8 @@ func _ready() -> void:
 
 	if is_primary:
 		MusicManager.play_random_song()
+		
+	turn_indicator.text = "Turn 1\nWhite"
 
 
 func _input(event) -> void:
@@ -99,6 +102,10 @@ func _input(event) -> void:
 					# Put down piece
 					pieces.held_piece.move_to(hovered_square)
 					half_moves += 1
+					if half_moves % 2 == 0:
+						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
+					else:
+						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nBlack"
 
 					# Verify checkmate state for opposite player
 					var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
@@ -192,10 +199,8 @@ func show_debug_timeline(board: Board) -> void:
 func pause():
 	if paused:
 		pause_menu.hide()
-		pause_button.show()
 	else:
 		pause_menu.show()
-		pause_button.hide()
 	paused = !paused
 
 func _on_pause_button_pressed() -> void:

@@ -33,14 +33,6 @@ script = ExtResource("4_kymhv")
 [node name="Pieces" type="Node2D" parent="."]
 script = ExtResource("4_q07he")
 
-[node name="PauseMenu" parent="." instance=ExtResource("7_exf0g")]
-visible = false
-offset_left = -36.0
-offset_top = -35.0
-offset_right = -36.0
-offset_bottom = -35.0
-metadata/_edit_use_anchors_ = true
-
 [node name="PauseButton" type="Button" parent="."]
 offset_left = -114.0
 offset_top = -63.0
@@ -49,5 +41,20 @@ offset_bottom = -32.0
 theme_override_constants/outline_size = 6
 theme_override_constants/line_spacing = 0
 text = "I I"
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_exf0g")]
+visible = false
+offset_left = -36.0
+offset_top = -35.0
+offset_right = -36.0
+offset_bottom = -35.0
+metadata/_edit_use_anchors_ = true
+
+[node name="TurnIndicator" type="Label" parent="."]
+offset_left = 68.0
+offset_top = -67.0
+offset_right = 108.0
+offset_bottom = -44.0
+theme_override_font_sizes/font_size = 13
 
 [connection signal="pressed" from="PauseButton" to="." method="_on_pause_button_pressed"]
