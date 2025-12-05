@@ -12,20 +12,20 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @onready var pause_button: Button = $PauseButton
 @onready var turn_indicator: Label = $TurnIndicator
 
-var paused = false
+@onready var paused = false
 
 ## Current amount of moves taken. If even, white to play.
-var half_moves := 0
+@onready var half_moves := 0
 
 ## Tracks if the board is the root board. Changes /
-var is_primary: bool
+@onready var is_primary: bool
 
-var queued_bitmaps: Array
-var queued_pieces: Array
+@onready var queued_bitmaps: Array
+@onready var queued_pieces: Array
 
 # Debug
-var debug_timelines := []
-var debug_timelines_half_move := 0
+@onready var debug_timelines := []
+@onready var debug_timelines_half_move := half_moves
 
 
 ## Sets all the root information for a board.
