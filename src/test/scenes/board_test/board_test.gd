@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 @warning_ignore("unused_parameter")
 @warning_ignore("return_value_discarded")
 # TestSuite generated from
-const Source: String = "res://scenes/board/board.gd"
+const SOURCE: String = "res://scenes/board/board.gd"
 
 
 func test_set_difficulty() -> void:
