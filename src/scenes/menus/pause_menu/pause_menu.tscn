@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0o0wn3xnasao"]
+
+[ext_resource type="Script" uid="uid://clprjmv3pp32u" path="res://scenes/menus/pause_menu/pause_menu.gd" id="1_lde4l"]
+
+[sub_resource type="GDScript" id="GDScript_lde4l"]
+
+[sub_resource type="Shader" id="Shader_fgv3k"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
+uniform float amount: hint_range(0.0, 5.0);
+
+void fragment() {
+	vec4 color = textureLod(screen_texture,SCREEN_UV, amount);
+	COLOR = color;
+}"
+script = SubResource("GDScript_lde4l")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i58lr"]
+shader = SubResource("Shader_fgv3k")
+shader_parameter/amount = 3.0000001425
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lde4l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_i58lr")
+layout_mode = 0
+offset_left = -412.0
+offset_top = -245.0
+offset_right = 444.0
+offset_bottom = 264.0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
