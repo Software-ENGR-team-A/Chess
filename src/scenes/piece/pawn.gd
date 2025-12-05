@@ -141,9 +141,7 @@ func movement_actions(pos: Vector2i) -> void:
 
 func captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
 	var captures = super.captures_when_moved_to(pos)
-#IT WORKS
 	var en_passant_target = get_en_passant_target(pos)
 	if en_passant_target:
 		captures.push_back(en_passant_target)
-
 	return captures
