@@ -25,7 +25,7 @@ var queued_pieces: Array
 
 # Debug
 var debug_timelines := []
-var debug_timelines_half_move := half_moves
+var debug_timelines_half_move := 0
 
 
 ## Sets all the root information for a board.
