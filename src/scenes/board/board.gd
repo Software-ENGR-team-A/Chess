@@ -49,7 +49,7 @@ func _ready() -> void:
 
 	if is_primary:
 		MusicManager.play_random_song()
-		
+
 	turn_indicator.text = "Turn 1\nWhite"
 
 
@@ -79,7 +79,11 @@ func _input(event) -> void:
 		else:
 			squares.set_highlight(hovered_square)
 
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if (
+			event is InputEventMouseButton
+			and event.pressed
+			and event.button_index == MOUSE_BUTTON_LEFT
+		):
 			if pieces.held_piece == null:
 				# Pick up piece
 				box_cursor.set_board_pos(hovered_square)
@@ -121,9 +125,10 @@ func _input(event) -> void:
 					AudioManager.play_sound(AudioManager.movement.invalid)
 
 				pieces.pick_up(null)
-	
+
 	if Input.is_action_just_pressed("pause"):
 		pause()
+
 
 func _notification(event):
 	if event == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -196,12 +201,14 @@ func show_debug_timeline(board: Board) -> void:
 
 	debug_timelines.push_back(new_window)
 
+
 func pause():
 	if paused:
 		pause_menu.hide()
 	else:
 		pause_menu.show()
 	paused = !paused
+
 
 func _on_pause_button_pressed() -> void:
 	pause()
