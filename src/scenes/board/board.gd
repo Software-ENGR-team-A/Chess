@@ -9,6 +9,8 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var box_cursor: BoxCursor
 
 @onready var turn_indicator = $TurnIndicator
+@onready var pause_menu = $PauseMenu
+var paused = false
 
 ## Current amount of moves taken. If even, white to play.
 var half_moves := 0
@@ -37,9 +39,9 @@ func setup(_is_primary, floor_map: Array, pieces_array: Array) -> void:
 
 func set_turn(turn: int):
 	if turn % 2 == 1:
-		turn_indicator.text = str(turn) + "\nWhite"
+		turn_indicator.text = "Turn " + str(turn) + "\nWhite"
 	else:
-		turn_indicator.text = str(turn) + "\nBlack"
+		turn_indicator.text = "Turn " + str(turn) + "\nBlack"
 
 func _ready() -> void:
 	if queued_bitmaps.size() > 0 and queued_pieces.size() > 0:
@@ -54,70 +56,73 @@ func _ready() -> void:
 
 
 func _input(event) -> void:
-	if not is_primary:
-		return
+	if not paused:
+		if not is_primary:
+			return
 
-	var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
+		var hovered_square = squares.local_to_map(squares.get_local_mouse_position())
 
-	box_cursor.lerp_to_board_pos(hovered_square)
+		box_cursor.lerp_to_board_pos(hovered_square)
 
-	if pieces.held_piece != null:
-		# Fetch world position from cursor in viewport
-		var vport = get_viewport()
-		var screen_mouse_position = vport.get_mouse_position()  # Get mouse position on screen
-		var world_pos = (
-			(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
-			* screen_mouse_position
-		)
+		if pieces.held_piece != null:
+			# Fetch world position from cursor in viewport
+			var vport = get_viewport()
+			var screen_mouse_position = vport.get_mouse_position()  # Get mouse position on screen
+			var world_pos = (
+				(vport.get_screen_transform() * vport.get_canvas_transform()).affine_inverse()
+				* screen_mouse_position
+			)
 
-		# Move piece under cursor
-		pieces.held_piece.position = world_pos + Vector2(0, -12)
+			# Move piece under cursor
+			pieces.held_piece.position = world_pos + Vector2(0, -12)
 
-		pieces.set_scared_pieces_when_moved_to(hovered_square)
-
-	else:
-		squares.set_highlight(hovered_square)
-
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if pieces.held_piece == null:
-			# Pick up piece
-			box_cursor.set_board_pos(hovered_square)
-			AudioManager.play_sound(AudioManager.movement.pickup)
-
-			var piece_at_cell = pieces.at(hovered_square)
-			if piece_at_cell and piece_at_cell.player == half_moves % 2:
-				pieces.pick_up(piece_at_cell)
-				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+			pieces.set_scared_pieces_when_moved_to(hovered_square)
 
 		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			# Try to put down piece
-			if (
-				squares.has_floor_at(hovered_square)
-				and Piece.movement_safe_for_king(
-					pieces.held_piece.movement_outcome_at(hovered_square)
-				)
-			):
-				# Put down piece
-				pieces.held_piece.move_to(hovered_square)
-				half_moves += 1
-				set_turn(half_moves + 1)
+			squares.set_highlight(hovered_square)
 
-				# Verify checkmate state for opposite player
-				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
-				if is_primary and enemy_king.in_checkmate():
-					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			if pieces.held_piece == null:
+				# Pick up piece
+				box_cursor.set_board_pos(hovered_square)
+				AudioManager.play_sound(AudioManager.movement.pickup)
 
-				AudioManager.play_sound(AudioManager.movement.place)
+				var piece_at_cell = pieces.at(hovered_square)
+				if piece_at_cell and piece_at_cell.player == half_moves % 2:
+					pieces.pick_up(piece_at_cell)
+					Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 			else:
-				# Revert location
-				pieces.held_piece.set_board_pos(pieces.held_piece.board_pos)
-				AudioManager.play_sound(AudioManager.movement.invalid)
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+				# Try to put down piece
+				if (
+					squares.has_floor_at(hovered_square)
+					and Piece.movement_safe_for_king(
+						pieces.held_piece.movement_outcome_at(hovered_square)
+					)
+				):
+					# Put down piece
+					pieces.held_piece.move_to(hovered_square)
+					half_moves += 1
+					set_turn(half_moves + 1)
 
-			pieces.pick_up(null)
+					# Verify checkmate state for opposite player
+					var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
+					if is_primary and enemy_king.in_checkmate():
+						AudioManager.play_sound(AudioManager.movement.checkmate, -15)
+						print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
+					AudioManager.play_sound(AudioManager.movement.place)
+
+				else:
+					# Revert location
+					pieces.held_piece.set_board_pos(pieces.held_piece.board_pos)
+					AudioManager.play_sound(AudioManager.movement.invalid)
+
+				pieces.pick_up(null)
+	
+	if Input.is_action_just_pressed("pause"):
+		pause()
 
 func _notification(event):
 	if event == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -189,3 +194,14 @@ func show_debug_timeline(board: Board) -> void:
 	board.get_node("Camera").zoom = Vector2(4, 4)
 
 	debug_timelines.push_back(new_window)
+
+func pause():
+	if paused:
+		pause_menu.hide()
+	if not paused:
+		pause_menu.show()
+	paused = !paused
+
+func _on_pause_button_pressed() -> void:
+	if not paused:
+		pause()
