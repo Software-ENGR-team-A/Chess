@@ -41,6 +41,9 @@ func move_to(pos: Vector2i) -> void:
 	var pawn_original := original_pos
 	var pawn_prev := board_pos
 
+	# Make sure the piece is reset before duplicated and swapped
+	board.pieces.pick_up(null)
+
 	# 5) Create a new node by duplicating this pawn (keeps all child nodes intact)
 	var queen := duplicate() as Piece
 
