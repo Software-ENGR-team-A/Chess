@@ -1,0 +1,33 @@
+name: Main Checks
+
+on:
+  push:
+    branches: "main"
+  pull_request:
+    branches: "main"
+
+jobs:
+  static-checks:
+    name: 'gdtoolkit'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: Scony/godot-gdscript-toolkit@master
+    - run: gdformat --check ./
+    - run: gdlint ./
+  gdunit-checks:
+    name: 'GdUnit'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: MikeSchulze/gdunit4-action@v1
+      with:
+        godot-version: '4.5.1'
+        paths: 'res://tests'
+        timeout: 2
+    - name: Upload GdUnit reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+          name: gdunit-reports
+          path: .gdunit/reports
