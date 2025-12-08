@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7k57d4hiqhd1"]
+
+[ext_resource type="Script" uid="uid://dbfahhjcplmb6" path="res://scenes/piece/piece.gd" id="1_huli3"]
+[ext_resource type="SpriteFrames" uid="uid://djyaadn235qky" path="res://scenes/piece/PieceAnims.tres" id="2_huli3"]
+
+[node name="Piece" type="Node2D"]
+script = ExtResource("1_huli3")
+metadata/sprite = 0
+
+[node name="InternalOffset" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="SpriteRot" type="Node2D" parent="InternalOffset"]
+unique_name_in_owner = true
+position = Vector2(0, 14)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="InternalOffset/SpriteRot"]
+unique_name_in_owner = true
+position = Vector2(0, -6)
+sprite_frames = ExtResource("2_huli3")
+animation = &"WhiteKing"
+
+[node name="ShadowRot" type="Node2D" parent="InternalOffset"]
+unique_name_in_owner = true
+position = Vector2(4, 18)
+
+[node name="Shadow" type="AnimatedSprite2D" parent="InternalOffset/ShadowRot"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0, 0, 0, 0.2509804)
+z_index = -1
+position = Vector2(0, -6)
+sprite_frames = ExtResource("2_huli3")
+animation = &"WhiteKing"
