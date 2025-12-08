@@ -186,8 +186,15 @@ func show_debug_timeline(board: Board) -> void:
 	debug_timelines.push_back(new_window)
 
 
-func set_difficulty(new_difficulty: String) -> void:
-	difficulty = new_difficulty
+func set_difficulty(new_difficulty: int) -> void:
+	if new_difficulty == 0:
+		difficulty = "Easy"
+	elif new_difficulty == 1:
+		difficulty = "Medium"
+	elif new_difficulty == 2:
+		difficulty = "Hard"
+	else:
+		difficulty = "Easy"
 	print("Difficulty set to: ", difficulty)
 
 
