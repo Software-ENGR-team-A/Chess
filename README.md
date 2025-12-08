@@ -10,15 +10,6 @@
 
 ---
 
-## 🧪 Testing - For CS3203 Code Review
-
-When checking our unit tests, they are each in their own branch as of 2025-10-31. Make sure you checkout the branch for the classmate you are reviewing. Each of us have linked to the proper test file in our own branch in the master document.
-
-To check if unit tests are passing, go to the GdUnit tab in the top left of the Godot editor and click the Rerun Unit Tests button. You may have to click the Run Discover Tests button in the same panel before they appear.
-
-![Testing Image](media/test_helper.png)
-
----
 
 Chess and Balances is an in-development game seeking to re-imagine the classic game of Chess
 
@@ -29,7 +20,12 @@ A major source of gameplay inspiration we keep returning to is the 2024 indie hi
 ## 📥 Downloading and Playing
 
 If you would like to try the latest release, download it from the releases tab on the right!
-<img width="340" height="733" alt="image" src="https://github.com/user-attachments/assets/7529ac61-24aa-4dfd-ae81-82f45130589e" />
+
+<p align="center">
+  <picture>
+    <img width="340"" alt="Arrow pointing to releases tab on right" src="https://github.com/user-attachments/assets/08a85288-b7d6-43f6-ad48-2d03fceb2364" />
+  </picture>
+</p>
 
 To try the current build, see **🔧 Building / Contributing**
 
