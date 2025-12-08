@@ -27,9 +27,3 @@ jobs:
           project_dir: "./src/"
           paths: "res://test"
           timeout: 2
-      - name: Upload GdUnit reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gdunit-reports
-          path: .gdunit/reports
