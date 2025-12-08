@@ -28,7 +28,10 @@ A major source of gameplay inspiration we keep returning to is the 2024 indie hi
 
 ## 📥 Downloading and Playing
 
-As we are very early in development, there are currently no released builds. To try the game out, see **🔧 Building / Contributing**
+If you would like to try the latest release, download it from the releases tab on the right!
+<img width="340" height="733" alt="image" src="https://github.com/user-attachments/assets/7529ac61-24aa-4dfd-ae81-82f45130589e" />
+
+To try the current build, see **🔧 Building / Contributing**
 
 ## 🔧 Building / Contributing
 
