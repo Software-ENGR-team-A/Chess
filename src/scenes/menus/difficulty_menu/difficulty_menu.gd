@@ -56,14 +56,14 @@ var master_squares := [
 	0b0000000000000000,
 	0b0000000000000000,
 	0b0000000000000000,
-	0b0000111111110000,
-	0b0001111111111000,
-	0b0001110110111000,
-	0b0001111111111000,
-	0b0001111111111000,
-	0b0001110110111000,
-	0b0001111111111000,
-	0b0000111111110000,
+	0b0011111111110000,
+	0b0010111111110000,
+	0b0010110110110000,
+	0b0010111111110100,
+	0b0010111111110100,
+	0b0000110110110100,
+	0b0000111111110100,
+	0b0000111111111100,
 	0b0000000000000000,
 	0b0000000000000000,
 	0b0000000000000000,
@@ -164,7 +164,7 @@ var master_pieces_data := [
 	{"script": PAWN_SCRIPT, "pos": Vector2i(2, -3), "player": 0},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(3, -3), "player": 0},
 	# White Back Row
-	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
+	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
 	{"script": BISHOP_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
 	{"script": KING_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
@@ -172,6 +172,12 @@ var master_pieces_data := [
 	{"script": BISHOP_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
 	{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
+	# Riflemen
+	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(-6, 0), "player": 0},
+	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(5, -1), "player": 1},
+	# Counter-Knights
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-4, 0), "player": 1},
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(3, -1), "player": 0},
 	# Black Front Row
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, 2), "player": 1},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-3, 2), "player": 1},
@@ -189,7 +195,7 @@ var master_pieces_data := [
 	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
 	{"script": BISHOP_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
-	{"script": RIFLEMAN_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
+	{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 ]
 
 var difficulty := 1
