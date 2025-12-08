@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=3 uid="uid://ieyjkped1arb"]
+
+[ext_resource type="Script" uid="uid://3ts1a8faf3dp" path="res://scenes/menus/options_menu/options_menu.gd" id="1_2hu2m"]
+[ext_resource type="Texture2D" uid="uid://j2qrqfsy6mpo" path="res://assets/backgrounds/light_blue.png" id="1_um17b"]
+
+[sub_resource type="SystemFont" id="SystemFont_0dyb4"]
+font_names = PackedStringArray("Impact")
+subpixel_positioning = 0
+
+[sub_resource type="SystemFont" id="SystemFont_vduk8"]
+font_names = PackedStringArray("Impact")
+subpixel_positioning = 0
+
+[node name="OptionsMenu" type="Control" node_paths=PackedStringArray("music_slider", "back_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2hu2m")
+music_slider = NodePath("TextureRect/VBoxContainer/HBoxContainer/Label2/HSlider")
+back_button = NodePath("TextureRect/VBoxContainer/HBoxContainer/Label2/Button2")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_um17b")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 20.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_0dyb4")
+theme_override_font_sizes/font_size = 200
+text = "Options"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 55.2
+
+[node name="Label2" type="Label" parent="TextureRect/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_0dyb4")
+theme_override_font_sizes/font_size = 75
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="TextureRect/VBoxContainer/HBoxContainer/Label2"]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 72.0
+offset_right = 1286.0
+offset_bottom = 186.0
+
+[node name="Button2" type="Button" parent="TextureRect/VBoxContainer/HBoxContainer/Label2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.5630001
+anchor_right = 0.5
+anchor_bottom = 2.0630002
+offset_left = -54.0
+offset_top = 11.203995
+offset_right = 55.0
+offset_bottom = 35.20398
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_vduk8")
+theme_override_font_sizes/font_size = 50
+text = "Back"
