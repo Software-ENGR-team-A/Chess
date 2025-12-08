@@ -1,14 +1,12 @@
-# res://scenes/menus/options_menu/options_menu.gd
-
 class_name OptionsMenu
 extends Control
 
+const MIN_VOLUME := -60.0
+const MAX_VOLUME := 5.0
+const DEFAULT_VOLUME := -15.0
+
 @export var music_slider: HSlider
 @export var back_button: Button
-
-const MIN_VOLUME := -60
-const MAX_VOLUME := 5
-const DEFAULT_VOLUME := -15
 
 
 func _ready() -> void:
