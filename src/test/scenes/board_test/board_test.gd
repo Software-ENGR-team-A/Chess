@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 @warning_ignore("unused_parameter")
 @warning_ignore("return_value_discarded")
 # TestSuite generated from
-const __source: String = "res://scenes/board/board.gd"
+const SOURCE: String = "res://scenes/board/board.gd"
 
 const BOARD_SCENE := preload("res://scenes/board/board.tscn")
 const BOARD_PIECES_SCRIPT := preload("res://scenes/board/board_pieces.gd")
@@ -154,3 +154,23 @@ func test_look_in_direction() -> void:
 
 	# Clear
 	b.queue_free()
+
+
+func test_set_difficulty() -> void:
+	# Arrange
+	var board := Board.new()
+
+	# Assert default value
+	assert_str(board.get_difficulty()).is_equal("Medium")
+
+	# Act & Assert: set to Easy
+	board.set_difficulty("Easy")
+	assert_str(board.get_difficulty()).is_equal("Easy")
+
+	# Act & Assert: set to Hard
+	board.set_difficulty("Hard")
+	assert_str(board.get_difficulty()).is_equal("Hard")
+
+	# Cleanup
+	board.queue_free()
+	await get_tree().process_frame  # Give Godot a frame to clean up freed nodes

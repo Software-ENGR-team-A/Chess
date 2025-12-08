@@ -11,6 +11,9 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 ## Current amount of moves taken. If even, white to play.
 var half_moves := 0
 
+## Difficulty level to change AI
+var difficulty: String = "Medium"
+
 ## Tracks if the board is the root board. Changes /
 var is_primary: bool
 
@@ -96,6 +99,7 @@ func _input(event) -> void:
 
 				# Verify checkmate state for opposite player
 				var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
+
 				if is_primary and enemy_king.in_checkmate():
 					AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 					print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
@@ -180,3 +184,12 @@ func show_debug_timeline(board: Board) -> void:
 	board.get_node("Camera").zoom = Vector2(4, 4)
 
 	debug_timelines.push_back(new_window)
+
+
+func set_difficulty(new_difficulty: String) -> void:
+	difficulty = new_difficulty
+	print("Difficulty set to: ", difficulty)
+
+
+func get_difficulty() -> String:
+	return difficulty
