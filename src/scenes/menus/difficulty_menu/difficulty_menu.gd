@@ -10,7 +10,7 @@ const KNIGHT_SCRIPT := preload("res://scenes/piece/knight.gd")
 const BISHOP_SCRIPT := preload("res://scenes/piece/bishop.gd")
 const QUEEN_SCRIPT := preload("res://scenes/piece/queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/king.gd")
-const RIFLEMAN_SCRIPT := preload("res://scenes/piece/Rifleman.gd")
+const RIFLEMAN_SCRIPT := preload("res://scenes/piece/rifleman.gd")
 const ROACH_SCRIPT := preload("res://scenes/piece/roach.gd")
 
 var default_squares := [
