@@ -17,6 +17,9 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 ## Current amount of moves taken. If even, white to play.
 @onready var half_moves := 0
 
+## Difficulty level to change AI
+var difficulty: String = "Medium"
+
 ## Tracks if the board is the root board. Changes /
 @onready var is_primary: bool
 
@@ -212,3 +215,17 @@ func pause():
 
 func _on_pause_button_pressed() -> void:
 	pause()
+func set_difficulty(new_difficulty: int) -> void:
+	if new_difficulty == 0:
+		difficulty = "Easy"
+	elif new_difficulty == 1:
+		difficulty = "Medium"
+	elif new_difficulty == 2:
+		difficulty = "Hard"
+	else:
+		difficulty = "Easy"
+	print("Difficulty set to: ", difficulty)
+
+
+func get_difficulty() -> String:
+	return difficulty
