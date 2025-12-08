@@ -27,3 +27,4 @@ jobs:
           project_dir: "./src/"
           paths: "res://test"
           timeout: 2
+          publish-report: false
