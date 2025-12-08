@@ -16,6 +16,7 @@ jobs:
     - uses: Scony/godot-gdscript-toolkit@master
     - run: gdformat --check ./
     - run: gdlint ./
+    
   gdunit-checks:
     name: 'GdUnit'
     runs-on: ubuntu-latest
