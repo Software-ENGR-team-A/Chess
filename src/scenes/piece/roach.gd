@@ -30,6 +30,8 @@ func capture() -> void:
 	var valid_locations = []
 	for i in range(-1, 1):
 		for j in range(-1, 1):
+			if i == 0 and j == 0:
+				continue
 			var location = board_pos + Vector2i(i, j)
 			if board.squares.has_floor_at(location) and not board.pieces.at(location):
 				valid_locations.push_back(location)
