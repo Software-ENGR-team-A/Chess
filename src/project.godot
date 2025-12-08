@@ -40,6 +40,7 @@ enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg", "res://addon
 [gdunit4]
 
 Shortcuts/editor/create_test=PackedInt32Array(4194328, 4194327, 4194341)
+settings/test/test_discovery=true
 
 [input]
 
