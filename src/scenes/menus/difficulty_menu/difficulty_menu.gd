@@ -11,6 +11,7 @@ const BISHOP_SCRIPT := preload("res://scenes/piece/bishop.gd")
 const QUEEN_SCRIPT := preload("res://scenes/piece/queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/king.gd")
 const RIFLEMAN_SCRIPT := preload("res://scenes/piece/Rifleman.gd")
+const ROACH_SCRIPT := preload("res://scenes/piece/roach.gd")
 
 var default_squares := [
 	0b0000000000000000,
@@ -108,6 +109,50 @@ var default_pieces_data := [
 	{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 ]
 
+var medium_pieces_data := [
+	# White Front Row
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-3, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-1, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(0, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(1, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(2, -3), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(3, -3), "player": 0},
+	# White Back Row
+	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
+	{"script": ROACH_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
+	{"script": KING_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
+	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
+	{"script": ROACH_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
+	{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
+	# Middle
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -1), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(1, -1), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-2, 0), "player": 0},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(1, 0), "player": 0},
+	# Black Front Row
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-3, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-2, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(-1, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(0, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(1, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
+	{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
+	# Black Back Row
+	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
+	{"script": ROACH_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
+	{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
+	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
+	{"script": ROACH_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
+	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
+	{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
+]
+
 var master_pieces_data := [
 	# White Front Row
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-4, -3), "player": 0},
@@ -177,7 +222,7 @@ func start_game() -> void:
 		pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(default_pieces_data)
 	elif difficulty == 1:
 		squares = medium_squares
-		pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(default_pieces_data)
+		pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(medium_pieces_data)
 	else:
 		squares = master_squares
 		pieces = BOARD_PIECES_SCRIPT.generate_pieces_from_data(master_pieces_data)
