@@ -24,6 +24,7 @@ jobs:
       - uses: MikeSchulze/gdunit4-action@v1
         with:
           godot-version: "4.5.1"
+          project_dir: "./src/"
           paths: "res://test"
           timeout: 2
       - name: Upload GdUnit reports
