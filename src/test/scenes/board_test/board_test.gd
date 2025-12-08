@@ -164,11 +164,11 @@ func test_set_difficulty() -> void:
 	assert_str(board.get_difficulty()).is_equal("Medium")
 
 	# Act & Assert: set to Easy
-	board.set_difficulty("Easy")
+	board.set_difficulty(0)
 	assert_str(board.get_difficulty()).is_equal("Easy")
 
 	# Act & Assert: set to Hard
-	board.set_difficulty("Hard")
+	board.set_difficulty(2)
 	assert_str(board.get_difficulty()).is_equal("Hard")
 
 	# Cleanup
