@@ -41,6 +41,8 @@ Our roadmap is detailed on the [Project page](https://github.com/orgs/Software-E
 
 Code formatting is enforced with [godot-gdscript-toolkit](https://github.com/Scony/godot-gdscript-toolkit). Before submitting a change, run `gdformat .` and check that `gdlint .` is passing from the project directory and fix as needed. Pull requests failing to pass these will not be merged until this is addressed.
 
+A suite of test-cases, found in `src/test` must also be passed. Creating test cases for any functions you create is highly encouraged, and a lack of tests may justify a PR rejection.
+
 ## 🛡️ License
 
 Chess and Balances is licensed under [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (or later) - see the [`LICENSE`](LICENSE) file for details.
