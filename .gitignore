@@ -4,3 +4,20 @@
 .vscode/
 .idea/
 .DS_Store
+
+# gdUnit4
+reports/
+
+# Releases: Linux
+releases/Linux/arm32/*
+releases/Linux/arm64/*
+releases/Linux/x86_32/*
+releases/Linux/x86_64/*
+
+# Releases: Windows
+releases/Windows/arm64/*
+releases/Windows/x86_32/*
+releases/Windows/x86_64/*
+
+#Releases : MacOSX
+releases/MacOSX/*

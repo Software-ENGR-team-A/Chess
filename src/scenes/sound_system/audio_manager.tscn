@@ -1,0 +1,36 @@
+[gd_scene load_steps=15 format=3 uid="uid://d1kqs01ig1dug"]
+
+[ext_resource type="Script" uid="uid://dlvmb6alpnxru" path="res://scenes/sound_system/audio_manager.gd" id="1_fagox"]
+[ext_resource type="AudioStream" uid="uid://k62kwx56okre" path="res://assets/audio/movement/capture.ogg" id="2_x5gnv"]
+[ext_resource type="AudioStream" uid="uid://bq8ffcsi5y7aq" path="res://assets/audio/movement/invalid_move.ogg" id="5_sbso7"]
+[ext_resource type="AudioStream" uid="uid://cwns48lve41oh" path="res://assets/audio/movement/pickup.ogg" id="6_mp3ft"]
+[ext_resource type="AudioStream" uid="uid://dtnrgrgptfnqn" path="res://assets/audio/movement/small_explosion_8_bit.ogg" id="6_x5gnv"]
+[ext_resource type="AudioStream" uid="uid://hp4i7wwekb38" path="res://assets/audio/movement/place.ogg" id="7_e5y6x"]
+[ext_resource type="AudioStream" uid="uid://cv7t2mxa1n2p1" path="res://assets/audio/movement/boss_death.ogg" id="7_sbso7"]
+[ext_resource type="Script" uid="uid://cfcgaocxt5vrm" path="res://scenes/sound_system/sound_groups/movement_sounds.gd" id="8_e5y6x"]
+[ext_resource type="AudioStream" uid="uid://cr2ie0ejroua3" path="res://assets/audio/movement/slash_8_bit.ogg" id="8_mp3ft"]
+[ext_resource type="AudioStream" uid="uid://q7s18kpviutr" path="res://assets/audio/menu/cancel_8_bit.ogg" id="10_exi1o"]
+[ext_resource type="AudioStream" uid="uid://bl5u15xo2o2xr" path="res://assets/audio/menu/menu_8_bit.ogg" id="11_cv2ok"]
+[ext_resource type="Script" uid="uid://d0rxdfdq67rol" path="res://scenes/sound_system/sound_groups/menu_sounds.gd" id="12_ygj4p"]
+
+[sub_resource type="Resource" id="Resource_3ygxf"]
+script = ExtResource("8_e5y6x")
+pickup = ExtResource("6_mp3ft")
+place = ExtResource("7_e5y6x")
+invalid = ExtResource("5_sbso7")
+capture = ExtResource("2_x5gnv")
+check = ExtResource("6_x5gnv")
+checkmate = ExtResource("7_sbso7")
+stalemate = ExtResource("8_mp3ft")
+metadata/_custom_type_script = "uid://cfcgaocxt5vrm"
+
+[sub_resource type="Resource" id="Resource_uj4dh"]
+script = ExtResource("12_ygj4p")
+open = ExtResource("11_cv2ok")
+close = ExtResource("10_exi1o")
+metadata/_custom_type_script = "uid://d0rxdfdq67rol"
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_fagox")
+movement = SubResource("Resource_3ygxf")
+menu = SubResource("Resource_uj4dh")
