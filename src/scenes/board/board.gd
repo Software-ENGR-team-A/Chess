@@ -8,6 +8,9 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var pieces: Node
 @export var box_cursor: BoxCursor
 
+## Difficulty level to change AI
+var difficulty: String = "Medium"
+
 @onready var pause_menu: Control = $PauseMenu
 @onready var pause_button: Button = $PauseButton
 @onready var turn_indicator: Label = $TurnIndicator
@@ -16,9 +19,6 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 
 ## Current amount of moves taken. If even, white to play.
 @onready var half_moves := 0
-
-## Difficulty level to change AI
-@onready var difficulty: String = "Medium"
 
 ## Tracks if the board is the root board. Changes /
 @onready var is_primary: bool
