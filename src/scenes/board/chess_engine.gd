@@ -16,7 +16,7 @@ func _init(_root_board: Board) -> void:
 func make_move(board: Board) -> void:
 	# make_best_shallow_move_for(board)
 
-	var decided_outcome = recursive_move_check(board, 3)
+	var decided_outcome = recursive_move_check(board, 1)
 	if decided_outcome:
 		score_move(decided_outcome, true)
 		decided_outcome.perform()
