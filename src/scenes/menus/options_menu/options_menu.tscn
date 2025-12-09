@@ -11,7 +11,7 @@ subpixel_positioning = 0
 font_names = PackedStringArray("Impact")
 subpixel_positioning = 0
 
-[node name="OptionsMenu" type="Control" node_paths=PackedStringArray("music_slider", "back_button")]
+[node name="OptionsMenu" type="Control" node_paths=PackedStringArray("music_slider", "sfx_slider", "master_slider", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2hu2m")
-music_slider = NodePath("TextureRect/VBoxContainer/HBoxContainer/Label2/HSlider")
+music_slider = NodePath("TextureRect/VBoxContainer/HBoxContainer3/Label2/HSlider")
+sfx_slider = NodePath("TextureRect/VBoxContainer/HBoxContainer2/Label2/HSlider")
+master_slider = NodePath("TextureRect/VBoxContainer/HBoxContainer/Label2/HSlider")
 back_button = NodePath("TextureRect/VBoxContainer/HBoxContainer/Label2/Button2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -62,7 +64,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_0dyb4")
 theme_override_font_sizes/font_size = 75
-text = "Volume"
+text = "Master Volume"
 horizontal_alignment = 1
 
 [node name="HSlider" type="HSlider" parent="TextureRect/VBoxContainer/HBoxContainer/Label2"]
@@ -79,10 +81,10 @@ anchor_left = 0.5
 anchor_top = 1.5630001
 anchor_right = 0.5
 anchor_bottom = 2.0630002
-offset_left = -54.0
-offset_top = 11.203995
-offset_right = 55.0
-offset_bottom = 35.20398
+offset_left = -53.0
+offset_top = 372.20398
+offset_right = 56.0
+offset_bottom = 396.20398
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -90,3 +92,45 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_vduk8")
 theme_override_font_sizes/font_size = 50
 text = "Back"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 252.9
+
+[node name="Label2" type="Label" parent="TextureRect/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_0dyb4")
+theme_override_font_sizes/font_size = 75
+text = "SFX Volume"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="TextureRect/VBoxContainer/HBoxContainer2/Label2"]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 72.0
+offset_right = 1286.0
+offset_bottom = 186.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 661.0
+
+[node name="Label2" type="Label" parent="TextureRect/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_0dyb4")
+theme_override_font_sizes/font_size = 75
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="TextureRect/VBoxContainer/HBoxContainer3/Label2"]
+layout_mode = 0
+offset_left = 768.0
+offset_top = 72.0
+offset_right = 1286.0
+offset_bottom = 186.0
