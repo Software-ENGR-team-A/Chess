@@ -10,6 +10,7 @@
 
 ---
 
+
 Chess and Balances is an in-development game seeking to re-imagine the classic game of Chess
 
 Currently, the only thing implemented is a functioning Chess system, with an underlying structure to enable highly customizable variants. We're imagining a less-serious experience, aimed towards beginner to intermediate Chess players. While we're still imagining the core gameplay loop, we're leaning towards a single-player, roguelike game that starts with limited pieces and lets you build up your army and upgrade your units on an evolving battlefield against an AI opponent.
@@ -18,7 +19,15 @@ A major source of gameplay inspiration we keep returning to is the 2024 indie hi
 
 ## 📥 Downloading and Playing
 
-As we are very early in development, there are currently no released builds. To try the game out, see **🔧 Building / Contributing**
+If you would like to try the latest release, download it from the releases tab on the right!
+
+<p align="center">
+  <picture>
+    <img width="340"" alt="Arrow pointing to releases tab on right" src="https://github.com/user-attachments/assets/08a85288-b7d6-43f6-ad48-2d03fceb2364" />
+  </picture>
+</p>
+
+To try the current build, see **🔧 Building / Contributing**
 
 ## 🔧 Building / Contributing
 

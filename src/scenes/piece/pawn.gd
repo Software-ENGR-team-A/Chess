@@ -12,15 +12,70 @@ func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	forward_direction = -1 if player else 1
 
 
-## Generates and stores all movement outcomes for the piece
-func _generate_all_moves() -> void:
-	# Forward three squares
-	for col in range(-1, 2):
-		var map_cell = Vector2i(board_pos.x - col, board_pos.y + forward_direction)
-		movement_outcome_at(map_cell)
+# Override move_to so we can special-case promotion
+func move_to(pos: Vector2i) -> void:
+	var is_promotion := (
+		(forward_direction == -1 and pos.y == -4) or (forward_direction == 1 and pos.y == 3)
+	)
 
-	# Double promote
-	movement_outcome_at(Vector2i(board_pos.x, board_pos.y + 2*forward_direction))
+	if not is_promotion:
+		# Normal move: use base Piece logic
+		super.move_to(pos)
+		return
+
+	# ---------- PROMOTION MOVE ----------
+
+	# 1) Clear old square in board map
+	board.pieces.map.set(board_pos, null)
+
+	# 2) Handle captures (normal + en passant via captures_when_moved_to)
+	for piece in captures_when_moved_to(pos):
+		piece.capture()
+
+	# 3) Run any extra pawn actions (like your en passant cleanup)
+	#    This keeps behavior consistent with non-promotion moves.
+	movement_actions(pos)
+
+	# 4) Cache pawn data we want to carry over
+	var pawn_board := board
+	var pawn_player := player
+	var pawn_original := original_pos
+	var pawn_prev := board_pos
+
+	# Make sure the piece is reset before duplicated and swapped
+	board.pieces.pick_up(null)
+
+	# 5) Create a new node by duplicating this pawn (keeps all child nodes intact)
+	var queen := duplicate() as Piece
+
+	# 6) Convert that duplicate into a Queen by swapping the script
+	queen.set_script(load("res://scenes/piece/queen.gd"))
+
+	# 7) Attach the queen node to the board
+	pawn_board.pieces.add_child(queen)
+
+	# 8) Initialize queen like a normal piece
+	queen.board = pawn_board
+	queen.player = pawn_player
+	queen.original_pos = pawn_original
+	queen.previous_position = pawn_prev
+	queen.set_board_pos(pos)
+	queen.last_moved_half_move = pawn_board.half_moves
+	queen.point_value = 9
+	queen.anim_name = get_player_name() + "Queen"
+
+	# 9) Update animations in case Queen._ready doesn't handle this immediately
+	if is_instance_valid(queen.sprite):
+		queen.sprite.animation = queen.anim_name
+	if is_instance_valid(queen.shadow):
+		queen.shadow.animation = queen.anim_name
+
+	# 10) Put queen into board map
+	pawn_board.pieces.map[pos] = queen
+
+	# 11) Remove the original pawn node
+	pawn_board.pieces.remove_child(self)
+	queue_free()
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:
@@ -89,9 +144,7 @@ func movement_actions(pos: Vector2i) -> void:
 
 func captures_when_moved_to(pos: Vector2i) -> Array[Piece]:
 	var captures = super.captures_when_moved_to(pos)
-
 	var en_passant_target = get_en_passant_target(pos)
 	if en_passant_target:
 		captures.push_back(en_passant_target)
-
 	return captures
