@@ -8,14 +8,14 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var pieces: Node
 @export var box_cursor: BoxCursor
 
+@export var turn_indicator: Label
+@export var pause_menu: Control
+@export var pause_button: TextureButton
+
 var difficulty: String = "Medium"
 var ai_enabled: bool = true
 
 var engine: ChessEngine
-
-@onready var pause_menu: Control = $PauseMenu
-@onready var pause_button: Button = $PauseButton
-@onready var turn_indicator: Label = $TurnIndicator
 
 @onready var paused = false
 
