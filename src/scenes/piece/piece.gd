@@ -74,12 +74,12 @@ func move_to(pos: Vector2i) -> void:
 	# Pick up original piece
 	board.pieces.map.set(board_pos, null)
 
+	# Perform extra actions
+	movement_actions(pos)
+
 	# Captures
 	for piece in captures_when_moved_to(pos):
 		piece.capture()
-
-	# Perform extra actions
-	movement_actions(pos)
 
 	# Move piece
 	previous_position = board_pos

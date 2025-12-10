@@ -12,6 +12,7 @@ const QUEEN_SCRIPT := preload("res://scenes/piece/queen.gd")
 const KING_SCRIPT := preload("res://scenes/piece/king.gd")
 const RIFLEMAN_SCRIPT := preload("res://scenes/piece/rifleman.gd")
 const ROACH_SCRIPT := preload("res://scenes/piece/roach.gd")
+const BUILDER_SCRIPT := preload("res://scenes/piece/builder.gd")
 
 @export var easy_button: Button
 @export var medium_button: Button
@@ -129,14 +130,14 @@ var medium_pieces_data := [
 	{"script": PAWN_SCRIPT, "pos": Vector2i(2, -3), "player": 0},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(3, -3), "player": 0},
 	# White Back Row
-	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
+	{"script": BUILDER_SCRIPT, "pos": Vector2i(-4, -4), "player": 0},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, -4), "player": 0},
 	{"script": ROACH_SCRIPT, "pos": Vector2i(-2, -4), "player": 0},
 	{"script": KING_SCRIPT, "pos": Vector2i(-1, -4), "player": 0},
 	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, -4), "player": 0},
 	{"script": ROACH_SCRIPT, "pos": Vector2i(1, -4), "player": 0},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, -4), "player": 0},
-	{"script": ROOK_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
+	{"script": BUILDER_SCRIPT, "pos": Vector2i(3, -4), "player": 0},
 	# Middle
 	{"script": PAWN_SCRIPT, "pos": Vector2i(-2, -1), "player": 1},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(1, -1), "player": 1},
@@ -152,14 +153,14 @@ var medium_pieces_data := [
 	{"script": PAWN_SCRIPT, "pos": Vector2i(2, 2), "player": 1},
 	{"script": PAWN_SCRIPT, "pos": Vector2i(3, 2), "player": 1},
 	# Black Back Row
-	{"script": ROOK_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
+	{"script": BUILDER_SCRIPT, "pos": Vector2i(-4, 3), "player": 1},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(-3, 3), "player": 1},
 	{"script": ROACH_SCRIPT, "pos": Vector2i(-2, 3), "player": 1},
 	{"script": KING_SCRIPT, "pos": Vector2i(-1, 3), "player": 1},
 	{"script": QUEEN_SCRIPT, "pos": Vector2i(0, 3), "player": 1},
 	{"script": ROACH_SCRIPT, "pos": Vector2i(1, 3), "player": 1},
 	{"script": KNIGHT_SCRIPT, "pos": Vector2i(2, 3), "player": 1},
-	{"script": ROOK_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
+	{"script": BUILDER_SCRIPT, "pos": Vector2i(3, 3), "player": 1}
 ]
 
 var master_pieces_data := [

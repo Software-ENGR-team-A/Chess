@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=74 format=3 uid="uid://djyaadn235qky"]
+[gd_resource type="SpriteFrames" load_steps=82 format=3 uid="uid://djyaadn235qky"]
 
 [ext_resource type="Texture2D" uid="uid://bm86noysxv6ks" path="res://assets/spritesheet.png" id="1_vkki1"]
 
@@ -33,6 +33,22 @@ region = Rect2(103, 120, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_x7cra"]
 atlas = ExtResource("1_vkki1")
 region = Rect2(120, 120, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3npts"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(69, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_832l2"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(86, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3u3j"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(103, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ivkr"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(120, 205, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_duskk"]
 atlas = ExtResource("1_vkki1")
@@ -178,6 +194,22 @@ region = Rect2(103, 103, 16, 16)
 atlas = ExtResource("1_vkki1")
 region = Rect2(120, 103, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc6iv"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(1, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yy8a8"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(18, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bk8c"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(35, 205, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v34b6"]
+atlas = ExtResource("1_vkki1")
+region = Rect2(52, 205, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_wtpcx"]
 atlas = ExtResource("1_vkki1")
 region = Rect2(1, 52, 16, 16)
@@ -319,6 +351,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"BlackBishop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3npts")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_832l2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3u3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ivkr")
+}],
+"loop": true,
+"name": &"BlackBuilder",
 "speed": 5.0
 }, {
 "frames": [{
@@ -467,6 +516,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"WhiteBishop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc6iv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yy8a8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bk8c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v34b6")
+}],
+"loop": true,
+"name": &"WhiteBuilder",
 "speed": 5.0
 }, {
 "frames": [{
