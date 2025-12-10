@@ -107,7 +107,9 @@ func score_move(move: Move, debug: bool = false) -> float:
 	# Add score for captures
 	for capture in move.piece.captures_when_moved_to(move.board_pos):
 		if debug:
-			print("\t" + str(round(capture.point_value * 4)) + " points for capturing " + str(capture))
+			print(
+				"\t" + str(round(capture.point_value * 4)) + " points for capturing " + str(capture)
+			)
 
 		points += capture.point_value * 4
 
@@ -118,7 +120,7 @@ func score_move(move: Move, debug: bool = false) -> float:
 	# points += center_bonus
 	# if debug:
 	# 	print("\t" + str(round(center_bonus)) + " points for centre bonus")
-	
+
 	if debug:
 		print(str(round(points)) + " points total")
 

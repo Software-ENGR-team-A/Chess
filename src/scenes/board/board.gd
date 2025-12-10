@@ -8,8 +8,10 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var pieces: Node
 @export var box_cursor: BoxCursor
 
-## Difficulty level to change AI
 var difficulty: String = "Medium"
+var ai_enabled: bool = true
+
+var engine: ChessEngine
 
 @onready var pause_menu: Control = $PauseMenu
 @onready var pause_button: Button = $PauseButton
@@ -29,9 +31,6 @@ var difficulty: String = "Medium"
 # Debug
 @onready var debug_timelines := []
 @onready var debug_timelines_half_move := half_moves
-
-# This NEEDS to be moved to like an overarching game class
-var engine: ChessEngine
 
 
 ## Sets all the root information for a board.
@@ -98,7 +97,6 @@ func _input(event) -> void:
 				box_cursor.set_board_pos(hovered_square)
 				AudioManager.play_sound(AudioManager.movement.pickup)
 
-				AudioManager.play_sound(AudioManager.movement.place)
 				var piece_at_cell = pieces.at(hovered_square)
 				if piece_at_cell and piece_at_cell.player == half_moves % 2:
 					pieces.pick_up(piece_at_cell)
@@ -129,8 +127,8 @@ func _input(event) -> void:
 
 					AudioManager.play_sound(AudioManager.movement.place)
 
-					engine.make_move(self)
-
+					if ai_enabled:
+						engine.make_move(self)
 
 				else:
 					# Revert location

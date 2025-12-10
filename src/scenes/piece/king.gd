@@ -9,7 +9,6 @@ func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	anim_name = get_player_name() + "King"
 
 
-
 ## Generates and stores all movement outcomes for the piece
 func _generate_all_moves() -> void:
 	# Normal square of movement

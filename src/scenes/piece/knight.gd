@@ -30,6 +30,7 @@ func _generate_all_moves() -> void:
 	movement_outcome_at(Vector2i(board_pos.x + 1, board_pos.y - 2))
 	movement_outcome_at(Vector2i(board_pos.x + 1, board_pos.y + 2))
 
+
 func _movement(pos: Vector2i) -> MovementOutcome:
 	# Check knight shape
 	if not check_knight_shape(pos):

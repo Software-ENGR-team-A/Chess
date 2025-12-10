@@ -26,6 +26,7 @@ func _generate_all_moves() -> void:
 		movement_outcome_at(Vector2i(board_pos.x - offset, board_pos.y - offset))
 		movement_outcome_at(Vector2i(board_pos.x + offset, board_pos.y - offset))
 
+
 func _movement(pos: Vector2i) -> MovementOutcome:
 	var piece_to_capture = board.pieces.at(pos)
 

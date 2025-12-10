@@ -13,6 +13,15 @@ const KING_SCRIPT := preload("res://scenes/piece/king.gd")
 const RIFLEMAN_SCRIPT := preload("res://scenes/piece/rifleman.gd")
 const ROACH_SCRIPT := preload("res://scenes/piece/roach.gd")
 
+@export var easy_button: Button
+@export var medium_button: Button
+@export var hard_button: Button
+
+@export var ai_button: Button
+@export var local_button: Button
+
+@export var start_button: Button
+
 var default_squares := [
 	0b0000000000000000,
 	0b0000000000000000,
@@ -199,18 +208,33 @@ var master_pieces_data := [
 ]
 
 var difficulty := 1
+var ai := true
 
 
 func _ready() -> void:
-	$TextureRect/HBoxContainer/EasyButton.pressed.connect(func(): set_difficulty(0))
-	$TextureRect/HBoxContainer/MediumButton.pressed.connect(func(): set_difficulty(1))
-	$TextureRect/HBoxContainer/HardButton.pressed.connect(func(): set_difficulty(2))
+	easy_button.pressed.connect(func(): set_difficulty(0))
+	medium_button.pressed.connect(func(): set_difficulty(1))
+	hard_button.pressed.connect(func(): set_difficulty(2))
 
-	$TextureRect/VBoxContainer/StartButton.pressed.connect(start_game)
+	ai_button.pressed.connect(func(): set_ai(true))
+	local_button.pressed.connect(func(): set_ai(false))
+
+	start_button.pressed.connect(start_game)
 
 
 func set_difficulty(value: int):
 	difficulty = value
+
+	easy_button.disabled = value == 0
+	medium_button.disabled = value == 1
+	hard_button.disabled = value == 2
+
+
+func set_ai(value: bool):
+	ai = value
+
+	ai_button.disabled = value == true
+	local_button.disabled = value == false
 
 
 func start_game() -> void:
@@ -219,6 +243,7 @@ func start_game() -> void:
 
 	var new_board = BOARD_SCENE.instantiate()
 	new_board.set_difficulty(difficulty)
+	new_board.ai_enabled = ai
 
 	var squares
 	var pieces
