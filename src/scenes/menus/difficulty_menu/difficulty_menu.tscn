@@ -1,231 +1,142 @@
-[gd_scene load_steps=20 format=3 uid="uid://bvsxlmgsmj0t5"]
+[gd_scene load_steps=4 format=3 uid="uid://bvsxlmgsmj0t5"]
 
 [ext_resource type="Script" uid="uid://pqpnkew0tj48" path="res://scenes/menus/difficulty_menu/difficulty_menu.gd" id="1_2r61v"]
-[ext_resource type="Texture2D" uid="uid://j2qrqfsy6mpo" path="res://assets/backgrounds/light_blue.png" id="2_qsbkh"]
+[ext_resource type="Theme" uid="uid://bgixiarsqwbu" path="res://scenes/menus/button_theme.tres" id="3_cik14"]
 
 [sub_resource type="Theme" id="Theme_2r61v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsbkh"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oipiq"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icbs3"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="SystemFont" id="SystemFont_cik14"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cik14"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwbl4"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m2lcq"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3yqky"]
-bg_color = Color(0, 0.72156864, 0.28235295, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ldk"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ob6pc"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r1p12"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xiptm"]
-bg_color = Color(0, 0.72156864, 0.28235295, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l2qm"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nto4l"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nr5kj"]
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4b4t"]
-bg_color = Color(0, 0.72156864, 0.28235295, 1)
-corner_radius_top_left = 64
-corner_radius_top_right = 64
-corner_radius_bottom_right = 64
-corner_radius_bottom_left = 64
-
-[node name="DifficultyMenu" type="Control"]
+[node name="DifficultyMenu" type="Control" node_paths=PackedStringArray("easy_button", "medium_button", "hard_button", "ai_button", "local_button", "start_button")]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-tooltip_text = "Select Difficulty
-"
-theme = SubResource("Theme_2r61v")
-script = ExtResource("1_2r61v")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 2048.0
-offset_bottom = 1080.0
-texture = ExtResource("2_qsbkh")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
-layout_mode = 0
-offset_left = 624.0
-offset_top = 650.0
-offset_right = 1424.0
-offset_bottom = 750.0
-
-[node name="StartButton" type="Button" parent="TextureRect/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 80
-theme_override_styles/normal = SubResource("StyleBoxFlat_qsbkh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_oipiq")
-theme_override_styles/hover = SubResource("StyleBoxFlat_icbs3")
-text = "Start Game"
-
-[node name="Label" type="Label" parent="TextureRect"]
-layout_mode = 0
-offset_right = 1912.0
-offset_bottom = 413.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_cik14")
-theme_override_font_sizes/font_size = 150
-text = "Select Difficulty
-"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect"]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -624.0
-offset_top = -140.0
-offset_right = 576.0
-offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 100
+scale = Vector2(6, 6)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+tooltip_text = "Select Difficulty
+"
+theme = SubResource("Theme_2r61v")
+script = ExtResource("1_2r61v")
+easy_button = NodePath("Vertical/Difficulty/Difficulty Selection/EasyButton")
+medium_button = NodePath("Vertical/Difficulty/Difficulty Selection/MediumButton")
+hard_button = NodePath("Vertical/Difficulty/Difficulty Selection/HardButton")
+ai_button = NodePath("Vertical/Opponent/Opponent Selection/AIButton")
+local_button = NodePath("Vertical/Opponent/Opponent Selection/LocalButton")
+start_button = NodePath("Vertical/StartButton")
 
-[node name="EasyButton" type="Button" parent="TextureRect/HBoxContainer"]
+[node name="Vertical" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -86.5
+offset_right = 86.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Vertical"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_cik14")
+
+[node name="Difficulty" type="VBoxContainer" parent="Vertical"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Difficulty Label" type="Label" parent="Vertical/Difficulty"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.0
+theme = ExtResource("3_cik14")
+text = "Map Difficulty"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Difficulty Selection" type="HBoxContainer" parent="Vertical/Difficulty"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+alignment = 1
+
+[node name="EasyButton" type="Button" parent="Vertical/Difficulty/Difficulty Selection"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme = ExtResource("3_cik14")
+text = "Easy
+"
+
+[node name="MediumButton" type="Button" parent="Vertical/Difficulty/Difficulty Selection"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme = ExtResource("3_cik14")
+disabled = true
+text = "Medium"
+
+[node name="HardButton" type="Button" parent="Vertical/Difficulty/Difficulty Selection"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme = ExtResource("3_cik14")
+text = "Master"
+
+[node name="HSeparator" type="HSeparator" parent="Vertical"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_cik14")
+
+[node name="Opponent" type="VBoxContainer" parent="Vertical"]
+layout_mode = 2
+
+[node name="Opponent Label" type="Label" parent="Vertical/Opponent"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_cik14")
+text = "Opponent"
+horizontal_alignment = 1
+
+[node name="Opponent Selection" type="HBoxContainer" parent="Vertical/Opponent"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="AIButton" type="Button" parent="Vertical/Opponent/Opponent Selection"]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_color = Color(0.3779188, 0.37791887, 0.37791884, 1)
-theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 80
-theme_override_styles/normal = SubResource("StyleBoxFlat_cik14")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bwbl4")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m2lcq")
-theme_override_styles/focus = SubResource("StyleBoxFlat_3yqky")
-text = "Easy"
+size_flags_vertical = 4
+theme = ExtResource("3_cik14")
+disabled = true
+text = "vs AI"
 
-[node name="MediumButton" type="Button" parent="TextureRect/HBoxContainer"]
+[node name="LocalButton" type="Button" parent="Vertical/Opponent/Opponent Selection"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_hover_color = Color(0.446777, 0.44677705, 0.44677705, 1)
-theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-theme_override_font_sizes/font_size = 80
-theme_override_styles/normal = SubResource("StyleBoxFlat_48ldk")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ob6pc")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r1p12")
-theme_override_styles/focus = SubResource("StyleBoxFlat_xiptm")
-text = "Medium"
+size_flags_vertical = 4
+theme = ExtResource("3_cik14")
+text = "2-Player"
 
-[node name="HardButton" type="Button" parent="TextureRect/HBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="Vertical"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 80
-theme_override_styles/normal = SubResource("StyleBoxFlat_2l2qm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_nto4l")
-theme_override_styles/hover = SubResource("StyleBoxFlat_nr5kj")
-theme_override_styles/focus = SubResource("StyleBoxFlat_j4b4t")
-text = "Master"
+size_flags_vertical = 3
+theme = ExtResource("3_cik14")
+
+[node name="StartButton" type="Button" parent="Vertical"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("3_cik14")
+text = " Start Game "
+
+[node name="HSeparator4" type="HSeparator" parent="Vertical"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_cik14")

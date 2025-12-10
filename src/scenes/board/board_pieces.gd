@@ -210,4 +210,5 @@ static func generate_pieces_from_data(pieces_data: Array) -> Array:
 	for piece_data in pieces_data:
 		var piece = spawn_piece(piece_data.script, piece_data.pos, piece_data.player)
 		output.push_back(piece)
+
 	return output
