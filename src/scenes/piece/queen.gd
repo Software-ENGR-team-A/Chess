@@ -5,7 +5,26 @@ extends Piece
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 9
+	center_control_multiplier = 2.0
 	anim_name = get_player_name() + "Queen"
+
+
+## Generates and stores all movement outcomes for the piece
+func _generate_all_moves() -> void:
+	# Vertical
+	for row in range(0, 16):
+		var map_cell = Vector2i(board_pos.x, row - 8)
+		movement_outcome_at(map_cell)
+
+	# Horizontal
+	for col in range(0, 16):
+		var map_cell = Vector2i(col - 8, board_pos.y)
+		movement_outcome_at(map_cell)
+
+	# Both diagonals
+	for offset in range(0, 16):
+		movement_outcome_at(Vector2i(board_pos.x - offset, board_pos.y - offset))
+		movement_outcome_at(Vector2i(board_pos.x + offset, board_pos.y - offset))
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

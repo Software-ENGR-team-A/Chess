@@ -8,8 +8,10 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var pieces: Node
 @export var box_cursor: BoxCursor
 
-## Difficulty level to change AI
 var difficulty: String = "Medium"
+var ai_enabled: bool = true
+
+var engine: ChessEngine
 
 @onready var pause_menu: Control = $PauseMenu
 @onready var pause_button: Button = $PauseButton
@@ -36,6 +38,9 @@ var difficulty: String = "Medium"
 ## [param pieces_array]: Array of [Piece]s to put on the board
 func setup(_is_primary, floor_map: Array, pieces_array: Array) -> void:
 	is_primary = _is_primary
+
+	if is_primary:
+		engine = ChessEngine.new(self)
 
 	if ready:
 		load_queued_state(floor_map, pieces_array)
@@ -121,6 +126,9 @@ func _input(event) -> void:
 						print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
 
 					AudioManager.play_sound(AudioManager.movement.place)
+
+					if ai_enabled:
+						engine.make_move(self)
 
 				else:
 					# Revert location

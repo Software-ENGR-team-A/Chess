@@ -5,7 +5,15 @@ extends Piece
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 3
+	center_control_multiplier = 3.0
 	anim_name = get_player_name() + "Bishop"
+
+
+## Generates and stores all movement outcomes for the piece
+func _generate_all_moves() -> void:
+	for offset in range(0, 16):
+		movement_outcome_at(Vector2i(board_pos.x - offset, board_pos.y - offset))
+		movement_outcome_at(Vector2i(board_pos.x + offset, board_pos.y - offset))
 
 
 func _movement(pos: Vector2i) -> MovementOutcome:

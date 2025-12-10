@@ -1,12 +1,13 @@
 class_name Pawn
 extends Piece
 
-@export var forward_direction: int
+var forward_direction: int
 
 
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 1
+	center_control_multiplier = 1.5
 	anim_name = get_player_name() + "Pawn"
 	forward_direction = -1 if player else 1
 
