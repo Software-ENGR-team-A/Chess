@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://pv081dywn1wv"]
+
+[sub_resource type="GDScript" id="GDScript_lde4l"]
+
+[sub_resource type="Shader" id="Shader_fgv3k"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
+uniform float amount: hint_range(0.0, 5.0);
+
+void fragment() {
+	vec4 color = textureLod(screen_texture,SCREEN_UV, amount);
+	COLOR = color;
+}"
+script = SubResource("GDScript_lde4l")
+
+[resource]
+shader = SubResource("Shader_fgv3k")
+shader_parameter/amount = 5.0

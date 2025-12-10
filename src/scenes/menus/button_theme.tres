@@ -1,0 +1,99 @@
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://bgixiarsqwbu"]
+
+[ext_resource type="FontFile" uid="uid://dc8krw5p6ibbj" path="res://assets/yoster-island/yoster.ttf" id="1_lcu51"]
+[ext_resource type="Texture2D" uid="uid://cdlxwtjghluuq" path="res://assets/ui.png" id="2_y6el7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kuoli"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+expand_margin_bottom = 2.0
+region_rect = Rect2(0, 25, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_882cc"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(25, 25, 30, 30)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r6hev"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+expand_margin_bottom = 2.0
+region_rect = Rect2(25, 0, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y6el7"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+expand_margin_bottom = 2.0
+region_rect = Rect2(0, 0, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6twlp"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+expand_margin_bottom = 2.0
+region_rect = Rect2(50, 0, 24, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6el7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6el7"]
+atlas = ExtResource("2_y6el7")
+region = Rect2(75, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuoli"]
+atlas = ExtResource("2_y6el7")
+region = Rect2(75, 18, 17, 17)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b07xo"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 4.0
+texture_margin_top = 3.0
+texture_margin_right = 4.0
+texture_margin_bottom = 3.0
+expand_margin_bottom = 1.0
+region_rect = Rect2(94, 14, 20, 7)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_es2m1"]
+texture = ExtResource("2_y6el7")
+texture_margin_left = 4.0
+texture_margin_top = 3.0
+texture_margin_right = 4.0
+texture_margin_bottom = 3.0
+expand_margin_bottom = 1.0
+region_rect = Rect2(94, 5, 20, 7)
+
+[resource]
+Button/colors/font_color = Color(0.28627452, 0.1764706, 0.21960784, 1)
+Button/colors/font_disabled_color = Color(0.5137255, 0.45882353, 0.6117647, 1)
+Button/font_sizes/font_size = 12
+Button/fonts/font = ExtResource("1_lcu51")
+Button/styles/disabled = SubResource("StyleBoxTexture_kuoli")
+Button/styles/focus = SubResource("StyleBoxTexture_882cc")
+Button/styles/hover = SubResource("StyleBoxTexture_r6hev")
+Button/styles/normal = SubResource("StyleBoxTexture_y6el7")
+Button/styles/pressed = SubResource("StyleBoxTexture_6twlp")
+HSeparator/styles/separator = SubResource("StyleBoxEmpty_y6el7")
+HSlider/icons/grabber = SubResource("AtlasTexture_y6el7")
+HSlider/icons/grabber_highlight = SubResource("AtlasTexture_kuoli")
+HSlider/styles/grabber_area = SubResource("StyleBoxTexture_b07xo")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_b07xo")
+HSlider/styles/slider = SubResource("StyleBoxTexture_es2m1")
+Label/font_sizes/font_size = 12
+Label/fonts/font = ExtResource("1_lcu51")

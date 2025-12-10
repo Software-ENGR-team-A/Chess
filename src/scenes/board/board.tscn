@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0bs6sbbrybcl"]
+[gd_scene load_steps=13 format=3 uid="uid://c0bs6sbbrybcl"]
 
 [ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
 [ext_resource type="TileSet" uid="uid://csu6oc8c7768i" path="res://scenes/board/spritesheet_tileset.tres" id="2_q07he"]
@@ -6,13 +6,31 @@
 [ext_resource type="Texture2D" uid="uid://bm86noysxv6ks" path="res://assets/spritesheet.png" id="4_ci4ar"]
 [ext_resource type="Script" uid="uid://cv0lyl3vphqw5" path="res://scenes/board/box_cursor.gd" id="4_kymhv"]
 [ext_resource type="Script" uid="uid://buabp8ji67ups" path="res://scenes/board/board_pieces.gd" id="4_q07he"]
+[ext_resource type="Texture2D" uid="uid://cdlxwtjghluuq" path="res://assets/ui.png" id="7_dej46"]
 [ext_resource type="PackedScene" uid="uid://c0o0wn3xnasao" path="res://scenes/menus/pause_menu/pause_menu.tscn" id="7_exf0g"]
+[ext_resource type="Theme" uid="uid://bgixiarsqwbu" path="res://scenes/menus/button_theme.tres" id="9_rpdi3"]
 
-[node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces", "box_cursor")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rpdi3"]
+atlas = ExtResource("7_dej46")
+region = Rect2(1, 55, 9, 9)
+margin = Rect2(0, 0, 2, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6wwm"]
+atlas = ExtResource("7_dej46")
+region = Rect2(21, 55, 9, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8r4w"]
+atlas = ExtResource("7_dej46")
+region = Rect2(11, 55, 9, 9)
+
+[node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces", "box_cursor", "turn_indicator", "pause_menu", "pause_button")]
 script = ExtResource("1_q07he")
 squares = NodePath("Squares")
 pieces = NodePath("Pieces")
 box_cursor = NodePath("BoxCursor")
+turn_indicator = NodePath("CanvasLayer/TurnIndicator")
+pause_menu = NodePath("PauseMenu")
+pause_button = NodePath("CanvasLayer/MarginContainer/PauseButton")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(8, 8)
@@ -33,15 +51,6 @@ script = ExtResource("4_kymhv")
 [node name="Pieces" type="Node2D" parent="."]
 script = ExtResource("4_q07he")
 
-[node name="PauseButton" type="Button" parent="."]
-offset_left = -114.0
-offset_top = -63.0
-offset_right = -85.0
-offset_bottom = -32.0
-theme_override_constants/outline_size = 6
-theme_override_constants/line_spacing = 0
-text = "I I"
-
 [node name="PauseMenu" parent="." instance=ExtResource("7_exf0g")]
 visible = false
 offset_left = -36.0
@@ -50,11 +59,32 @@ offset_right = -36.0
 offset_bottom = -35.0
 metadata/_edit_use_anchors_ = true
 
-[node name="TurnIndicator" type="Label" parent="."]
-offset_left = 68.0
-offset_top = -67.0
-offset_right = 108.0
-offset_bottom = -44.0
-theme_override_font_sizes/font_size = 13
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(6, 6)
+transform = Transform2D(6, 0, 0, 6, 0, 0)
 
-[connection signal="pressed" from="PauseButton" to="." method="_on_pause_button_pressed"]
+[node name="TurnIndicator" type="Label" parent="CanvasLayer"]
+offset_left = 2.0
+offset_top = 14.0
+offset_right = 38.0
+offset_bottom = 26.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("9_rpdi3")
+text = "Hello!"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+
+[node name="PauseButton" type="TextureButton" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = SubResource("AtlasTexture_rpdi3")
+texture_pressed = SubResource("AtlasTexture_c6wwm")
+texture_hover = SubResource("AtlasTexture_k8r4w")
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/PauseButton" to="." method="_on_pause_button_pressed"]
