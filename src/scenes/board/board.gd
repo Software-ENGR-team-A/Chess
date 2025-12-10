@@ -113,11 +113,6 @@ func _input(event) -> void:
 				):
 					# Put down piece
 					pieces.held_piece.move_to(hovered_square)
-					half_moves += 1
-					if half_moves % 2 == 0:
-						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
-					else:
-						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nBlack"
 
 					# Verify checkmate state for opposite player
 					var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
@@ -129,6 +124,12 @@ func _input(event) -> void:
 
 					if ai_enabled:
 						engine.make_move(self)
+
+					half_moves += 1
+					if half_moves % 2 == 0:
+						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
+					else:
+						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nBlack"
 
 				else:
 					# Revert location
