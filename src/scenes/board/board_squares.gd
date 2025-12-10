@@ -55,13 +55,10 @@ func set_at(pos: Vector2i, on: bool) -> void:
 	var has_floor := has_floor_at(pos)
 	var to_add := 1 << (16 - pos.x - 8 - 1)
 
-	if has_floor and not on:
-		to_add = -1 * to_add
-	elif not (has_floor and on):
-		return
-
-	floor_data[pos.y - 8] += to_add
-	return
+	if on and not has_floor:
+		floor_data[pos.y - 8] += to_add
+	elif not on and has_floor:
+		floor_data[pos.y - 8] -= to_add
 
 
 ## Re-calculates all the tiles. If supplied a [param selected_piece], the floor will indicate
