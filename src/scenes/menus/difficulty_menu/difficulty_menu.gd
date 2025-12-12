@@ -229,6 +229,7 @@ func set_difficulty(value: int):
 	easy_button.disabled = value == 0
 	medium_button.disabled = value == 1
 	hard_button.disabled = value == 2
+	AudioManager.play_sound(AudioManager.menu.select)
 
 
 func set_ai(value: bool):
@@ -236,6 +237,7 @@ func set_ai(value: bool):
 
 	ai_button.disabled = value == true
 	local_button.disabled = value == false
+	AudioManager.play_sound(AudioManager.menu.select)
 
 
 func start_game() -> void:
@@ -261,4 +263,5 @@ func start_game() -> void:
 
 	new_board.setup(true, squares, pieces)
 	get_tree().root.add_child(new_board)
+	AudioManager.play_sound(AudioManager.menu.select)
 	queue_free()
