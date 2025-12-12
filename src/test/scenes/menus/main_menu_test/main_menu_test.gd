@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 @warning_ignore("unused_parameter")
 @warning_ignore("return_value_discarded")
 # TestSuite generated from
-const SOURCE_SCENE := preload("res://scenes/menus/main_menu/main_menu.gd")
+const SOURCE_SCENE := preload("res://scenes/menus/main_menu/main_menu.tscn")
 
 var main_menu: Node
 
