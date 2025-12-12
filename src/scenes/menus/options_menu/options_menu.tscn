@@ -60,6 +60,7 @@ horizontal_alignment = 1
 [node name="HSlider" type="HSlider" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_vduk8")
+max_value = 1.0
 
 [node name="SFX Volume" type="Label" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -71,6 +72,7 @@ horizontal_alignment = 1
 [node name="HSlider3" type="HSlider" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_vduk8")
+max_value = 1.0
 
 [node name="Music Volume" type="Label" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -82,6 +84,7 @@ horizontal_alignment = 1
 [node name="HSlider2" type="HSlider" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_vduk8")
+max_value = 1.0
 
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
