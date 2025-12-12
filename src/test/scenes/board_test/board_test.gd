@@ -177,9 +177,11 @@ func test_set_difficulty() -> void:
 
 
 func test_turn_indicator() -> void:
+	# Instantiate new board scene
 	var bd = BOARD_SCENE.instantiate()
 	add_child(bd)
 
+	# Cycle through 100 different gamestates and test each one
 	for i in range(99):
 		bd.half_moves = i
 		bd.update_turn_indicator()
@@ -192,5 +194,6 @@ func test_turn_indicator() -> void:
 				"Turn " + str(bd.half_moves + 1) + "\r\nBlack"
 			)
 
+	# Clean up orphans
 	bd.queue_free()
 	await get_tree().process_frame
