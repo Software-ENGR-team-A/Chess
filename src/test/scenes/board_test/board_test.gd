@@ -174,3 +174,26 @@ func test_set_difficulty() -> void:
 	# Cleanup
 	board.queue_free()
 	await get_tree().process_frame  # Give Godot a frame to clean up freed nodes
+
+
+func test_turn_indicator() -> void:
+	# Instantiate new board scene
+	var bd = BOARD_SCENE.instantiate()
+	add_child(bd)
+
+	# Cycle through 100 different gamestates and test each one
+	for i in range(99):
+		bd.half_moves = i
+		bd.update_turn_indicator()
+		if i % 2 == 0:
+			assert_str(bd.turn_indicator.text).is_equal(
+				"Turn " + str(bd.half_moves + 1) + "\r\nWhite"
+			)
+		if i % 2 == 1:
+			assert_str(bd.turn_indicator.text).is_equal(
+				"Turn " + str(bd.half_moves + 1) + "\r\nBlack"
+			)
+
+	# Clean up orphans
+	bd.queue_free()
+	await get_tree().process_frame
