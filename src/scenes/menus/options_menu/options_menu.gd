@@ -11,7 +11,7 @@ const DEFAULT_DB := -20.0
 # Slider Range
 const MIN_LINEAR: float = 0.0001
 const MAX_LINEAR: float = 1
-const DEFAULT_LINEAR: float = .75
+const DEFAULT_LINEAR: float = .9
 
 # Bus names – CHANGE THESE if your buses are named differently
 const MUSIC_BUS := "Music"
