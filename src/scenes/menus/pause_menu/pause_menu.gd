@@ -1,8 +1,8 @@
 extends Control
 
-@onready var board = $"../"
-
 const MAIN_SCENE := preload("res://scenes/menus/main_menu/main_menu.tscn")
+
+@onready var board = $"../"
 
 
 func _on_resume_pressed() -> void:

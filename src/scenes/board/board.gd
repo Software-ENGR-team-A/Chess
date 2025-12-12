@@ -263,3 +263,8 @@ func set_difficulty(new_difficulty: int) -> void:
 
 func get_difficulty() -> String:
 	return difficulty
+
+
+func _on_menu_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/menus/main_menu/main_menu.tscn")
+	self.queue_free()
