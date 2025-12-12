@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c0bs6sbbrybcl"]
+[gd_scene load_steps=16 format=3 uid="uid://c0bs6sbbrybcl"]
 
 [ext_resource type="Script" uid="uid://c2uda738gndb4" path="res://scenes/board/board.gd" id="1_q07he"]
 [ext_resource type="TileSet" uid="uid://csu6oc8c7768i" path="res://scenes/board/spritesheet_tileset.tres" id="2_q07he"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://cdlxwtjghluuq" path="res://assets/ui.png" id="7_dej46"]
 [ext_resource type="PackedScene" uid="uid://c0o0wn3xnasao" path="res://scenes/menus/pause_menu/pause_menu.tscn" id="7_exf0g"]
 [ext_resource type="Theme" uid="uid://bgixiarsqwbu" path="res://scenes/menus/button_theme.tres" id="9_rpdi3"]
+[ext_resource type="Material" uid="uid://pv081dywn1wv" path="res://scenes/blur.tres" id="10_c6wwm"]
+[ext_resource type="Texture2D" uid="uid://cp4sc600mn2ka" path="res://assets/icon_background@10x.png" id="11_k8r4w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rpdi3"]
 atlas = ExtResource("7_dej46")
@@ -23,7 +25,11 @@ region = Rect2(21, 55, 9, 9)
 atlas = ExtResource("7_dej46")
 region = Rect2(11, 55, 9, 9)
 
-[node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces", "box_cursor", "turn_indicator", "pause_menu", "pause_button")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0prs"]
+atlas = ExtResource("7_dej46")
+region = Rect2(64, 48, 64, 16)
+
+[node name="Board" type="Node2D" node_paths=PackedStringArray("squares", "pieces", "box_cursor", "turn_indicator", "pause_menu", "pause_button", "win_panel", "win_text")]
 script = ExtResource("1_q07he")
 squares = NodePath("Squares")
 pieces = NodePath("Pieces")
@@ -31,6 +37,8 @@ box_cursor = NodePath("BoxCursor")
 turn_indicator = NodePath("CanvasLayer/TurnIndicator")
 pause_menu = NodePath("PauseMenu")
 pause_button = NodePath("CanvasLayer/MarginContainer/PauseButton")
+win_panel = NodePath("Win")
+win_text = NodePath("Win/WinText")
 
 [node name="Camera" type="Camera2D" parent="."]
 zoom = Vector2(8, 8)
@@ -86,5 +94,51 @@ size_flags_vertical = 0
 texture_normal = SubResource("AtlasTexture_rpdi3")
 texture_pressed = SubResource("AtlasTexture_c6wwm")
 texture_hover = SubResource("AtlasTexture_k8r4w")
+
+[node name="Win" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control" type="TextureRect" parent="Win"]
+material = ExtResource("10_c6wwm")
+layout_mode = 0
+offset_left = -250.0
+offset_top = -238.0
+offset_right = 250.0
+offset_bottom = 238.0
+texture = ExtResource("11_k8r4w")
+
+[node name="TextureRect" type="TextureRect" parent="Win"]
+modulate = Color(1, 1, 1, 0.8666667)
+layout_mode = 0
+offset_left = -120.0
+offset_top = -40.0
+offset_right = 120.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_w0prs")
+
+[node name="WinText" type="Label" parent="Win"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -63.0
+offset_right = 150.5
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("9_rpdi3")
+theme_override_font_sizes/font_size = 36
+text = "WHITE WINS!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="CanvasLayer/MarginContainer/PauseButton" to="." method="_on_pause_button_pressed"]
