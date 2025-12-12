@@ -137,7 +137,7 @@ func _input(event) -> void:
 						paused = true
 
 					# Player won
-					elif is_primary and enemy_king.in_checkmate():
+					elif is_primary and (not enemy_king or enemy_king.in_checkmate()):
 						AudioManager.play_sound(AudioManager.movement.checkmate, -15)
 
 						win_text.text = (("Black" if half_moves % 2 == 0 else "White") + " wins!")
@@ -263,3 +263,8 @@ func set_difficulty(new_difficulty: int) -> void:
 
 func get_difficulty() -> String:
 	return difficulty
+
+
+func _on_menu_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/menus/main_menu/main_menu.tscn")
+	self.queue_free()

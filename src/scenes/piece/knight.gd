@@ -5,7 +5,7 @@ extends Piece
 func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
 	super.setup(_board, _pos, _player)
 	point_value = 3
-	center_control_multiplier = 2.0
+	center_control_multiplier = 1.2
 	anim_name = get_player_name() + "Knight"
 
 
