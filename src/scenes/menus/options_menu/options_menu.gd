@@ -8,6 +8,11 @@ const MIN_DB := -80.0  # near silent
 const MAX_DB := 5.0  # full volume
 const DEFAULT_DB := -20.0
 
+# Slider Range
+const MIN_LINEAR: float = 0.0001
+const MAX_LINEAR: float = 1
+const DEFAULT_LINEAR: float = .75
+
 # Bus names – CHANGE THESE if your buses are named differently
 const MUSIC_BUS := "Music"
 const SFX_BUS := "Sound Effects"
@@ -17,6 +22,10 @@ const MASTER_BUS := "Master"
 @export var sfx_slider: HSlider
 @export var master_slider: HSlider
 @export var back_button: Button
+
+# Change how frequent the slider sound plays
+var slider_sounder: int = 0
+var slider_sounder_max: int = 3
 
 
 func _ready() -> void:
@@ -46,15 +55,15 @@ func _init_slider_for_bus(slider: HSlider, bus_name: String) -> void:
 	if not slider:
 		return
 
-	slider.min_value = MIN_DB
-	slider.max_value = MAX_DB
-	slider.step = 1.0
+	slider.min_value = MIN_LINEAR
+	slider.max_value = MAX_LINEAR
+	slider.step = MIN_LINEAR
 
 	var current_db := _get_bus_db(bus_name)
 	if is_nan(current_db):
 		current_db = DEFAULT_DB
 
-	slider.value = clamp(current_db, MIN_DB, MAX_DB)
+	slider.value = db_to_linear(clamp(current_db, MIN_DB, MAX_DB))
 
 
 func _get_bus_db(bus_name: String) -> float:
@@ -65,11 +74,16 @@ func _get_bus_db(bus_name: String) -> float:
 	return AudioServer.get_bus_volume_db(bus)
 
 
-func _set_bus_db(bus_name: String, db: float) -> void:
+func _set_bus_db(bus_name: String, value: float) -> void:
+	var db_value = linear_to_db(value)
 	var bus := AudioServer.get_bus_index(bus_name)
 	if bus == -1:
 		return
-	AudioServer.set_bus_volume_db(bus, clamp(db, MIN_DB, MAX_DB))
+	AudioServer.set_bus_volume_db(bus, clamp(db_value, MIN_DB, MAX_DB))
+	if slider_sounder > slider_sounder_max:
+		AudioManager.play_sound(AudioManager.menu.slider)
+		slider_sounder = 0
+	slider_sounder += 1
 
 
 func _on_back_pressed() -> void:

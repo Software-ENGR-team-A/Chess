@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d1kqs01ig1dug"]
+[gd_scene load_steps=16 format=3 uid="uid://d1kqs01ig1dug"]
 
 [ext_resource type="Script" uid="uid://dlvmb6alpnxru" path="res://scenes/sound_system/audio_manager.gd" id="1_fagox"]
 [ext_resource type="AudioStream" uid="uid://k62kwx56okre" path="res://assets/audio/movement/capture.ogg" id="2_x5gnv"]
@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://q7s18kpviutr" path="res://assets/audio/menu/cancel_8_bit.ogg" id="10_exi1o"]
 [ext_resource type="AudioStream" uid="uid://bl5u15xo2o2xr" path="res://assets/audio/menu/menu_8_bit.ogg" id="11_cv2ok"]
 [ext_resource type="Script" uid="uid://d0rxdfdq67rol" path="res://scenes/sound_system/sound_groups/menu_sounds.gd" id="12_ygj4p"]
+[ext_resource type="AudioStream" uid="uid://2dys3li3k6b2" path="res://assets/audio/menu/Slider.ogg" id="13_sbso7"]
 
 [sub_resource type="Resource" id="Resource_3ygxf"]
 script = ExtResource("8_e5y6x")
@@ -28,6 +29,7 @@ metadata/_custom_type_script = "uid://cfcgaocxt5vrm"
 script = ExtResource("12_ygj4p")
 open = ExtResource("11_cv2ok")
 close = ExtResource("10_exi1o")
+slider = ExtResource("13_sbso7")
 metadata/_custom_type_script = "uid://d0rxdfdq67rol"
 
 [node name="AudioManager" type="Node"]
