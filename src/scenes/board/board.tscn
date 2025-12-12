@@ -141,4 +141,15 @@ text = "WHITE WINS!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Menu" type="Button" parent="Win"]
+layout_mode = 0
+offset_left = -58.0
+offset_top = 42.0
+offset_right = 58.0
+offset_bottom = 70.0
+theme = ExtResource("9_rpdi3")
+text = "Return to Menu
+"
+
 [connection signal="pressed" from="CanvasLayer/MarginContainer/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="Win/Menu" to="." method="_on_menu_pressed"]
