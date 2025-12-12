@@ -60,7 +60,7 @@ func _ready() -> void:
 	if is_primary:
 		MusicManager.play_random_song()
 
-	turn_indicator.text = "Turn 1\nWhite"
+	update_turn_indicator()
 
 
 func _input(event) -> void:
@@ -121,10 +121,7 @@ func _input(event) -> void:
 					if ai_enabled and half_moves % 2 == 1:
 						engine.make_move(self)
 
-					if half_moves % 2 == 0:
-						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
-					else:
-						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nBlack"
+					update_turn_indicator()
 
 					# Check win conditions
 
@@ -268,3 +265,10 @@ func get_difficulty() -> String:
 func _on_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/menus/main_menu/main_menu.tscn")
 	self.queue_free()
+
+
+func update_turn_indicator() -> void:
+	if half_moves % 2 == 0:
+		turn_indicator.text = "Turn " + str(half_moves + 1) + "\r\nWhite"
+	else:
+		turn_indicator.text = "Turn " + str(half_moves + 1) + "\r\nBlack"
