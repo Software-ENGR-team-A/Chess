@@ -122,10 +122,14 @@ func _input(event) -> void:
 
 					AudioManager.play_sound(AudioManager.movement.place)
 
-					if ai_enabled:
+					half_moves += 1
+
+					if ai_enabled and half_moves % 2 == 1:
 						engine.make_move(self)
 
-					half_moves += 1
+						if half_moves % 2 == 1:
+							print("you win!")
+
 					if half_moves % 2 == 0:
 						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
 					else:
