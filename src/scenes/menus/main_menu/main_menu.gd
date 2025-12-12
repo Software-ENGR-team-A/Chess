@@ -25,12 +25,15 @@ func _ready():
 
 func on_start_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/menus/difficulty_menu/difficulty_menu.tscn")
+	AudioManager.play_sound(AudioManager.menu.select)
 
 
 func on_option_pressed() -> void:
 	var options = OPTIONS_SCENE.instantiate()
+	AudioManager.play_sound(AudioManager.menu.select)
 	get_tree().root.add_child(options)
 
 
 func on_exit_pressed() -> void:
+	AudioManager.play_sound(AudioManager.menu.select)
 	get_tree().quit()
