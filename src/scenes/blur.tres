@@ -16,4 +16,4 @@ script = SubResource("GDScript_lde4l")
 
 [resource]
 shader = SubResource("Shader_fgv3k")
-shader_parameter/amount = 5.0
+shader_parameter/amount = 2.50000011875

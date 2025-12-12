@@ -11,6 +11,8 @@ const AUDIO_BUS := preload("res://scenes/sound_system/default_bus_layout.tres")
 @export var turn_indicator: Label
 @export var pause_menu: Control
 @export var pause_button: TextureButton
+@export var win_panel: Control
+@export var win_text: Label
 
 var difficulty: String = "Medium"
 var ai_enabled: bool = true
@@ -114,22 +116,43 @@ func _input(event) -> void:
 					# Put down piece
 					pieces.held_piece.move_to(hovered_square)
 
-					# Verify checkmate state for opposite player
-					var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
-					if is_primary and enemy_king.in_checkmate():
-						AudioManager.play_sound(AudioManager.movement.checkmate, -15)
-						print(("Black" if enemy_king == pieces.white_king else "White") + " wins!")
+					half_moves += 1
 
-					AudioManager.play_sound(AudioManager.movement.place)
-
-					if ai_enabled:
+					if ai_enabled and half_moves % 2 == 1:
 						engine.make_move(self)
 
-					half_moves += 1
 					if half_moves % 2 == 0:
 						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nWhite"
 					else:
 						turn_indicator.text = "Turn " + str(half_moves + 1) + "\nBlack"
+
+					# Check win conditions
+
+					var enemy_king = pieces["white_king" if half_moves % 2 == 0 else "black_king"]
+
+					# AI won
+					if ai_enabled and half_moves % 2 == 1:
+						win_text.text = "You Win!"
+						win_panel.visible = true
+						paused = true
+
+					# Player won
+					elif is_primary and enemy_king.in_checkmate():
+						AudioManager.play_sound(AudioManager.movement.checkmate, -15)
+
+						win_text.text = (("Black" if half_moves % 2 == 0 else "White") + " wins!")
+						win_panel.visible = true
+						paused = true
+
+					# Stalemate
+					elif len(engine.get_possible_moves_for(self)) == 0:
+						win_text.text = "Stalemate!"
+						win_panel.visible = true
+						paused = true
+
+					# Continue as normal
+					else:
+						AudioManager.play_sound(AudioManager.movement.place)
 
 				else:
 					# Revert location

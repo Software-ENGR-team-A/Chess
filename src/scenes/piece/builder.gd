@@ -2,8 +2,8 @@ class_name Builder
 extends Piece
 
 
-func setup(board: Board, pos: Vector2i, player: int) -> void:
-	super.setup(board, pos, player)
+func setup(_board: Board, _pos: Vector2i, _player: int) -> void:
+	super.setup(_board, _pos, _player)
 	self.point_value = 3
 	self.anim_name = get_player_name() + "Builder"
 
