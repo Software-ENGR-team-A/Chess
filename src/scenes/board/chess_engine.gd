@@ -1,7 +1,7 @@
 class_name ChessEngine
 
-# const VARIABILITY := 1.0
-const VARIABILITY := 0.0
+const VARIABILITY := 1.0
+#const VARIABILITY := 0.0
 
 var root_board: Board
 
@@ -114,12 +114,13 @@ func score_move(move: Move, debug: bool = false) -> float:
 		points += capture.point_value * 4
 
 	# Remove points for poor centre control
-	# var center_bonus =  8 - Vector2(move.board_pos).distance_to(Vector2(-0.5, -0.5))
-	# center_bonus *= move.piece.center_control_multiplier / 2
+	var center_bonus = 8 - Vector2(move.board_pos).distance_to(Vector2(-0.5, -0.5))
+	center_bonus *= move.piece.center_control_multiplier / 2
 	#
-	# points += center_bonus
-	# if debug:
-	# 	print("\t" + str(round(center_bonus)) + " points for centre bonus")
+	points += center_bonus
+
+	if debug:
+		print("\t" + str(round(center_bonus)) + " points for centre bonus")
 
 	if debug:
 		print(str(round(points)) + " points total")
