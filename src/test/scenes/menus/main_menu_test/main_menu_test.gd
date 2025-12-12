@@ -3,7 +3,6 @@ class_name MainMenuTest
 extends GdUnitTestSuite
 @warning_ignore("unused_parameter")
 @warning_ignore("return_value_discarded")
-
 # TestSuite generated from
 const __source: String = "res://scenes/menus/main_menu/main_menu.gd"
 
