@@ -87,4 +87,5 @@ func _set_bus_db(bus_name: String, value: float) -> void:
 
 
 func _on_back_pressed() -> void:
+	AudioManager.play_sound(AudioManager.menu.select)
 	queue_free()
